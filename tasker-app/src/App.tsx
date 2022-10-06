@@ -1,25 +1,24 @@
-import '@fullcalendar/react/dist/vdom'
+import '@fullcalendar/react/dist/vdom';
 
-import { useState } from 'react'
+import { useState } from 'react';
 import moment from 'moment';
 import './App.css'
 
-const getWeekdays = () => {
-  let calendar: moment.Moment[] = []
-  const startWeek = moment().startOf('week');
-  const endWeek = moment().endOf('week');
-  let start = startWeek.day()
-
+const getWeeklyCalendar = (day: moment.Moment) => {
+  let calendar: moment.Moment[] = [];
+  let startWeek = moment(day).startOf('week');
+  let endWeek = moment(day).endOf('week');
+  let start = startWeek.day();
   while(start <= endWeek.day()) {
-    calendar.push(startWeek.clone())
-    startWeek.add(1, 'day')
-    start++
+    calendar.push(startWeek.clone());
+    startWeek.add(1, 'day');
+    start++;
   }
-  return calendar
+  return calendar;
 }
-
 function App() {
-  const [activeDay, setActiveDay] = useState(moment())
+  const [activeDay, setActiveDay] = useState(moment());
+  const [calendar, setCalendar] = useState(getWeeklyCalendar(moment()));
   const tasks = [
     {
       id: 1,
@@ -64,26 +63,40 @@ function App() {
   ]
   
   function handleClick(selectedDay: moment.Moment) {
-    setActiveDay(selectedDay)
+    setActiveDay(selectedDay);
   }
   function getDailyTasks(selectedDay: string) {
-    return tasks.filter(task => task.date === selectedDay)
+    return tasks.filter(task => task.date === selectedDay);
   }
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    console.log(typeof e.currentTarget.value)
+ 
+  function getWeekdays(weekSts: String, calendar: moment.Moment[]) {
+    if (weekSts === 'next') {
+      const nextWeekStartDay = calendar[0].add(1, 'week');
+      const nextWeekDays = getWeeklyCalendar(nextWeekStartDay);
+      setCalendar(nextWeekDays);
+      setActiveDay(nextWeekStartDay.startOf('week'));
+    } 
+    if (weekSts === 'last') {
+      const lastWeekStartDay = calendar[0].subtract(1, 'week');
+      const lastWeekDays = getWeeklyCalendar(lastWeekStartDay);
+      setCalendar(lastWeekDays);
+      setActiveDay(lastWeekStartDay.startOf('week'));
+    }
   }
+  
   // Moment(new Date(date)).format('MM/DD/YYYY') --> to get rid of the moment deprecated warning
   //key is not good :(
   return (<>
+  <button onClick={() => getWeekdays('last', calendar)}>Last Week</button>
     <div className='carousel'>
-      {getWeekdays().map((day,i) => {
+      {calendar.map((day,i) => {
         return <div key={i} className={moment(activeDay.format('DD MMMM YYYY')).isSame(day.format('DD MMMM YYYY')) ? 'active' : ''} onClick={() => handleClick(day)}>{day.format('MMMM D')}</div>
         
       })}
     </div>
+    <button onClick={() => getWeekdays('next', calendar)}>Next Week</button>
     <div className='daily-tasks-page'>
     {getDailyTasks(activeDay.format('DD MMMM YYYY')).map(task => {
-      console.log(new Date(task.start))
         return <div className='task'>
           <div className='task-time'>{task.start}</div>
           <div className='task-def'>
