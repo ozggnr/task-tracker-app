@@ -4,9 +4,14 @@
   padding: 2rem;
   text-align: center;
 }
-.carousel {
+.dates {
   display: flex;
   justify-content: space-between;
+}
+.dates-top {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.75rem;
 }
 .active {
   background-color: aquamarine;
@@ -14,6 +19,10 @@
 }
 .task {
   display: flex;
+  justify-content: space-evenly;
+}
+.button-group-week {
+  text-align: right;
 }
 @keyframes logo-spin {
   from {

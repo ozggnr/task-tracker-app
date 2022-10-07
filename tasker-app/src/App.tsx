@@ -2,6 +2,7 @@ import '@fullcalendar/react/dist/vdom';
 
 import { useState } from 'react';
 import moment from 'moment';
+import TaskPage from './components/TaskPage.jsx'
 import './App.css'
 
 const getWeeklyCalendar = (day: moment.Moment) => {
@@ -86,25 +87,24 @@ function App() {
   
   // Moment(new Date(date)).format('MM/DD/YYYY') --> to get rid of the moment deprecated warning
   //key is not good :(
+    console.log(activeDay.month())
   return (<>
-  <button onClick={() => getWeekdays('last', calendar)}>Last Week</button>
-    <div className='carousel'>
+    <div className='dates-top'>
+      <div>{activeDay.format('MMMM YYYY')}</div>
+      <div className='button-group-week'>
+        <button onClick={() => getWeekdays('last', calendar)}>{"<"}</button>
+        <button onClick={() => getWeeklyCalendar(moment())}>Today</button>
+        <button onClick={() => getWeekdays('next', calendar)}>{">"}</button>
+      </div>
+    </div>
+    <div className='dates'>
       {calendar.map((day,i) => {
         return <div key={i} className={moment(activeDay.format('DD MMMM YYYY')).isSame(day.format('DD MMMM YYYY')) ? 'active' : ''} onClick={() => handleClick(day)}>{day.format('MMMM D')}</div>
         
       })}
     </div>
-    <button onClick={() => getWeekdays('next', calendar)}>Next Week</button>
-    <div className='daily-tasks-page'>
-    {getDailyTasks(activeDay.format('DD MMMM YYYY')).map(task => {
-        return <div className='task'>
-          <div className='task-time'>{task.start}</div>
-          <div className='task-def'>
-            <div className='task-title'>{task.title}</div>
-            <div className='task-desc'>{task.desc}</div>
-          </div>
-        </div>})}
-      </div>
+    <TaskPage tasks={getDailyTasks(activeDay.format('DD MMMM YYYY'))} className='mt-2'/>
+    
   </>)
 }
 
