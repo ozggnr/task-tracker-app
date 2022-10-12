@@ -1,48 +1,50 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+.calendar {
+  padding-top: 1rem;
+  height: calc(100vh - 6rem);
+  max-height: calc(100vh - 6rem);
+  overflow: auto;
+  margin: auto 24px;
 }
 .dates {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  font-weight: 800;
+  color: #2F0147 ;
+  margin-top: 1.5rem;
 }
 .dates-top {
   display: flex;
   justify-content: space-between;
   margin: 0.75rem;
 }
-.active {
-  background-color: aquamarine;
+.date {
+  cursor: pointer;
+}
+.date.active {
+  /* background-color: #AED9E0; */
+  background-color: #2F0147;
+  color: #fff;
   font-size: xx-large;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
 }
 .task {
   display: flex;
-  justify-content: space-evenly;
+}
+.daily-tasks-page {
+  background-color: #2e01470e;
+  /* display: flex;
+  flex-direction: column; */
+  border-radius: 0.5rem;
+  margin-top: 1.5rem;
+}
+.col-1 {
+  display: flex;
+  width: 50%;
+  margin: 0.5rem 0;
+  justify-content: center;
 }
 .button-group-week {
   text-align: right;
-}
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }
