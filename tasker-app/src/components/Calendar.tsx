@@ -1,5 +1,5 @@
 import moment from "moment";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DailyTasks from "./DailyTasks";
 
 const getWeeklyCalendar = (day: moment.Moment) => {
@@ -14,62 +14,33 @@ const getWeeklyCalendar = (day: moment.Moment) => {
   }
   return calendar;
 }
-const Calendar = () => {
-    const todayMomentObj = moment()
+interface Task {
+    id?: number,
+    date: string,
+    title: string,
+    desc: string,
+    start: string,
+    end: string,
+    completed: boolean,
+    repeat: string
+}
+interface Props {
+    tasks: Task[]
+}
+const Calendar = (props: Props) => {
+    const todayMomentObj = moment();
+    const { tasks } = props;
     const [activeDay, setActiveDay] = useState(todayMomentObj);
-    const [calendar, setCalendar] = useState(() => getWeeklyCalendar(todayMomentObj)); //---> create calendar compoenent and send the active day
-    const tasks = [
-        {
-        id: 1,
-        date: '05 October 2022',
-        title: 'Workout',
-        desc: '',
-        start: '8:30',
-        end: '9:00',
-        completed: true,
-        repeat: ''
-        },
-        {
-        id: 2,
-        date: '02 October 2022',
-        title: 'House',
-        desc: 'Rearrange closet',
-        start: '12:30',
-        end: '14:00',
-        completed: true,
-        repeat: ''
-        },
-        {
-        id: 3,
-        date: '07 October 2022',
-        title: 'Shopping',
-        desc: 'Go to grocery store',
-        start: '17:30',
-        end: '18:30',
-        completed: false,
-        repeat: ''
-        },
-        {
-        id: 4,
-        date: '05 October 2022',
-        title: 'Coding',
-        desc: 'Complete react lesson',
-        start: '9:00',
-        end: '11:00',
-        completed: false,
-        repeat: ''
-        }
-    ]
-    
+    const [calendar, setCalendar] = useState(() => getWeeklyCalendar(todayMomentObj)); //---> this needs to be refactored, find another solution
+   
     // Moment(new Date(date)).format('MM/DD/YYYY') --> to get rid of the moment deprecated warning
     //key is not good :(
-        console.log(calendar)
     return (<div className="calendar">
         <div className='dates-top'>
         <div>{activeDay.format('MMMM YYYY')}</div>
         <div className='button-group-week'>
             <button onClick={() => getWeekdays('last', calendar)}>{"<"}</button>
-            <button onClick={() => getWeeklyCalendar(todayMomentObj)}>Today</button>
+            <button onClick={() => getWeekdays('today', calendar)}>Today</button>
             <button onClick={() => getWeekdays('next', calendar)}>{">"}</button>
         </div>
         </div>
@@ -88,21 +59,23 @@ const Calendar = () => {
         setActiveDay(selectedDay);
     }
     function getDailyTasks(selectedDay: string) {
-        return tasks.filter(task => task.date === selectedDay);
+        return tasks.filter(task => moment(task.date).format('DD MMMM YYYY') === selectedDay);
     }
     
     function getWeekdays(weekSts: String, calendar: moment.Moment[]) {
         if (weekSts === 'next') {
-        const nextWeekStartDay = calendar[0].add(1, 'week');
-        const nextWeekDays = getWeeklyCalendar(nextWeekStartDay);
-        setCalendar(nextWeekDays);
-        setActiveDay(nextWeekStartDay.startOf('week'));
-        } 
-        if (weekSts === 'last') {
-        const lastWeekStartDay = calendar[0].subtract(1, 'week');
-        const lastWeekDays = getWeeklyCalendar(lastWeekStartDay);
-        setCalendar(lastWeekDays);
-        setActiveDay(lastWeekStartDay.startOf('week'));
+            const nextWeekStartDay = calendar[0].add(1, 'week');
+            const nextWeekDays = getWeeklyCalendar(nextWeekStartDay);
+            setCalendar(nextWeekDays);
+            setActiveDay(nextWeekStartDay.startOf('week'));
+        } else if (weekSts === 'last') {
+            const lastWeekStartDay = calendar[0].subtract(1, 'week');
+            const lastWeekDays = getWeeklyCalendar(lastWeekStartDay);
+            setCalendar(lastWeekDays);
+            setActiveDay(lastWeekStartDay.startOf('week'));
+        } else {
+            setCalendar(getWeeklyCalendar(moment()));
+            setActiveDay(moment());
         }
     }
     }

@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "date": "20 October 2022",
+        "title": "Workout",
+        "desc": "",
+        "start": "8:30",
+        "end": "9:00",
+        "completed": true,
+        "repeat": ""
+    },
+    {
+        "id": 2,
+        "date": "22 October 2022",
+        "title": "House",
+        "desc": "Rearrange closet",
+        "start": "12:30",
+        "end": "14:00",
+        "completed": true,
+        "repeat": ""
+    },
+    {
+        "id": 3,
+        "date": "17 October 2022",
+        "title": "Shopping",
+        "desc": "Go to grocery store",
+        "start": "17:30",
+        "end": "18:30",
+        "completed": false,
+        "repeat": ""
+    },
+    {
+        "id": 4,
+        "date": "20 October 2022",
+        "title": "Coding",
+        "desc": "Complete react lesson",
+        "start": "9:00",
+        "end": "11:00",
+        "completed": false,
+        "repeat": ""
+    }
+]

@@ -1,6 +1,6 @@
 
 interface Task {
-    id: number,
+    id?: number,
     date: string,
     title: string,
     desc: string,
@@ -13,9 +13,8 @@ interface Props {
   tasks: Task[], className: string
 }
 const DailyTasks = (props: Props) => {
-  console.log(props)
     const { tasks } = props;
-    
+    console.log(tasks)
     return <div className='daily-tasks-page'>
     {tasks.map(task => {
         return <div className='task'>
