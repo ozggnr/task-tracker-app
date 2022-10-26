@@ -1,14 +1,5 @@
+import { Task } from '../Types';
 
-interface Task {
-    id?: number,
-    date: string,
-    title: string,
-    desc: string,
-    start: string,
-    end: string,
-    completed: boolean,
-    repeat: string
-}
 interface Props {
   tasks: Task[], className: string
 }
