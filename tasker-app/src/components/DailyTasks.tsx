@@ -1,20 +1,35 @@
+import moment from 'moment';
+import { useEffect, useState } from 'react';
 import { Task } from '../Types';
 
 interface Props {
-  tasks: Task[], className: string
+  day: moment.Moment
 }
-const DailyTasks = (props: Props) => {
-    const { tasks } = props;
-    console.log(tasks)
+export const DailyTasks = ({day}: Props) => {
+	const [tasks, setTasks] = useState<Task[]>([])
+	useEffect(() => {
+		async function getTasks() {
+			const response = await fetch('/tasks.json');
+			const tasks = await response.json()
+			setTasks(tasks)
+		}
+		getTasks()
+	}, [])
+
+    const dailyTasks = getDailyTasks(day.format('DD MMMM YYYY'))
+  
     return <div className='daily-tasks-page'>
-    {tasks.map(task => {
-        return <div className='task'>
-          <div className='col-1'>{task.start}</div>
-          <div className='col-1'>
-            <div className='task-title'>{task.title}</div>
-            <div className='task-desc'>{task.desc}</div>
-          </div>
-        </div>})}
+		{dailyTasks.map(task => {
+			return <div className='task'>
+			<div className='col-1'>{task.start}</div>
+			<div className='col-1'>
+				<div className='task-title'>{task.title}</div>
+				<div className='task-desc'>{task.desc}</div>
+			</div>
+			</div>})}
       </div>
+
+    function getDailyTasks(selectedDay: string) {
+		return tasks.filter(task => moment(task.date).format('DD MMMM YYYY') === selectedDay);
+    }
 }
-export default DailyTasks;
