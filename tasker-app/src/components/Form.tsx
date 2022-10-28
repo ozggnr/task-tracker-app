@@ -1,14 +1,12 @@
 import { FC } from 'react';
-
-type Props = {
-    children?: React.ReactNode,
-    handleSubmit: React.FormEventHandler
-  };
+// ----Not using this one for now
+// type Props = {
+//     children?: React.ReactNode,
+//     handleSubmit: React.FormEventHandler
+//   };
   
-export const Form: FC<Props> = ({children, handleSubmit}) => {
-    console.log(children)
-    console.log(handleSubmit)
-    return <form onSubmit={handleSubmit}>
-        {children}
-    </form>
-}
+// export const Form: FC<Props> = ({children, handleSubmit}) => {
+//     return <form onSubmit={handleSubmit}>
+//         {children}
+//     </form>
+// }

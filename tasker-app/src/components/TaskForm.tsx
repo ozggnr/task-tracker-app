@@ -1,7 +1,7 @@
 import { FormEvent, useState, ChangeEvent } from 'react';
-import { Form } from './Form';
 import { Task } from '../Types';
 import { FormInput } from './FormInput';
+import { TaskFormContainer } from './FormStyle';
 
 export const TaskForm = () => { 
     const [taskInputFields, setTaskInputFields] = useState<Task>({
@@ -13,14 +13,14 @@ export const TaskForm = () => {
         completed: false,
         repeat: ""
       })
-    return <Form handleSubmit={handleFormSubmit}>
+    return <TaskFormContainer onSubmit={handleFormSubmit}>
         <FormInput label='Title' type='text' name='title' value={taskInputFields.title} onChange={handleChange} />
         <FormInput label='Description' type='text' name='desc' value={taskInputFields.desc} onChange={handleChange} />
         <FormInput label='Date' type='date' name='date' value={taskInputFields.date} onChange={handleChange} />
         <FormInput label='Time' type='time' name='start' value={taskInputFields.start} onChange={handleChange} />
-        <button type='button'>Save</button>
-    </Form>
-
+        <button type='submit'>Save</button>
+    </TaskFormContainer>
+  
     function handleFormSubmit(e: FormEvent) {
         e.preventDefault()
         fetch('/tasks.json').then(response => response.json()).then(data => {
