@@ -1,21 +1,8 @@
 import moment from "moment";
 import { useState } from "react";
-import { DailyTasks } from "./DailyTasks";
-import { TaskForm } from "./TaskForm";
-
-const getWeeklyCalendar = (day: moment.Moment) => {
-  let calendar: moment.Moment[] = [];
-  let startWeek = moment(day).startOf('week');
-  let endWeek = moment(day).endOf('week');
-  let start = startWeek.day();
-  while(start <= endWeek.day()) {
-    calendar.push(startWeek.clone());
-    startWeek.add(1, 'day');
-    start++;
-  }
-  return calendar;
-}
-
+import { DailyTasks } from "../DailyTasks";
+import { TaskForm } from "../TaskForm";
+import { CalendarContainer, CalendarDateContainer } from "./Calendar.style";
 export const Calendar = () => {
     const todayMomentObj = moment();
     const [openForm, setOpenForm] = useState(false)
@@ -24,28 +11,28 @@ export const Calendar = () => {
 
     // Moment(new Date(date)).format('MM/DD/YYYY') --> to get rid of the moment deprecated warning
     //key is not good :(
-    return (<div className="calendar">
+    return (<CalendarContainer>
         <div className='dates-top'>
             <div>{activeDay.format('MMMM YYYY')}</div>
+            <div>
+                <button onClick={() => setOpenForm(true)}>Create New Task</button>
+            </div>
             <div className='button-group-week'>
                 <button onClick={() => getWeekdays('last', calendar)}>{"<"}</button>
                 <button onClick={() => getWeekdays('today', calendar)}>Today</button>
                 <button onClick={() => getWeekdays('next', calendar)}>{">"}</button>
             </div>
         </div>
-        <div>
-            <button onClick={() => setOpenForm(true)}>Create New Task</button>
-        </div>
         {openForm && <TaskForm />}
-        <div className='dates'>
+        <CalendarDateContainer>
             {calendar.map((day,i) => {
                 const selectedDay = moment(activeDay.format('DD MMMM YYYY')).isSame(day.format('DD MMMM YYYY'))
                 return <div key={i} className={'date' + (selectedDay ? ' active' : '')} onClick={() => handleClick(day)}>{day.format('ddd D')}</div>
                 
             })}
-        </div>
+        </CalendarDateContainer>
         <DailyTasks day={activeDay} />
-    </div>)
+    </CalendarContainer>)
 
     function handleClick(selectedDay: moment.Moment) {
         setActiveDay(selectedDay);
@@ -68,6 +55,18 @@ export const Calendar = () => {
             setActiveDay(moment());
         }
     }
+    function getWeeklyCalendar (day: moment.Moment) {
+        let calendar: moment.Moment[] = [];
+        let startWeek = moment(day).startOf('week');
+        let endWeek = moment(day).endOf('week');
+        let start = startWeek.day();
+        while(start <= endWeek.day()) {
+          calendar.push(startWeek.clone());
+          startWeek.add(1, 'day');
+          start++;
+        }
+        return calendar;
+      }
     
 }
 
