@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "outDir": "./build",
+    "strict": true,
+    "lib": ["esnext"],
+    "esModuleInterop": true,
+    "target": "es6",
+    "noImplicitAny": true,
+    "module": "commonjs"
+  }
+}
