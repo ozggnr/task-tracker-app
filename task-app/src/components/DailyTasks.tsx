@@ -1,3 +1,4 @@
+import axios from 'axios';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { Task } from '../Types';
@@ -9,8 +10,8 @@ export const DailyTasks = ({day}: Props) => {
 	const [tasks, setTasks] = useState<Task[]>([])
 	useEffect(() => {
 		async function getTasks() {
-			const response = await fetch('/tasks.json');
-			const tasks = await response.json()
+			const response = await axios.get('http://localhost:5001/api/task')
+			const tasks = response.data.data;
 			setTasks(tasks)
 		}
 		getTasks()
