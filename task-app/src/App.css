@@ -1,36 +1,76 @@
 .dates-top {
-  display: flex;
-  justify-content: space-between;
-  margin: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    margin: 0.75rem;
 }
 .date {
-  cursor: pointer;
+    cursor: pointer;
 }
 .date.active {
-  /* background-color: #AED9E0; */
-  background-color: #2F0147;
-  color: #fff;
-  font-size: xx-large;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
+    /* background-color: #AED9E0; */
+    background-color: #2f0147;
+    color: #fff;
+    font-size: xx-large;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
 }
 .task {
-  display: flex;
+    display: flex;
 }
 .daily-tasks-page {
-  background-color: #2e01470e;
-  display: flex;
-  flex-direction: column;
-  border-radius: 1rem;
-  margin-top: 1.5rem;
-  height: 100%;
+    background-color: #2e01470e;
+    display: flex;
+    flex-direction: column;
+    border-radius: 1rem;
+    margin-top: 1.5rem;
+    height: 100%;
 }
 .col-1 {
-  display: flex;
-  width: 50%;
-  margin: 0.5rem 0;
-  justify-content: center;
+    display: flex;
+    width: 50%;
+    margin: 0.5rem 0;
+    justify-content: center;
 }
 .button-group-week {
-  text-align: right;
+    text-align: right;
+}
+.taskContainer {
+    font-family: sans-serif;
+    text-align: center;
+    margin: 2rem;
+    border: 2px solid #253c788c;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    display: flex;
+    box-shadow: #253c783d 0px 0px 1px 0px, #253c783d 0px 2px 6px 2px;
+}
+.progressContainer {
+    display: flex;
+    place-items: center;
+    align-items: center;
+    /* box-shadow: color horizontal-offset vertical-offset blur-radius optional-spread-radius*/
+    box-shadow: rgba(60, 64, 67, 0.3) 1px 1px 3px 0px,
+        rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    border-radius: 50%;
+}
+
+.progress-value {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 240px;
+    width: 240px;
+    border-radius: 50%;
+    background-color: #fff;
+    border: 2px solid rgb(20, 116, 20);
+}
+.tagImage {
+    border-radius: 50%;
+    width: 80%;
+}
+.task {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
 }
