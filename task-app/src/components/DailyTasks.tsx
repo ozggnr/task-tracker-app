@@ -5,7 +5,7 @@ import { Task } from '../Types';
 import { TaskComponent } from './task/TaskComponent';
 
 interface Props {
-    day: moment.Moment;
+    day: string;
 }
 export const DailyTasks = ({ day }: Props) => {
     const [tasks, setTasks] = useState<Task[]>([]);
@@ -18,7 +18,7 @@ export const DailyTasks = ({ day }: Props) => {
         getTasks();
     }, []);
 
-    const dailyTasks = getDailyTasks(day.format('DD MMMM YYYY'));
+    const dailyTasks = getDailyTasks(day);
 
     return (
         <div className="daily-tasks-page">

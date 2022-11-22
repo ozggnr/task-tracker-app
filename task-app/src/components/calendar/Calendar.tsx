@@ -1,74 +1,89 @@
-import moment from "moment";
-import { useState } from "react";
-import { DailyTasks } from "../DailyTasks";
-import { TaskForm } from "../TaskForm";
-import { CalendarContainer, CalendarDateContainer } from "./Calendar.style";
+import moment from 'moment';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import {
+    lastWeek,
+    nextWeek,
+    setDay,
+    thisWeek,
+} from '../../store/reducers/daysOfWeekSlice';
+import { DailyTasks } from '../DailyTasks';
+import { TaskForm } from '../TaskForm';
+import { CalendarContainer, CalendarDateContainer } from './Calendar.style';
+
 export const Calendar = () => {
-    const todayMomentObj = moment();
-    const [openForm, setOpenForm] = useState(false)
-    const [activeDay, setActiveDay] = useState(todayMomentObj);
-    const [calendar, setCalendar] = useState(() => getWeeklyCalendar(todayMomentObj)); //---> this needs to be refactored, find another solution
+    const [openForm, setOpenForm] = useState(false);
+
+    //We will update our state by using dispatch, dispatch gets action with payload
+    const dispatch = useDispatch();
+
+    //this is our state
+    const activeDay = useSelector((state: RootState) => state.daysOfWeek);
+    const calendar: moment.Moment[] = getWeeklyCalendar(activeDay);
+
+    const activeMonth = moment(activeDay).format('MMMM YYYY');
 
     // Moment(new Date(date)).format('MM/DD/YYYY') --> to get rid of the moment deprecated warning
     //key is not good :(
-    return (<CalendarContainer>
-        <div className='dates-top'>
-            <div>{activeDay.format('MMMM YYYY')}</div>
-            <div>
-                <button onClick={() => setOpenForm(true)}>Create New Task</button>
+    return (
+        <CalendarContainer>
+            <div className="dates-top">
+                <div>{activeMonth}</div>
+                <div>
+                    <button onClick={() => setOpenForm(true)}>
+                        Create New Task
+                    </button>
+                </div>
+                <div className="button-group-week">
+                    <button onClick={() => dispatch(lastWeek(activeDay))}>
+                        {'<'}
+                    </button>
+                    <button onClick={() => dispatch(thisWeek(activeDay))}>
+                        Today
+                    </button>
+                    <button onClick={() => dispatch(nextWeek(activeDay))}>
+                        {'>'}
+                    </button>
+                </div>
             </div>
-            <div className='button-group-week'>
-                <button onClick={() => getWeekdays('last', calendar)}>{"<"}</button>
-                <button onClick={() => getWeekdays('today', calendar)}>Today</button>
-                <button onClick={() => getWeekdays('next', calendar)}>{">"}</button>
-            </div>
-        </div>
-        {openForm && <TaskForm />}
-        <CalendarDateContainer>
-            {calendar.map((day,i) => {
-                const selectedDay = moment(activeDay.format('DD MMMM YYYY')).isSame(day.format('DD MMMM YYYY'))
-                return <div key={i} className={'date' + (selectedDay ? ' active' : '')} onClick={() => handleClick(day)}>{day.format('ddd D')}</div>
-                
-            })}
-        </CalendarDateContainer>
-        <DailyTasks day={activeDay} />
-    </CalendarContainer>)
+            {openForm && <TaskForm />}
+            <CalendarDateContainer>
+                {calendar.map((day, i) => {
+                    const selectedDay = moment(
+                        moment(activeDay).format('DD MMMM YYYY')
+                    ).isSame(moment(day).format('DD MMMM YYYY'));
+                    return (
+                        <div
+                            key={i}
+                            className={'date' + (selectedDay ? ' active' : '')}
+                            onClick={() =>
+                                handleClick(day.format('DD MMMM YYYY'))
+                            }
+                        >
+                            {day.format('ddd D')}
+                        </div>
+                    );
+                })}
+            </CalendarDateContainer>
+            <DailyTasks day={activeDay} />
+        </CalendarContainer>
+    );
 
-    function handleClick(selectedDay: moment.Moment) {
-        setActiveDay(selectedDay);
+    function handleClick(selectedDay: string) {
+        dispatch(setDay(selectedDay));
     }
-    
-    function getWeekdays(weekSts: String, calendar: moment.Moment[]) {
-        console.log(calendar)
-        if (weekSts === 'next') {
-            const nextWeekStartDay = calendar[0].add(1, 'week');
-            const nextWeekDays = getWeeklyCalendar(nextWeekStartDay);
-            setCalendar(nextWeekDays);
-            setActiveDay(nextWeekStartDay.startOf('week'));
-        } else if (weekSts === 'last') {
-            const lastWeekStartDay = calendar[0].subtract(1, 'week');
-            const lastWeekDays = getWeeklyCalendar(lastWeekStartDay);
-            setCalendar(lastWeekDays);
-            setActiveDay(lastWeekStartDay.startOf('week'));
-        } else {
-            setCalendar(getWeeklyCalendar(moment()));
-            setActiveDay(moment());
-        }
-    }
-    function getWeeklyCalendar (day: moment.Moment) {
+
+    function getWeeklyCalendar(day: string) {
         let calendar: moment.Moment[] = [];
         let startWeek = moment(day).startOf('week');
         let endWeek = moment(day).endOf('week');
         let start = startWeek.day();
-        while(start <= endWeek.day()) {
-          calendar.push(startWeek.clone());
-          startWeek.add(1, 'day');
-          start++;
+        while (start <= endWeek.day()) {
+            calendar.push(startWeek.clone());
+            startWeek.add(1, 'day');
+            start++;
         }
         return calendar;
-      }
-    
-}
-
-
-
+    }
+};
