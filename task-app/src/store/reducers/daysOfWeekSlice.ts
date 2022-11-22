@@ -1,27 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit';
-import moment from 'moment';
+import { addWeeks, subWeeks } from 'date-fns';
+import { longDateFormat, startOfTheWeek } from '../../utils/dateHelpers';
 
-const today = moment().format('DD MMMM YYYY');
+const today = longDateFormat(new Date());
 export const daysOfWeekSlice = createSlice({
     name: 'daysOfWeek',
     initialState: today,
     reducers: {
         lastWeek: (state, action) => {
-            const lastWeekFirstDay = moment(action.payload)
-                .subtract(1, 'week')
-                .startOf('week')
-                .format('DD MMMM YYYY');
-            return lastWeekFirstDay;
+            const lastWeek = subWeeks(new Date(action.payload), 1);
+            const lastWeekFirstDay = startOfTheWeek(lastWeek);
+
+            return longDateFormat(lastWeekFirstDay);
         },
         thisWeek: (state, action) => {
             return today;
         },
         nextWeek: (state, action) => {
-            const nextWeekFirstDay = moment(action.payload)
-                .add(1, 'week')
-                .startOf('week')
-                .format('DD MMMM YYYY');
-            return nextWeekFirstDay;
+            const nextWeek = addWeeks(new Date(action.payload), 1);
+            const nextWeekFirstDay = startOfTheWeek(nextWeek);
+
+            return longDateFormat(nextWeekFirstDay);
         },
         setDay: (state, action) => {
             return action.payload;

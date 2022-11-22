@@ -1,31 +1,20 @@
-import { useState, useEffect, useRef } from 'react';
-import moment from 'moment';
-import './styles.css';
+import { useState, useEffect, useRef, PropsWithChildren } from 'react';
+import {
+    convertTimeString,
+    durationDifferenceInSeconds,
+} from '../../utils/dateHelpers';
 
 export const ProgressBar = () => {
     const [date, setDate] = useState(new Date());
     const intervalRef = useRef();
-    const endTime = '23:00';
 
-    function refreshClock() {
-        console.log('---------------', intervalRef);
-        setDate(new Date());
-    }
-    function convertStringToTime(date: Date, time: string) {
-        const dateString = moment(date).format('L');
-        return moment(`${dateString} ${time}`).format('LTS');
-    }
-    const convertedEndTime = convertStringToTime(date, endTime);
-    const nowTime = moment(date).format('LTS');
+    const convertedEndTime = convertTimeString(date, '23:00');
+    console.log('--', convertedEndTime);
 
-    const startTime = moment(nowTime, 'HH:mm:ss a');
-    const endedTime = moment(convertedEndTime, 'HH:mm:ss a');
-    const dif = moment.duration(endedTime.diff(startTime));
-    console.log(
-        `${dif.hours()} hours, ${dif.minutes()} mins, ${dif.seconds()} secs`
+    const totalSecs = durationDifferenceInSeconds(
+        new Date(),
+        new Date(convertedEndTime)
     );
-
-    const totalSecs = dif.hours() * 3600 + dif.minutes() * 60 + dif.seconds();
     const completed = 360 - totalSecs / 360;
 
     // useEffect(() => {
@@ -46,7 +35,9 @@ export const ProgressBar = () => {
         borderRadius: '50%',
         border: '2px solid black',
         zIndex: '0',
-        // background: `conic-gradient(red ${Math.floor(completed)}deg, #fff 0deg)`
+        background: `conic-gradient(red ${Math.floor(
+            completed
+        )}deg, #fff 0deg)`,
     };
 
     if (completed === 360) {
@@ -58,6 +49,11 @@ export const ProgressBar = () => {
                 {/* <span className="sth">{`${Math.floor(completed)}%`}</span> */}
                 <div className="progress-value">
                     {date.toLocaleTimeString()}
+                    <img
+                        src="images/test.jpg"
+                        alt="Task Tag"
+                        className="tagImage"
+                    />
                 </div>
                 {completed === 360 && <div>Completed!</div>}
             </div>

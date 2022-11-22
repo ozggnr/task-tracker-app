@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { addDays, isBefore, isEqual } from 'date-fns';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
@@ -8,6 +8,14 @@ import {
     setDay,
     thisWeek,
 } from '../../store/reducers/daysOfWeekSlice';
+import {
+    endOfTheWeek,
+    isSameDay,
+    longDateFormat,
+    shortDateFormat,
+    startOfTheWeek,
+    weekDay,
+} from '../../utils/dateHelpers';
 import { DailyTasks } from '../DailyTasks';
 import { TaskForm } from '../TaskForm';
 import { CalendarContainer, CalendarDateContainer } from './Calendar.style';
@@ -20,12 +28,10 @@ export const Calendar = () => {
 
     //this is our state
     const activeDay = useSelector((state: RootState) => state.daysOfWeek);
-    const calendar: moment.Moment[] = getWeeklyCalendar(activeDay);
+    const calendar: Date[] = getWeeklyCalendar(activeDay);
 
-    const activeMonth = moment(activeDay).format('MMMM YYYY');
+    const activeMonth = shortDateFormat(activeDay);
 
-    // Moment(new Date(date)).format('MM/DD/YYYY') --> to get rid of the moment deprecated warning
-    //key is not good :(
     return (
         <CalendarContainer>
             <div className="dates-top">
@@ -50,18 +56,18 @@ export const Calendar = () => {
             {openForm && <TaskForm />}
             <CalendarDateContainer>
                 {calendar.map((day, i) => {
-                    const selectedDay = moment(
-                        moment(activeDay).format('DD MMMM YYYY')
-                    ).isSame(moment(day).format('DD MMMM YYYY'));
                     return (
                         <div
                             key={i}
-                            className={'date' + (selectedDay ? ' active' : '')}
-                            onClick={() =>
-                                handleClick(day.format('DD MMMM YYYY'))
+                            className={
+                                'date' +
+                                (isSameDay(new Date(activeDay), day)
+                                    ? ' active'
+                                    : '')
                             }
+                            onClick={() => handleClick(longDateFormat(day))}
                         >
-                            {day.format('ddd D')}
+                            {weekDay(day)}
                         </div>
                     );
                 })}
@@ -75,14 +81,13 @@ export const Calendar = () => {
     }
 
     function getWeeklyCalendar(day: string) {
-        let calendar: moment.Moment[] = [];
-        let startWeek = moment(day).startOf('week');
-        let endWeek = moment(day).endOf('week');
-        let start = startWeek.day();
-        while (start <= endWeek.day()) {
-            calendar.push(startWeek.clone());
-            startWeek.add(1, 'day');
-            start++;
+        let calendar: Date[] = [];
+        let startWeek = startOfTheWeek(new Date(day));
+        let endWeek = endOfTheWeek(new Date(day));
+        //TODO create helper isBeforeOrSame
+        while (isBefore(startWeek, endWeek) || isEqual(startWeek, endWeek)) {
+            calendar.push(startWeek);
+            startWeek = addDays(startWeek, 1);
         }
         return calendar;
     }

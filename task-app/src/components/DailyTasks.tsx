@@ -1,7 +1,7 @@
 import axios from 'axios';
-import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { Task } from '../Types';
+import { longDateFormat } from '../utils/dateHelpers';
 import { TaskComponent } from './task/TaskComponent';
 
 interface Props {
@@ -30,7 +30,7 @@ export const DailyTasks = ({ day }: Props) => {
 
     function getDailyTasks(selectedDay: string) {
         return tasks.filter(
-            (task) => moment(task.date).format('DD MMMM YYYY') === selectedDay
+            (task) => longDateFormat(task.date) === selectedDay
         );
     }
 };
