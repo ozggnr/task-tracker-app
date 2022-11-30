@@ -13,7 +13,7 @@ export const TaskComponent = ({ task }: PropsWithChildren<TaskProps>) => {
                 <div className="col-1">{task.start}</div>
                 <div className="col-1">
                     <div className="task-title">{task.title}</div>
-                    <div className="task-desc">{task.desc}</div>
+                    <div className="task-desc">{task.description}</div>
                 </div>
             </div>
         </div>
