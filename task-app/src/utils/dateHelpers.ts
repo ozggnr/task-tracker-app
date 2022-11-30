@@ -29,7 +29,9 @@ export function longDateFormat(date: Date | string) {
 }
 
 export function shortDateFormat(date: Date | string) {
+    console.log(date, new Date(date));
     if (typeof date === 'string') date = new Date(date);
+    console.log(date);
     return format(date, 'MMMM yyyy');
 }
 
@@ -42,9 +44,10 @@ export function isSameDay(firstDay: Date, secondDay: Date): boolean {
         ? true
         : false;
 }
+//Start the week from monday
 export function startOfTheWeek(date: Date | number) {
-    return startOfWeek(date);
+    return startOfWeek(date, { weekStartsOn: 1 });
 }
 export function endOfTheWeek(date: Date | number) {
-    return endOfWeek(date);
+    return endOfWeek(date, { weekStartsOn: 1 });
 }
