@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { getTasks } from '../services/taskService';
 import { Task } from '../Types';
 import { longDateFormat } from '../utils/dateHelpers';
 import { TaskComponent } from './task/TaskComponent';
@@ -9,13 +9,9 @@ interface Props {
 }
 export const DailyTasks = ({ day }: Props) => {
     const [tasks, setTasks] = useState<Task[]>([]);
+
     useEffect(() => {
-        async function getTasks() {
-            const response = await axios.get('http://localhost:5001/api/task');
-            const tasks = response.data.data;
-            setTasks(tasks);
-        }
-        getTasks();
+        getTasks().then((tasks) => setTasks(tasks));
     }, []);
 
     const dailyTasks = getDailyTasks(day);
