@@ -3,6 +3,49 @@ import prisma from '../database/db';
 
 //Get all tasks
 export const getTasks = async (req: Request, res: Response) => {
-  const tasks = await prisma.task.findMany();
-  res.json({ data: tasks });
+    const tasks = await prisma.task.findMany();
+    res.json({ data: tasks });
+};
+
+//Get one task
+export const getTask = async (req: Request, res: Response) => {
+    const id = req.params.id;
+
+    const task = await prisma.task.findFirst({
+        where: {
+            id,
+        },
+    });
+    res.json({ data: task });
+};
+
+//create task
+export const createTask = async (req: Request, res: Response) => {
+    const newTask = await prisma.task.create({
+        data: {
+            date: req.body.date,
+            title: req.body.title,
+            description: req.body.description,
+            start: req.body.start,
+            end: req.body.end,
+        },
+    });
+    res.json({ data: newTask });
+};
+
+//update task
+export const updateTask = async (req: Request, res: Response) => {
+    const updatedTask = await prisma.task.update({
+        where: {
+            id: req.params.id,
+        },
+        data: {
+            date: req.body.date,
+            title: req.body.title,
+            description: req.body.description,
+            start: req.body.start,
+            end: req.body.end,
+        },
+    });
+    res.json({ data: updatedTask });
 };
