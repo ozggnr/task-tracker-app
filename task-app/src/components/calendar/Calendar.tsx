@@ -17,12 +17,9 @@ import {
     weekDay,
 } from '../../utils/dateHelpers';
 import { DailyTasks } from '../DailyTasks';
-import { TaskForm } from '../TaskForm';
 import { CalendarContainer, CalendarDateContainer } from './Calendar.style';
 
 export const Calendar = () => {
-    const [openForm, setOpenForm] = useState(false);
-
     //We will update our state by using dispatch, dispatch gets action with payload
     const dispatch = useDispatch();
 
@@ -31,16 +28,11 @@ export const Calendar = () => {
     const calendar: Date[] = getWeeklyCalendar(activeDay);
 
     const activeMonth = shortDateFormat(activeDay);
-
+    console.log(activeMonth);
     return (
         <CalendarContainer>
             <div className="dates-top">
                 <div>{activeMonth}</div>
-                <div>
-                    <button onClick={() => setOpenForm(true)}>
-                        Create New Task
-                    </button>
-                </div>
                 <div className="button-group-week">
                     <button onClick={() => dispatch(lastWeek(activeDay))}>
                         {'<'}
@@ -53,7 +45,6 @@ export const Calendar = () => {
                     </button>
                 </div>
             </div>
-            {openForm && <TaskForm />}
             <CalendarDateContainer>
                 {calendar.map((day, i) => {
                     return (
@@ -83,6 +74,7 @@ export const Calendar = () => {
     function getWeeklyCalendar(day: string) {
         let calendar: Date[] = [];
         let startWeek = startOfTheWeek(new Date(day));
+        console.log(startWeek);
         let endWeek = endOfTheWeek(new Date(day));
         //TODO create helper isBeforeOrSame
         while (isBefore(startWeek, endWeek) || isEqual(startWeek, endWeek)) {
