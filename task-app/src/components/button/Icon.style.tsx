@@ -7,9 +7,8 @@ import {
 } from '@styled-icons/fa-solid';
 
 export const AddIcon = styled(Plus)`
-    color: white;
-    width: 15%;
-    font-size: 0.5rem;
+    color: #fcfaf2;
+    width: 1rem;
 `;
 
 export const CloseIcon = styled(CircleXmark)`
@@ -19,11 +18,9 @@ export const CloseIcon = styled(CircleXmark)`
 `;
 
 export const LeftIcon = styled(CaretLeft)`
-    width: 1rem;
-    width: 15%;
+    width: 0.5rem;
 `;
 
 export const RightIcon = styled(CaretRight)`
-    width: 1rem;
-    width: 15%;
+    width: 0.5rem;
 `;

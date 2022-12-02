@@ -34,9 +34,7 @@ export default function Button({
     type,
     onClick,
     children,
-    icon,
 }: ButtonProps) {
-    console.log(type);
     const Button = getButton(type);
     return (
         <Button {...props} onClick={onClick}>

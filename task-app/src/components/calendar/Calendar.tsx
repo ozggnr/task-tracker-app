@@ -13,18 +13,20 @@ import {
     longDateFormat,
     shortDateFormat,
     startOfTheWeek,
-    weekDay,
+    weekDays,
 } from '../../utils/dateHelpers';
 import { DailyTasks } from '../dailytasks/DailyTasks';
 import {
     ButtonCaret,
     ButtonToday,
+    ButtonDays,
     CalendarContainer,
     CalendarDateContainer,
+    CalendarHeader,
 } from './Calendar.style';
-import { Row } from '../../App.style';
-import Button from '../button/Button';
+import { ButtonGroup } from '../button/Button.style';
 import { LeftIcon, RightIcon } from '../button/Icon.style';
+import { Title } from '../../App.style';
 
 export const Calendar = () => {
     //We will update our state by using dispatch, dispatch gets action with payload
@@ -35,12 +37,12 @@ export const Calendar = () => {
     const calendar: Date[] = getWeeklyCalendar(activeDay);
 
     const activeMonth = shortDateFormat(activeDay);
-    console.log(activeMonth);
+
     return (
         <CalendarContainer>
-            <div className="dates-top">
-                <div>{activeMonth}</div>
-                <Row>
+            <CalendarHeader>
+                <Title>{activeMonth}</Title>
+                <ButtonGroup>
                     <ButtonCaret onClick={() => dispatch(lastWeek(activeDay))}>
                         <LeftIcon />
                     </ButtonCaret>
@@ -50,23 +52,18 @@ export const Calendar = () => {
                     <ButtonCaret onClick={() => dispatch(nextWeek(activeDay))}>
                         <RightIcon />
                     </ButtonCaret>
-                </Row>
-            </div>
+                </ButtonGroup>
+            </CalendarHeader>
             <CalendarDateContainer>
                 {calendar.map((day, i) => {
                     return (
-                        <div
-                            key={i}
-                            className={
-                                'date' +
-                                (isSameDay(new Date(activeDay), day)
-                                    ? ' active'
-                                    : '')
-                            }
+                        <ButtonDays
+                            isActive={isSameDay(new Date(activeDay), day)}
                             onClick={() => handleClick(longDateFormat(day))}
                         >
-                            {weekDay(day)}
-                        </div>
+                            {weekDays(day)}{' '}
+                            {isSameDay(new Date(activeDay), day)}
+                        </ButtonDays>
                     );
                 })}
             </CalendarDateContainer>
@@ -81,7 +78,6 @@ export const Calendar = () => {
     function getWeeklyCalendar(day: string) {
         let calendar: Date[] = [];
         let startWeek = startOfTheWeek(new Date(day));
-        console.log(startWeek);
         let endWeek = endOfTheWeek(new Date(day));
         //TODO create helper isBeforeOrSame
         while (isBefore(startWeek, endWeek) || isEqual(startWeek, endWeek)) {

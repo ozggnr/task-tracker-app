@@ -1,41 +1,14 @@
-.dates-top {
-    display: flex;
-    justify-content: space-between;
-    margin: 0.75rem;
-}
-.date {
-    cursor: pointer;
-}
-.date.active {
-    /* background-color: #AED9E0; */
-    background-color: #2f0147;
-    color: #fff;
-    font-size: xx-large;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-}
-
-.daily-tasks-page {
-    background-color: #2e01470e;
-    display: flex;
-    flex-direction: column;
-    border-radius: 1rem;
-    margin-top: 1.5rem;
-    height: 100%;
-}
 .col-1 {
     display: flex;
     width: 50%;
     margin: 0.5rem 0;
     justify-content: center;
 }
-.button-group-week {
-    text-align: right;
-}
+
 .taskContainer {
     font-family: sans-serif;
     text-align: center;
-    margin: 2rem;
+    margin-top: 2rem;
     border: 2px solid #253c788c;
     border-radius: 1rem;
     padding: 1.5rem;

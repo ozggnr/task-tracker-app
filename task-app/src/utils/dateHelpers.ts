@@ -35,9 +35,9 @@ export function shortDateFormat(date: Date | string) {
     return format(date, 'MMMM yyyy');
 }
 
-export function weekDay(date: Date | string) {
+export function weekDays(date: Date | string) {
     if (typeof date === 'string') date = new Date(date);
-    return format(date, 'dd eee');
+    return format(date, 'eee dd');
 }
 export function isSameDay(firstDay: Date, secondDay: Date): boolean {
     return longDateFormat(firstDay) === longDateFormat(secondDay)
