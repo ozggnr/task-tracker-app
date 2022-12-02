@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
-import { getTasks } from '../services/taskService';
-import { Task } from '../Types';
-import { longDateFormat } from '../utils/dateHelpers';
-import Button from './button/button';
-import { TaskComponent } from './task/TaskComponent';
-import { TaskForm } from './TaskForm';
+import { getTasks } from '../../services/taskService';
+import { Task } from '../../Types';
+import { longDateFormat } from '../../utils/dateHelpers';
+import Button from '../button/Button';
+import { TaskComponent } from '../task/TaskComponent';
+import { TaskForm } from '../TaskForm';
+import { DayContainer } from './DailyTasks.style';
+import { Row } from '../../App.style';
+import { AddIcon } from '../button/Icon.style';
 
 interface Props {
     day: string;
@@ -20,15 +23,19 @@ export const DailyTasks = ({ day }: Props) => {
     const dailyTasks = getDailyTasks(day);
 
     return (
-        <div>
-            <Button onClick={() => setOpenForm(true)} icon="add">
-                Add Task
-            </Button>
+        <DayContainer>
             {openForm && <TaskForm />}
+            <Row>
+                <Button onClick={() => setOpenForm(true)}>
+                    <AddIcon />
+                    Add Task
+                </Button>
+            </Row>
+
             {dailyTasks.map((task) => {
                 return <TaskComponent task={task} />;
             })}
-        </div>
+        </DayContainer>
     );
 
     function getDailyTasks(selectedDay: string) {

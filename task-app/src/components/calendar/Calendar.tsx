@@ -1,5 +1,4 @@
 import { addDays, isBefore, isEqual } from 'date-fns';
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import {
@@ -16,8 +15,16 @@ import {
     startOfTheWeek,
     weekDay,
 } from '../../utils/dateHelpers';
-import { DailyTasks } from '../DailyTasks';
-import { CalendarContainer, CalendarDateContainer } from './Calendar.style';
+import { DailyTasks } from '../dailytasks/DailyTasks';
+import {
+    ButtonCaret,
+    ButtonToday,
+    CalendarContainer,
+    CalendarDateContainer,
+} from './Calendar.style';
+import { Row } from '../../App.style';
+import Button from '../button/Button';
+import { LeftIcon, RightIcon } from '../button/Icon.style';
 
 export const Calendar = () => {
     //We will update our state by using dispatch, dispatch gets action with payload
@@ -33,17 +40,17 @@ export const Calendar = () => {
         <CalendarContainer>
             <div className="dates-top">
                 <div>{activeMonth}</div>
-                <div className="button-group-week">
-                    <button onClick={() => dispatch(lastWeek(activeDay))}>
-                        {'<'}
-                    </button>
-                    <button onClick={() => dispatch(thisWeek(activeDay))}>
+                <Row>
+                    <ButtonCaret onClick={() => dispatch(lastWeek(activeDay))}>
+                        <LeftIcon />
+                    </ButtonCaret>
+                    <ButtonToday onClick={() => dispatch(thisWeek(activeDay))}>
                         Today
-                    </button>
-                    <button onClick={() => dispatch(nextWeek(activeDay))}>
-                        {'>'}
-                    </button>
-                </div>
+                    </ButtonToday>
+                    <ButtonCaret onClick={() => dispatch(nextWeek(activeDay))}>
+                        <RightIcon />
+                    </ButtonCaret>
+                </Row>
             </div>
             <CalendarDateContainer>
                 {calendar.map((day, i) => {
