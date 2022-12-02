@@ -4,10 +4,11 @@ import { Task } from '../../Types';
 import { longDateFormat } from '../../utils/dateHelpers';
 import Button from '../button/Button';
 import { TaskComponent } from '../task/TaskComponent';
-import { TaskForm } from '../TaskForm';
+import { TaskForm } from '../task/TaskForm';
 import { DayContainer } from './DailyTasks.style';
 import { Row } from '../../App.style';
 import { AddIcon } from '../button/Icon.style';
+import Sidebar from '../sidebar/Sidebar';
 
 interface Props {
     day: string;
@@ -24,13 +25,17 @@ export const DailyTasks = ({ day }: Props) => {
 
     return (
         <DayContainer>
-            {openForm && <TaskForm />}
-            <Row>
+            <Row end>
                 <Button onClick={() => setOpenForm(true)}>
                     <AddIcon />
                     Add Task
                 </Button>
             </Row>
+            {openForm && (
+                <Sidebar onClick={() => setOpenForm(false)}>
+                    <TaskForm />
+                </Sidebar>
+            )}
 
             {dailyTasks.map((task) => {
                 return <TaskComponent task={task} />;
