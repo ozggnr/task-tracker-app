@@ -1,10 +1,12 @@
 import { FormEvent, useState, ChangeEvent } from 'react';
-import { Task } from '../Types';
-import { FormInput } from './form/FormInput';
-import { TaskFormContainer } from './form/Form.style';
-import { postTask } from '../services/taskService';
-import { longDateFormat } from '../utils/dateHelpers';
+import { Task } from '../../Types';
+import { FormInput } from '../form/FormInput';
+import { TaskFormContainer } from './TaskForm.style';
+import { postTask } from '../../services/taskService';
+import { longDateFormat } from '../../utils/dateHelpers';
 import { parseISO, formatISO } from 'date-fns';
+import { Row } from '../../App.style';
+import { ButtonGroup } from '../button/Button.style';
 
 export const TaskForm = () => {
     const [taskInputFields, setTaskInputFields] = useState<Task>({
@@ -41,6 +43,7 @@ export const TaskForm = () => {
                 })}
                 onChange={handleChange}
             />
+            {/* <Row> */}
             <FormInput
                 label="Start Time"
                 type="time"
@@ -55,10 +58,13 @@ export const TaskForm = () => {
                 value={taskInputFields.end}
                 onChange={handleChange}
             />
-            <button type="submit">Save</button>
-            <button type="button" onClick={handleCancel}>
-                Cancel
-            </button>
+            {/* </Row> */}
+            <ButtonGroup>
+                <button type="submit">Save</button>
+                <button type="button" onClick={handleCancel}>
+                    Cancel
+                </button>
+            </ButtonGroup>
         </TaskFormContainer>
     );
 

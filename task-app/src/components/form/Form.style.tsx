@@ -1,9 +1,6 @@
 import styled from 'styled-components';
 
-
-export const TaskFormContainer = styled.form`
+export const FormInputStyle = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center
-`
+`;
