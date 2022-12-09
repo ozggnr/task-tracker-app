@@ -4,6 +4,8 @@ import {
     CircleXmark,
     CaretLeft,
     CaretRight,
+    TrashCan,
+    PenToSquare,
 } from '@styled-icons/fa-solid';
 
 export const AddIcon = styled(Plus)`
@@ -12,8 +14,13 @@ export const AddIcon = styled(Plus)`
 `;
 
 export const CloseIcon = styled(CircleXmark)`
-    width: 3rem;
-    font-size: 400px;
+    width: ${(props) =>
+        props.size === 'medium'
+            ? '2rem'
+            : props.size === 'large'
+            ? '3rem'
+            : '1rem'};
+
     color: tomato;
 `;
 
@@ -23,4 +30,14 @@ export const LeftIcon = styled(CaretLeft)`
 
 export const RightIcon = styled(CaretRight)`
     width: 0.5rem;
+`;
+
+export const DeleteIcon = styled(TrashCan)`
+    width: 1rem;
+    color: tomato;
+`;
+
+export const EditIcon = styled(PenToSquare)`
+    width: 1rem;
+    color: tomato;
 `;

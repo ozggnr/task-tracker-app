@@ -4,7 +4,7 @@ import Portal from '../portal/Portal';
 import { SidebarContainer } from './Sidebar.style';
 
 type SidebarProps = {
-    onClick: MouseEventHandler<HTMLButtonElement>;
+    onClick?: MouseEventHandler;
 };
 
 export default function Sidebar({
@@ -14,7 +14,7 @@ export default function Sidebar({
     return (
         <Portal parentId="sidebar">
             <SidebarContainer>
-                <CloseIcon onClick={() => onClick()} />
+                <CloseIcon onClick={onClick} />
                 {children}
             </SidebarContainer>
         </Portal>
