@@ -8,6 +8,7 @@ export const getTasks = async (req: Request, res: Response) => {
             subTasks: true,
         },
     });
+
     res.json({ data: tasks });
 };
 
@@ -27,6 +28,7 @@ export const getTask = async (req: Request, res: Response) => {
 
 //create task
 export const createTask = async (req: Request, res: Response) => {
+    console.log('body', req.body);
     const newTask = await prisma.task.create({
         data: {
             date: req.body.date,
@@ -34,17 +36,10 @@ export const createTask = async (req: Request, res: Response) => {
             description: req.body.description,
             start: req.body.start,
             end: req.body.end,
-            subTasks: {
-                create: [
-                    {
-                        description: req.body.subTasks?.description,
-                        start: req.body.subTasks?.start,
-                        end: req.body.subTasks?.end,
-                    },
-                ],
-            },
+            subTasks: {},
         },
     });
+    console.log(newTask);
     res.json({ data: newTask });
 };
 
@@ -61,13 +56,11 @@ export const updateTask = async (req: Request, res: Response) => {
             start: req.body.start,
             end: req.body.end,
             subTasks: {
-                create: [
-                    {
-                        description: req.body.subTasks?.description,
-                        start: req.body.subTasks?.start,
-                        end: req.body.subTasks?.end,
-                    },
-                ],
+                create: {
+                    description: req.body.subTasks?.description,
+                    start: req.body.subTasks?.start,
+                    end: req.body.subTasks?.end,
+                },
             },
         },
     });

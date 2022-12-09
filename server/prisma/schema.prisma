@@ -33,8 +33,8 @@ model SubTask {
   createdAt   DateTime    @default(now())
   belongsTo   Task        @relation(fields: [belongsToId], references: [id])
   belongsToId String      @db.ObjectId
-  description String
-  start       String
-  end         String
+  description String?
+  start       String?
+  end         String?
   status      TASK_STATUS @default(IN_PROGRESS)
 }
