@@ -10,9 +10,10 @@ import { Row } from '../../App.style';
 import { AddIcon } from '../button/Icon.style';
 import Sidebar from '../sidebar/Sidebar';
 
-interface Props {
+type Props = {
     day: string;
-}
+};
+
 export const DailyTasks = ({ day }: Props) => {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [openForm, setOpenForm] = useState(false);
@@ -23,23 +24,23 @@ export const DailyTasks = ({ day }: Props) => {
 
     const dailyTasks = getDailyTasks(day);
 
+    //TODO try redux toolkit to fetch data
     return (
         <DayContainer>
-            <Row end>
+            <Row>
                 <Button onClick={() => setOpenForm(true)}>
                     <AddIcon />
                     Add Task
                 </Button>
             </Row>
+            {dailyTasks.map((existTask) => {
+                return <TaskComponent task={existTask} setTasks={setTasks} />;
+            })}
             {openForm && (
                 <Sidebar onClick={() => setOpenForm(false)}>
-                    <TaskForm />
+                    <TaskForm setOpenForm={setOpenForm} setTasks={setTasks} />
                 </Sidebar>
             )}
-
-            {dailyTasks.map((task) => {
-                return <TaskComponent task={task} />;
-            })}
         </DayContainer>
     );
 

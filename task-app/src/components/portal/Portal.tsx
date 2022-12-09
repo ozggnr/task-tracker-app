@@ -8,7 +8,7 @@ type PortalProps = {
 export default function Portal({ children, parentId }: PortalProps) {
     //We always want to refer to the same DOM div
     const elRef = useRef<HTMLDivElement | null>(null);
-    console.log('ref', elRef);
+
     if (!elRef.current) {
         elRef.current = document.createElement('div');
     }
@@ -18,7 +18,6 @@ export default function Portal({ children, parentId }: PortalProps) {
     */
     useEffect(() => {
         const elementRoot = document.getElementById(parentId);
-        console.log('root', elementRoot);
         if (!elementRoot || !elRef.current) {
             return;
         }

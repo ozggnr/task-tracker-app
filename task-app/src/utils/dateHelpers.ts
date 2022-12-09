@@ -29,9 +29,7 @@ export function longDateFormat(date: Date | string) {
 }
 
 export function shortDateFormat(date: Date | string) {
-    console.log(date, new Date(date));
     if (typeof date === 'string') date = new Date(date);
-    console.log(date);
     return format(date, 'MMMM yyyy');
 }
 

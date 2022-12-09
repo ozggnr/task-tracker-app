@@ -8,5 +8,18 @@ export async function getTasks() {
 }
 
 export async function postTask(task: Task) {
-    await axios.post('http://localhost:5001/api/task', task);
+    try {
+        const posted = await axios.post('http://localhost:5001/api/task', task);
+        return posted.data.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function deleteTask(taskId: string) {
+    try {
+        await axios.delete(`http://localhost:5001/api/task/${taskId}`);
+    } catch (error) {
+        console.log(error);
+    }
 }

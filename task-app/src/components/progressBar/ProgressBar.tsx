@@ -9,7 +9,7 @@ export const ProgressBar = () => {
     const intervalRef = useRef();
 
     const convertedEndTime = convertTimeString(date, '23:00');
-    console.log('--', convertedEndTime);
+    // console.log('--', convertedEndTime);
 
     const totalSecs = durationDifferenceInSeconds(
         new Date(),
