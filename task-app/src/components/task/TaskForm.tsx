@@ -20,32 +20,33 @@ type TaskFormProps = {
     setTasks?: Dispatch<SetStateAction<Task[]>>;
     task?: Task;
 };
+const newTask: Task = {
+    date: new Date(),
+    title: '',
+    description: '',
+    start: '',
+    end: '',
+    completed: 'IN_PROGRESS',
+    subTasks: [
+        {
+            description: '',
+            start: '',
+            end: '',
+            completed: 'IN_PROGRESS',
+        },
+    ],
+};
 export const TaskForm = ({ setOpenForm, setTasks, task }: TaskFormProps) => {
-    const taskState: Task = {
-        date: new Date(),
-        title: '',
-        description: '',
-        start: '',
-        end: '',
-        completed: 'IN_PROGRESS',
-        subTasks: [
-            {
-                description: '',
-                start: '',
-                end: '',
-                completed: 'IN_PROGRESS',
-            },
-        ],
-    };
-    const selectedTask = task || taskState;
+    const selectedTask = task || newTask;
     const [taskInputFields, setTaskInputFields] = useState<Task>(selectedTask);
-    const [subTaskInputFields, setSubTaskInputFields] = useState<SubTask>({
+    const [subTask, setSubTask] = useState<SubTask>({
         description: '',
         start: '',
         end: '',
         completed: 'IN_PROGRESS',
     });
-    // console.log(subTaskInputFields, taskInputFields);
+    const [addSubTask, setAddSubTask] = useState(false);
+    console.log(taskInputFields);
 
     return (
         <TaskFormContainer>
@@ -86,18 +87,40 @@ export const TaskForm = ({ setOpenForm, setTasks, task }: TaskFormProps) => {
                     value={taskInputFields.end}
                     onChange={handleChange}
                 />
-                {taskInputFields?.subTasks.map((task) => {
-                    // console.log(task);
-                    return (
-                        <FormInput
-                            label="SubDescription"
-                            type="text"
-                            name="description"
-                            value={task.description}
-                            onChange={handleSubTaskChange}
-                        />
-                    );
-                })}
+                <button
+                    type="button"
+                    onClick={() => {
+                        console.log('here');
+                        setAddSubTask(true);
+                        setTaskInputFields({
+                            ...taskInputFields,
+                            subTasks: [
+                                ...taskInputFields.subTasks,
+                                ...[subTask],
+                            ],
+                        });
+                    }}
+                >
+                    Add SubTask
+                </button>
+
+                {taskInputFields.subTasks.length &&
+                    taskInputFields.subTasks.map((task, index) => {
+                        return (
+                            // one subtaskline
+                            <div>
+                                <FormInput
+                                    label="SubDescription"
+                                    type="text"
+                                    name="description"
+                                    value={task.description}
+                                    onChange={(
+                                        e: ChangeEvent<HTMLInputElement>
+                                    ) => handleSubTaskChange(index, e)}
+                                />
+                            </div>
+                        );
+                    })}
                 {/* </Row> */}
                 <ButtonGroup>
                     <button type="submit">Save</button>
@@ -111,38 +134,44 @@ export const TaskForm = ({ setOpenForm, setTasks, task }: TaskFormProps) => {
 
     function handleFormSubmit(e: FormEvent) {
         e.preventDefault();
-        return postTask(taskInputFields).then((data: Task) => {
+        return postTask(taskInputFields).then((task: Task) => {
             setOpenForm?.(false);
-            setTasks?.((prev) => [...prev, data]);
+            setTasks?.((prev) => [...prev, task]);
         });
     }
+
     function handleChange(event: ChangeEvent<HTMLInputElement>) {
         event.preventDefault();
         const name = event.target.name;
+
         if (name === 'date') {
             setTaskInputFields({
                 ...taskInputFields,
                 date: parseISO(event.target.value),
             });
-        } else
-            setTaskInputFields({
-                ...taskInputFields,
+        } else {
+            setTaskInputFields((prev) => ({
+                ...prev,
                 [name]: event.target.value,
-            });
+            }));
+        }
     }
-    function handleSubTaskChange(event: ChangeEvent<HTMLInputElement>) {
-        event.preventDefault();
-        const name = event.target.name;
-        console.log(taskInputFields);
-        const subtask = {
-            ...subTaskInputFields,
-            [name]: event.target.value,
-        };
-        //
-        // setTaskInputFields((prev) => ({
-        //     ...prev,
-        //     subTasks: [...prev.subTasks, subtask],
-        // }));
+    function handleSubTaskChange(
+        index: number,
+        event: ChangeEvent<HTMLInputElement>
+    ) {
+        const name = event?.target.name;
+        setTaskInputFields((prev) => ({
+            ...prev,
+            subTasks: prev.subTasks.map((sub, i) => {
+                return index === i
+                    ? {
+                          ...sub,
+                          [name]: event.target.value,
+                      }
+                    : sub;
+            }),
+        }));
     }
     function handleCancel() {
         console.log('cancelled');
