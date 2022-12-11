@@ -21,7 +21,7 @@ export const DailyTasks = ({ day }: Props) => {
     useEffect(() => {
         getTasks().then((tasks) => setTasks(tasks));
     }, []);
-
+    console.log('tasks', tasks);
     const dailyTasks = getDailyTasks(day);
 
     //TODO try redux toolkit to fetch data
@@ -34,7 +34,13 @@ export const DailyTasks = ({ day }: Props) => {
                 </Button>
             </Row>
             {dailyTasks.map((existTask) => {
-                return <TaskComponent task={existTask} setTasks={setTasks} />;
+                return (
+                    <TaskComponent
+                        task={existTask}
+                        setTasks={setTasks}
+                        key={existTask.id}
+                    />
+                );
             })}
             {openForm && (
                 <Sidebar onClick={() => setOpenForm(false)}>

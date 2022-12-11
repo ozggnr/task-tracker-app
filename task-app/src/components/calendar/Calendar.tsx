@@ -58,6 +58,7 @@ export const Calendar = () => {
                 {calendar.map((day, i) => {
                     return (
                         <ButtonDays
+                            key={i} //TODO change the key
                             isActive={isSameDay(new Date(activeDay), day)}
                             onClick={() => handleClick(longDateFormat(day))}
                         >

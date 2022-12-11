@@ -23,3 +23,15 @@ export async function deleteTask(taskId: string) {
         console.log(error);
     }
 }
+
+export async function updateTask(task: Task) {
+    try {
+        const updated = await axios.put(
+            `http://localhost:5001/api/task/${task.id}`,
+            task
+        );
+        return updated.data.data;
+    } catch (error) {
+        console.log(error);
+    }
+}

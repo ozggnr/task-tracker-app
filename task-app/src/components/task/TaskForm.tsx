@@ -8,7 +8,7 @@ import {
 import { Task, SubTask } from '../../Types';
 import { FormInput } from '../form/FormInput';
 import { TaskFormContainer } from './TaskForm.style';
-import { postTask } from '../../services/taskService';
+import { postTask, updateTask } from '../../services/taskService';
 import { longDateFormat } from '../../utils/dateHelpers';
 import { parseISO, formatISO } from 'date-fns';
 import { Row } from '../../App.style';
@@ -20,33 +20,24 @@ type TaskFormProps = {
     setTasks?: Dispatch<SetStateAction<Task[]>>;
     task?: Task;
 };
+const subTask: SubTask = {
+    description: '',
+    start: '',
+    end: '',
+    status: 'IN_PROGRESS',
+};
 const newTask: Task = {
     date: new Date(),
     title: '',
     description: '',
     start: '',
     end: '',
-    completed: 'IN_PROGRESS',
-    subTasks: [
-        {
-            description: '',
-            start: '',
-            end: '',
-            completed: 'IN_PROGRESS',
-        },
-    ],
+    status: 'IN_PROGRESS',
+    subTasks: [],
 };
 export const TaskForm = ({ setOpenForm, setTasks, task }: TaskFormProps) => {
     const selectedTask = task || newTask;
     const [taskInputFields, setTaskInputFields] = useState<Task>(selectedTask);
-    const [subTask, setSubTask] = useState<SubTask>({
-        description: '',
-        start: '',
-        end: '',
-        completed: 'IN_PROGRESS',
-    });
-    const [addSubTask, setAddSubTask] = useState(false);
-    console.log(taskInputFields);
 
     return (
         <TaskFormContainer>
@@ -90,8 +81,6 @@ export const TaskForm = ({ setOpenForm, setTasks, task }: TaskFormProps) => {
                 <button
                     type="button"
                     onClick={() => {
-                        console.log('here');
-                        setAddSubTask(true);
                         setTaskInputFields({
                             ...taskInputFields,
                             subTasks: [
@@ -110,6 +99,7 @@ export const TaskForm = ({ setOpenForm, setTasks, task }: TaskFormProps) => {
                             // one subtaskline
                             <div>
                                 <FormInput
+                                    key={task.id}
                                     label="SubDescription"
                                     type="text"
                                     name="description"
@@ -134,9 +124,24 @@ export const TaskForm = ({ setOpenForm, setTasks, task }: TaskFormProps) => {
 
     function handleFormSubmit(e: FormEvent) {
         e.preventDefault();
-        return postTask(taskInputFields).then((task: Task) => {
+
+        const promise = () =>
+            selectedTask.id
+                ? updateTask(taskInputFields)
+                : postTask(taskInputFields);
+
+        return promise().then((task: Task) => {
             setOpenForm?.(false);
-            setTasks?.((prev) => [...prev, task]);
+            setTasks?.((prevTasks) => {
+                const existTask = prevTasks.find((t) => t.id === task.id);
+                if (existTask) {
+                    return [...prevTasks, task];
+                } else {
+                    return prevTasks.map((prevTask) =>
+                        prevTask.id === task.id ? task : prevTask
+                    );
+                }
+            });
         });
     }
 
@@ -173,9 +178,11 @@ export const TaskForm = ({ setOpenForm, setTasks, task }: TaskFormProps) => {
             }),
         }));
     }
+
     function handleCancel() {
         console.log('cancelled');
     }
+
     function validateDate(date: Date | string) {
         if (!Number.isNaN(new Date(date).getTime())) {
             return formatISO(new Date(date), { representation: 'date' });
