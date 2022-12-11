@@ -5,7 +5,7 @@ export interface Task {
     description: string;
     start: string;
     end: string;
-    completed?: string;
+    status?: string;
     subTasks: SubTask[];
 }
 
@@ -14,5 +14,5 @@ export interface SubTask {
     description?: string;
     start?: string;
     end?: string;
-    completed?: string;
+    status?: string;
 }

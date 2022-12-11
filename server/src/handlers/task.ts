@@ -8,7 +8,6 @@ export const getTasks = async (req: Request, res: Response) => {
             subTasks: true,
         },
     });
-
     res.json({ data: tasks });
 };
 
@@ -28,7 +27,14 @@ export const getTask = async (req: Request, res: Response) => {
 
 //create task
 export const createTask = async (req: Request, res: Response) => {
-    console.log('body', req.body);
+    const subTasksToCreate = req.body?.subTasks.map((task: typeof req.body) => {
+        return {
+            description: task.description,
+            start: task.start,
+            end: task.end,
+            status: task.status,
+        };
+    });
     const newTask = await prisma.task.create({
         data: {
             date: req.body.date,
@@ -36,15 +42,53 @@ export const createTask = async (req: Request, res: Response) => {
             description: req.body.description,
             start: req.body.start,
             end: req.body.end,
-            subTasks: {},
+            subTasks: {
+                create: subTasksToCreate,
+            },
+        },
+        include: {
+            subTasks: true,
         },
     });
-    console.log(newTask);
     res.json({ data: newTask });
 };
 
-//update task
+//update task with related records
 export const updateTask = async (req: Request, res: Response) => {
+    type UpdateProps = {
+        data: {};
+        where: {
+            id: string;
+        };
+    };
+    const obj: UpdateProps = {
+        data: {},
+        where: {
+            id: '',
+        },
+    };
+
+    const subTasksToUpdate = req.body?.subTasks.reduce(
+        (props: UpdateProps[], task: typeof req.body) => {
+            if (task.id) {
+                obj.data = Object.assign(obj.data, {
+                    description: task.description,
+                    start: task.start,
+                    end: task.end,
+                    status: task.status,
+                });
+                obj.where.id = task.id;
+                props.push(obj);
+            }
+            return props;
+        },
+        []
+    );
+
+    const subTasksToCreate = req.body?.subTasks.filter(
+        (task: typeof req.body) => !task.id
+    );
+
     const updatedTask = await prisma.task.update({
         where: {
             id: req.params.id,
@@ -56,12 +100,12 @@ export const updateTask = async (req: Request, res: Response) => {
             start: req.body.start,
             end: req.body.end,
             subTasks: {
-                create: {
-                    description: req.body.subTasks?.description,
-                    start: req.body.subTasks?.start,
-                    end: req.body.subTasks?.end,
-                },
+                update: subTasksToUpdate.length ? subTasksToUpdate : [],
+                create: subTasksToCreate,
             },
+        },
+        include: {
+            subTasks: true,
         },
     });
     res.json({ data: updatedTask });
