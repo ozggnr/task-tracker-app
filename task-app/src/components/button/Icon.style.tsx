@@ -8,20 +8,33 @@ import {
     PenToSquare,
 } from '@styled-icons/fa-solid';
 
+export enum ICON_TYPE {
+    add = 'add',
+    edit = 'edit',
+    delete = 'delete',
+}
+export enum ICON_SIZE {
+    small = '1rem',
+    medium = '2rem',
+    large = '3rem',
+}
+
+export const getIcon = (iconType: ICON_TYPE) => {
+    const icon = {
+        [ICON_TYPE.add]: AddIcon,
+        [ICON_TYPE.edit]: EditIcon,
+        [ICON_TYPE.delete]: DeleteIcon,
+    }[iconType];
+    return icon;
+};
 export const AddIcon = styled(Plus)`
     color: #fcfaf2;
-    width: 1rem;
+    width: ${(props) => props.size || ICON_SIZE.small};
 `;
 
 export const CloseIcon = styled(CircleXmark)`
-    width: ${(props) =>
-        props.size === 'medium'
-            ? '2rem'
-            : props.size === 'large'
-            ? '3rem'
-            : '1rem'};
-
     color: tomato;
+    width: ${(props) => props.size || ICON_SIZE.small};
 `;
 
 export const LeftIcon = styled(CaretLeft)`
@@ -33,11 +46,11 @@ export const RightIcon = styled(CaretRight)`
 `;
 
 export const DeleteIcon = styled(TrashCan)`
-    width: 1rem;
-    color: tomato;
+    width: ${(props) => props.size || ICON_SIZE.small};
+    color: #fff;
 `;
 
 export const EditIcon = styled(PenToSquare)`
-    width: 1rem;
-    color: tomato;
+    width: ${(props) => props.size || ICON_SIZE.small};
+    color: #362e54;
 `;

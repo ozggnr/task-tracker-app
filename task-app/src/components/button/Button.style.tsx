@@ -4,7 +4,7 @@ export const BaseButton = styled.button`
     width: 10rem;
     letter-spacing: 0.5px;
     padding: 0.5rem 0;
-    background-color: #6096fd;
+    background-color: #362e54;
     color: #fcfaf2;
     text-transform: uppercase;
     font-weight: bolder;
@@ -19,15 +19,20 @@ export const BaseButton = styled.button`
 `;
 
 export const ButtonSave = styled(BaseButton)`
-    backgroundcolor: blue;
+    background-color: blue;
 `;
 
 export const ButtonDelete = styled(BaseButton)`
-    backgroundcolor: red;
+    background-color: #ee6060;
 `;
 
 export const ButtonCancel = styled(BaseButton)`
-    backgroundcolor: green;
+    background-color: green;
+`;
+export const ButtonEdit = styled(BaseButton)`
+    background-color: #fff;
+    color: #362e54;
+    border: 1px solid #362e54;
 `;
 // interface ButtonGroupProps {
 //     readonly start?: boolean;

@@ -7,13 +7,13 @@ export const CalendarDateContainer = styled.div`
     align-items: center;
     font-weight: 800;
     color: #2f0147;
-    margin: 1.5rem 2rem 0 2rem;
+    margin: 1.5rem 6rem 0 6rem;
 `;
 export const CalendarContainer = styled.div`
     padding-top: 1rem;
     height: calc(100vh - 2rem);
     max-height: calc(100vh - 2rem);
-    overflow: auto;
+    overflow: hidden;
     margin: auto 24px;
     flex-grow: 1;
     display: flex;
@@ -47,7 +47,7 @@ export const ButtonDays = styled(BaseButton)<ButtonDaysProps>`
     font-size: ${(props) => (props.isActive ? '1.5rem' : '1rem')};
     width: ${(props) => (props.isActive ? '4rem' : '3rem')};
     height: ${(props) => (props.isActive ? '6rem' : '4rem')};
-    color: ${(props) => (props.isActive ? '' : '#6096fd')};
+    color: ${(props) => (props.isActive ? '' : '#362e54')};
     background-color: ${(props) => (props.isActive ? '' : '#FCFAF2')};
     line-height: ${(props) => (props.isActive ? '3rem' : '1.5rem')};
 `;
