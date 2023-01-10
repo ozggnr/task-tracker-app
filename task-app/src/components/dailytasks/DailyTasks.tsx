@@ -3,7 +3,7 @@ import { getTasks } from '../../services/taskService';
 import { Task } from '../../Types';
 import { longDateFormat } from '../../utils/dateHelpers';
 import Button from '../button/Button';
-import { TaskComponent } from '../task/TaskComponent';
+import { TaskCard } from '../task/TaskCard';
 import { TaskForm } from '../task/TaskForm';
 import { DayContainer } from './DailyTasks.style';
 import { Row } from '../../App.style';
@@ -21,7 +21,7 @@ export const DailyTasks = ({ day }: Props) => {
     useEffect(() => {
         getTasks().then((tasks) => setTasks(tasks));
     }, []);
-    console.log('tasks', tasks);
+
     const dailyTasks = getDailyTasks(day);
 
     //TODO try redux toolkit to fetch data
@@ -35,7 +35,7 @@ export const DailyTasks = ({ day }: Props) => {
             </Row>
             {dailyTasks.map((existTask) => {
                 return (
-                    <TaskComponent
+                    <TaskCard
                         task={existTask}
                         setTasks={setTasks}
                         key={existTask.id}
@@ -43,7 +43,7 @@ export const DailyTasks = ({ day }: Props) => {
                 );
             })}
             {openForm && (
-                <Sidebar onClick={() => setOpenForm(false)}>
+                <Sidebar onClick={() => setOpenForm(false)} isActive={openForm}>
                     <TaskForm setOpenForm={setOpenForm} setTasks={setTasks} />
                 </Sidebar>
             )}
