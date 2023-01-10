@@ -6,15 +6,14 @@ html body {
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
     font-size: 16px;
     font-weight: 400;
-    /* {/#f5edf000} F0FFF1*/
-    background-color: #f5edf000;
-    /* color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424; */
 
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
+
+    background: url('images/bck4.jpg') no-repeat;
+    background-position: center center;
+    background-size: cover;
 }
 * {
     box-sizing: border-box;

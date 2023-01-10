@@ -11,7 +11,7 @@ export const Row = styled.div<RowProps>`
 
 //TODO create template
 export const Title = styled.h1`
-    color: #6096fd;
+    color: #362e54;
 `;
 
 interface ContainerProps {

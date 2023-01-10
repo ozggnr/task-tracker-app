@@ -1,15 +1,9 @@
 // import '@fullcalendar/react/dist/vdom';
-import './App.css'
+import './App.css';
 import { Calendar } from './components/calendar/Calendar';
 
 function App() {
-  
-  return (<>
-      <Calendar />
-  </>)
- 
+    return <Calendar />;
 }
 
-export default App
-
-
+export default App;
