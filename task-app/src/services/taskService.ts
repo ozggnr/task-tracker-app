@@ -1,37 +1,54 @@
-import axios from 'axios';
 import { Task } from '../Types';
 
+type Fetcher = {
+    url: string;
+    method: string;
+    body?: Task;
+    json?: boolean;
+};
+const fetcher = async ({ url, method, body, json = true }: Fetcher) => {
+    const response = await fetch(url, {
+        method,
+        body: body && JSON.stringify(body),
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error('API error!');
+    }
+
+    const data = await response.json();
+    return data.data;
+};
+
 export async function getTasks() {
-    const response = await axios.get('http://localhost:5001/api/task');
-    const tasks = response.data.data;
-    return tasks;
+    return fetcher({
+        url: 'http://localhost:5001/api/task',
+        method: 'GET',
+    });
 }
 
 export async function postTask(task: Task) {
-    try {
-        const posted = await axios.post('http://localhost:5001/api/task', task);
-        return posted.data.data;
-    } catch (error) {
-        console.log(error);
-    }
+    return fetcher({
+        url: 'http://localhost:5001/api/task',
+        method: 'POST',
+        body: task,
+    });
 }
-
 export async function deleteTask(taskId: string) {
-    try {
-        await axios.delete(`http://localhost:5001/api/task/${taskId}`);
-    } catch (error) {
-        console.log(error);
-    }
+    return fetcher({
+        url: `http://localhost:5001/api/task/${taskId}`,
+        method: 'DELETE',
+    });
 }
 
 export async function updateTask(task: Task) {
-    try {
-        const updated = await axios.put(
-            `http://localhost:5001/api/task/${task.id}`,
-            task
-        );
-        return updated.data.data;
-    } catch (error) {
-        console.log(error);
-    }
+    return fetcher({
+        url: `http://localhost:5001/api/task/${task.id}`,
+        method: 'PUT',
+        body: task,
+    });
 }
