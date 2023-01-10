@@ -11,6 +11,7 @@ datasource db {
 }
 
 enum TASK_STATUS {
+  NOT_STARTED
   IN_PROGRESS
   COMPLETED
 }
@@ -23,18 +24,21 @@ model Task {
   description String
   start       String
   end         String
-  status      TASK_STATUS @default(IN_PROGRESS)
+  status      TASK_STATUS @default(NOT_STARTED)
   subTasks    SubTask[]
+  deleted     Boolean @default(false)
 }
 
 //Embedded document pattern
 model SubTask {
   id          String      @id @default(auto()) @map("_id") @db.ObjectId
   createdAt   DateTime    @default(now())
-  belongsTo   Task        @relation(fields: [belongsToId], references: [id], onDelete: Cascade)
-  belongsToId String      @db.ObjectId
+  task   Task        @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId String      @db.ObjectId
   description String?
   start       String? 
   end         String?
-  status      TASK_STATUS @default(IN_PROGRESS)
+  status      TASK_STATUS @default(NOT_STARTED)
+  deleted     Boolean @default(false)
+  @@index([taskId, id])
 }
