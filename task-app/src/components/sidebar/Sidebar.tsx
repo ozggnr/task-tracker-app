@@ -5,15 +5,17 @@ import { SidebarContainer } from './Sidebar.style';
 
 type SidebarProps = {
     onClick?: MouseEventHandler;
+    isActive: boolean;
 };
 
 export default function Sidebar({
+    isActive,
     children,
     onClick,
 }: PropsWithChildren<SidebarProps>) {
     return (
         <Portal parentId="sidebar">
-            <SidebarContainer>
+            <SidebarContainer isActive={isActive}>
                 <CloseIcon onClick={onClick} />
                 {children}
             </SidebarContainer>
