@@ -37,7 +37,7 @@ export const createTask = async (req: Request, res: Response) => {
     });
     const newTask = await prisma.task.create({
         data: {
-            date: req.body.date,
+            date: new Date(req.body.date),
             title: req.body.title,
             description: req.body.description,
             start: req.body.start,
@@ -94,7 +94,7 @@ export const updateTask = async (req: Request, res: Response) => {
             id: req.params.id,
         },
         data: {
-            date: req.body.date,
+            date: new Date(req.body.date),
             title: req.body.title,
             description: req.body.description,
             start: req.body.start,
