@@ -10,35 +10,44 @@ import { FormInput } from '../form/FormInput';
 import { TaskFormContainer } from './TaskForm.style';
 import { postTask, updateTask } from '../../services/taskService';
 import { longDateFormat } from '../../utils/dateHelpers';
-import { parseISO, formatISO } from 'date-fns';
+import { parseISO, formatISO, format } from 'date-fns';
 import { Row } from '../../App.style';
 import { ButtonGroup } from '../button/Button.style';
 import { Form } from '../form/Form';
-
+import Button, { BUTTON_TYPE } from '../button/Button';
+//use immer for the state
 type TaskFormProps = {
     setOpenForm?: Dispatch<SetStateAction<boolean>>;
     setTasks?: Dispatch<SetStateAction<Task[]>>;
     task?: Task;
+    activeDay?: string;
 };
-const subTask: SubTask = {
-    description: '',
-    start: '',
-    end: '',
-    status: 'IN_PROGRESS',
-};
-const newTask: Task = {
-    date: new Date(),
-    title: '',
-    description: '',
-    start: '',
-    end: '',
-    status: 'IN_PROGRESS',
-    subTasks: [],
-};
-export const TaskForm = ({ setOpenForm, setTasks, task }: TaskFormProps) => {
+
+export const TaskForm = ({
+    setOpenForm,
+    setTasks,
+    task,
+    activeDay,
+}: TaskFormProps) => {
+    console.log(activeDay);
+    const subTask: SubTask = {
+        description: '',
+        start: '',
+        end: '',
+        status: 'NOT_STARTED',
+    };
+    const newTask: Task = {
+        date: activeDay!,
+        title: '',
+        description: '',
+        start: '',
+        end: '',
+        status: 'NOT_STARTED',
+        subTasks: [],
+    };
     const selectedTask = task || newTask;
     const [taskInputFields, setTaskInputFields] = useState<Task>(selectedTask);
-
+    console.log(selectedTask);
     return (
         <TaskFormContainer>
             <Form onSubmit={handleFormSubmit}>
@@ -56,13 +65,6 @@ export const TaskForm = ({ setOpenForm, setTasks, task }: TaskFormProps) => {
                     value={taskInputFields.description}
                     onChange={handleChange}
                 />
-                <FormInput
-                    label="Date"
-                    type="date"
-                    name="date"
-                    value={validateDate(taskInputFields.date)}
-                    onChange={handleChange}
-                />
                 {/* <Row> */}
                 <FormInput
                     label="Start Time"
@@ -78,8 +80,8 @@ export const TaskForm = ({ setOpenForm, setTasks, task }: TaskFormProps) => {
                     value={taskInputFields.end}
                     onChange={handleChange}
                 />
-                <button
-                    type="button"
+                <Button
+                    type={BUTTON_TYPE.button}
                     onClick={() => {
                         setTaskInputFields({
                             ...taskInputFields,
@@ -91,9 +93,8 @@ export const TaskForm = ({ setOpenForm, setTasks, task }: TaskFormProps) => {
                     }}
                 >
                     Add SubTask
-                </button>
-
-                {taskInputFields.subTasks.length &&
+                </Button>
+                {taskInputFields.subTasks.length > 0 &&
                     taskInputFields.subTasks.map((task, index) => {
                         return (
                             // one subtaskline
@@ -124,7 +125,7 @@ export const TaskForm = ({ setOpenForm, setTasks, task }: TaskFormProps) => {
 
     function handleFormSubmit(e: FormEvent) {
         e.preventDefault();
-
+        console.log(taskInputFields);
         const promise = () =>
             selectedTask.id
                 ? updateTask(taskInputFields)
@@ -133,13 +134,15 @@ export const TaskForm = ({ setOpenForm, setTasks, task }: TaskFormProps) => {
         return promise().then((task: Task) => {
             setOpenForm?.(false);
             setTasks?.((prevTasks) => {
-                const existTask = prevTasks.find((t) => t.id === task.id);
-                if (existTask) {
-                    return [...prevTasks, task];
-                } else {
+                const existTaskIndex = prevTasks.findIndex(
+                    (prevTask) => prevTask.id === task.id
+                );
+                if (existTaskIndex >= 0) {
                     return prevTasks.map((prevTask) =>
                         prevTask.id === task.id ? task : prevTask
                     );
+                } else {
+                    return [...prevTasks, task];
                 }
             });
         });
@@ -148,18 +151,10 @@ export const TaskForm = ({ setOpenForm, setTasks, task }: TaskFormProps) => {
     function handleChange(event: ChangeEvent<HTMLInputElement>) {
         event.preventDefault();
         const name = event.target.name;
-
-        if (name === 'date') {
-            setTaskInputFields({
-                ...taskInputFields,
-                date: parseISO(event.target.value),
-            });
-        } else {
-            setTaskInputFields((prev) => ({
-                ...prev,
-                [name]: event.target.value,
-            }));
-        }
+        setTaskInputFields((prev) => ({
+            ...prev,
+            [name]: event.target.value,
+        }));
     }
     function handleSubTaskChange(
         index: number,
