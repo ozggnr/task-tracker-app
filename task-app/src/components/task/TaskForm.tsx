@@ -21,6 +21,7 @@ type TaskFormProps = {
     setTasks?: Dispatch<SetStateAction<Task[]>>;
     task?: Task;
     activeDay?: string;
+    handleUpdateTask?: (task: Task) => void;
 };
 
 export const TaskForm = ({
@@ -28,8 +29,8 @@ export const TaskForm = ({
     setTasks,
     task,
     activeDay,
+    handleUpdateTask,
 }: TaskFormProps) => {
-    console.log(activeDay);
     const subTask: SubTask = {
         description: '',
         start: '',
@@ -47,7 +48,7 @@ export const TaskForm = ({
     };
     const selectedTask = task || newTask;
     const [taskInputFields, setTaskInputFields] = useState<Task>(selectedTask);
-    console.log(selectedTask);
+    // console.log(selectedTask, taskInputFields);
     return (
         <TaskFormContainer>
             <Form onSubmit={handleFormSubmit}>
@@ -132,6 +133,7 @@ export const TaskForm = ({
                 : postTask(taskInputFields);
 
         return promise().then((task: Task) => {
+            // console.log('onsave', task);
             setOpenForm?.(false);
             setTasks?.((prevTasks) => {
                 const existTaskIndex = prevTasks.findIndex(
@@ -145,6 +147,7 @@ export const TaskForm = ({
                     return [...prevTasks, task];
                 }
             });
+            handleUpdateTask?.(task);
         });
     }
 
@@ -156,6 +159,7 @@ export const TaskForm = ({
             [name]: event.target.value,
         }));
     }
+    //TODO check why we don't use id instead of index
     function handleSubTaskChange(
         index: number,
         event: ChangeEvent<HTMLInputElement>
