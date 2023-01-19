@@ -9,48 +9,43 @@ import {
 import { AddIcon, getIcon, ICON_SIZE, ICON_TYPE } from './Icon.style';
 
 //to create button types
-export enum BUTTON_TYPE {
+export enum BUTTON_COLOR {
     button = 'button',
     save = 'save',
     delete = 'delete',
     cancel = 'cancel',
     edit = 'edit',
 }
-const getButton = (buttonType = BUTTON_TYPE.button) => {
+const getButton = (buttonType = BUTTON_COLOR.button) => {
     const selectedButton = {
-        [BUTTON_TYPE.button]: BaseButton,
-        [BUTTON_TYPE.save]: ButtonSave,
-        [BUTTON_TYPE.delete]: ButtonDelete,
-        [BUTTON_TYPE.cancel]: ButtonCancel,
-        [BUTTON_TYPE.edit]: ButtonEdit,
+        [BUTTON_COLOR.button]: BaseButton,
+        [BUTTON_COLOR.save]: ButtonSave,
+        [BUTTON_COLOR.delete]: ButtonDelete,
+        [BUTTON_COLOR.cancel]: ButtonCancel,
+        [BUTTON_COLOR.edit]: ButtonEdit,
     }[buttonType];
-    // console.log(selectedButton);
     return selectedButton;
 };
 
-type ButtonProps = {
-    props?: ButtonHTMLAttributes<HTMLButtonElement>;
-    onClick: MouseEventHandler<HTMLButtonElement>;
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     children: ReactNode;
     icon?: ICON_TYPE;
     iconSize?: ICON_SIZE;
-    type?: BUTTON_TYPE;
-};
-export default function Button({
-    props,
-    icon,
-    iconSize,
-    type,
-    onClick,
-    children,
-}: ButtonProps) {
-    // console.log(icon, children);
-    const Button = getButton(type);
+    color?: BUTTON_COLOR;
+}
+
+export default function Button(props: ButtonProps) {
+    const { children, icon, iconSize, color, ...rest } = props;
+    const Button = getButton(color);
     const Icon = getIcon(icon!);
-    // console.log(iconSize, icon);
+
     return (
-        <Button {...props} onClick={onClick}>
-            {icon && <Icon size={iconSize!} />}
+        <Button {...rest}>
+            {icon && (
+                <span>
+                    <Icon size={iconSize!} />
+                </span>
+            )}
             {children}
         </Button>
     );
