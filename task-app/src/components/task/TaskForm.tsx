@@ -1,37 +1,23 @@
-import {
-    FormEvent,
-    useState,
-    ChangeEvent,
-    Dispatch,
-    SetStateAction,
-} from 'react';
+import { FormEvent, useState, ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { Task, SubTask } from '../../Types';
 import { FormInput } from '../form/FormInput';
 import { TaskFormContainer } from './TaskForm.style';
-import { postTask, updateTask } from '../../services/taskService';
-import { longDateFormat } from '../../utils/dateHelpers';
-import { parseISO, formatISO, format } from 'date-fns';
-import { Row } from '../../App.style';
+import { postTaskService, updateTaskService } from '../../services/taskService';
 import { ButtonGroup } from '../button/Button.style';
 import { Form } from '../form/Form';
-import Button, { BUTTON_TYPE } from '../button/Button';
+import Button, { BUTTON_COLOR } from '../button/Button';
+import { addTask, getTaskSelector, updateTask } from '../../store/reducers/tasksSlice';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 //use immer for the state
 type TaskFormProps = {
     setOpenForm?: Dispatch<SetStateAction<boolean>>;
-    setTasks?: Dispatch<SetStateAction<Task[]>>;
     task?: Task;
     activeDay?: string;
-    handleUpdateTask?: (task: Task) => void;
 };
 
-export const TaskForm = ({
-    setOpenForm,
-    setTasks,
-    task,
-    activeDay,
-    handleUpdateTask,
-}: TaskFormProps) => {
+export const TaskForm = ({ setOpenForm, task, activeDay }: TaskFormProps) => {
     const subTask: SubTask = {
+        date: activeDay!,
         description: '',
         start: '',
         end: '',
@@ -46,9 +32,12 @@ export const TaskForm = ({
         status: 'NOT_STARTED',
         subTasks: [],
     };
-    const selectedTask = task || newTask;
+    const dispatch = useAppDispatch();
+    //We can extract the value that we want withing the selector since record of the value is kept for each individual useSelectorx
+    const activeTask = useAppSelector((state) => getTaskSelector(state, task?.id!)); //TODO check if I can better solution for task.id
+    const selectedTask = activeTask || newTask;
     const [taskInputFields, setTaskInputFields] = useState<Task>(selectedTask);
-    // console.log(selectedTask, taskInputFields);
+    console.log(selectedTask);
     return (
         <TaskFormContainer>
             <Form onSubmit={handleFormSubmit}>
@@ -79,46 +68,58 @@ export const TaskForm = ({
                     type="time"
                     name="end"
                     value={taskInputFields.end}
+                    max="23:59"
                     onChange={handleChange}
                 />
                 <Button
-                    type={BUTTON_TYPE.button}
+                    color={BUTTON_COLOR.button}
+                    type="button"
                     onClick={() => {
                         setTaskInputFields({
                             ...taskInputFields,
-                            subTasks: [
-                                ...taskInputFields.subTasks,
-                                ...[subTask],
-                            ],
+                            subTasks: [...taskInputFields.subTasks, ...[subTask]],
                         });
                     }}
                 >
                     Add SubTask
                 </Button>
                 {taskInputFields.subTasks.length > 0 &&
-                    taskInputFields.subTasks.map((task, index) => {
+                    taskInputFields.subTasks.map((subTask, index) => {
                         return (
                             // one subtaskline
                             <div>
                                 <FormInput
-                                    key={task.id}
+                                    key={subTask.id}
                                     label="SubDescription"
                                     type="text"
                                     name="description"
-                                    value={task.description}
-                                    onChange={(
-                                        e: ChangeEvent<HTMLInputElement>
-                                    ) => handleSubTaskChange(index, e)}
+                                    value={subTask.description}
+                                    onChange={(e: ChangeEvent<HTMLInputElement>) => handleSubTaskChange(index, e)}
+                                />
+                                <FormInput
+                                    label="Start Time"
+                                    type="time"
+                                    name="start"
+                                    value={subTask.start}
+                                    onChange={(e: ChangeEvent<HTMLInputElement>) => handleSubTaskChange(index, e)}
+                                />
+                                <FormInput
+                                    label="End Time"
+                                    type="time"
+                                    name="end"
+                                    value={subTask.end}
+                                    max="23:59"
+                                    onChange={(e: ChangeEvent<HTMLInputElement>) => handleSubTaskChange(index, e)}
                                 />
                             </div>
                         );
                     })}
                 {/* </Row> */}
                 <ButtonGroup>
-                    <button type="submit">Save</button>
-                    <button type="button" onClick={handleCancel}>
+                    <Button type="submit">Save</Button>
+                    <Button type="button" onClick={handleCancel}>
                         Cancel
-                    </button>
+                    </Button>
                 </ButtonGroup>
             </Form>
         </TaskFormContainer>
@@ -126,44 +127,33 @@ export const TaskForm = ({
 
     function handleFormSubmit(e: FormEvent) {
         e.preventDefault();
-        console.log(taskInputFields);
-        const promise = () =>
-            selectedTask.id
-                ? updateTask(taskInputFields)
-                : postTask(taskInputFields);
-
-        return promise().then((task: Task) => {
-            // console.log('onsave', task);
-            setOpenForm?.(false);
-            setTasks?.((prevTasks) => {
-                const existTaskIndex = prevTasks.findIndex(
-                    (prevTask) => prevTask.id === task.id
-                );
-                if (existTaskIndex >= 0) {
-                    return prevTasks.map((prevTask) =>
-                        prevTask.id === task.id ? task : prevTask
-                    );
-                } else {
-                    return [...prevTasks, task];
-                }
+        e.stopPropagation();
+        // setOpenForm?.(false);
+        if (selectedTask.id) {
+            return updateTaskService(taskInputFields).then((updatedTask) => {
+                dispatch(updateTask(updatedTask));
+                setOpenForm?.(false);
             });
-            handleUpdateTask?.(task);
-        });
+        } else {
+            return postTaskService(taskInputFields).then((newTask) => {
+                dispatch(addTask(newTask));
+                setOpenForm?.(false);
+            });
+        }
     }
 
     function handleChange(event: ChangeEvent<HTMLInputElement>) {
         event.preventDefault();
         const name = event.target.name;
+        console.log(event.target.value);
         setTaskInputFields((prev) => ({
             ...prev,
             [name]: event.target.value,
         }));
     }
     //TODO check why we don't use id instead of index
-    function handleSubTaskChange(
-        index: number,
-        event: ChangeEvent<HTMLInputElement>
-    ) {
+    function handleSubTaskChange(index: number, event: ChangeEvent<HTMLInputElement>) {
+        event.preventDefault();
         const name = event?.target.name;
         setTaskInputFields((prev) => ({
             ...prev,
@@ -171,6 +161,7 @@ export const TaskForm = ({
                 return index === i
                     ? {
                           ...sub,
+                          date: activeDay,
                           [name]: event.target.value,
                       }
                     : sub;
@@ -180,15 +171,5 @@ export const TaskForm = ({
 
     function handleCancel() {
         console.log('cancelled');
-    }
-
-    function validateDate(date: Date | string) {
-        if (!Number.isNaN(new Date(date).getTime())) {
-            return formatISO(new Date(date), { representation: 'date' });
-        } else {
-            //TODO use library instead of doing this:()
-            console.log('invalid date');
-            return formatISO(new Date(), { representation: 'date' });
-        }
     }
 };

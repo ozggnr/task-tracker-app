@@ -1,12 +1,6 @@
 import { addDays, isBefore, isEqual } from 'date-fns';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store';
-import {
-    lastWeek,
-    nextWeek,
-    setDay,
-    thisWeek,
-} from '../../store/reducers/daysOfWeekSlice';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { lastWeek, nextWeek, setDay, thisWeek } from '../../store/reducers/daysOfWeekSlice';
 import {
     endOfTheWeek,
     isSameDay,
@@ -30,10 +24,10 @@ import { Title } from '../../App.style';
 
 export const Calendar = () => {
     //We will update our state by using dispatch, dispatch gets action with payload
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     //this is our state
-    const activeDay = useSelector((state: RootState) => state.daysOfWeek);
+    const activeDay = useAppSelector((state) => state.daysOfWeek);
     const calendar: Date[] = getWeeklyCalendar(activeDay);
 
     const activeMonth = shortDateFormat(activeDay);
@@ -46,9 +40,7 @@ export const Calendar = () => {
                     <ButtonCaret onClick={() => dispatch(lastWeek(activeDay))}>
                         <LeftIcon />
                     </ButtonCaret>
-                    <ButtonToday onClick={() => dispatch(thisWeek(activeDay))}>
-                        Today
-                    </ButtonToday>
+                    <ButtonToday onClick={() => dispatch(thisWeek(activeDay))}>Today</ButtonToday>
                     <ButtonCaret onClick={() => dispatch(nextWeek(activeDay))}>
                         <RightIcon />
                     </ButtonCaret>
@@ -62,8 +54,7 @@ export const Calendar = () => {
                             isActive={isSameDay(new Date(activeDay), day)}
                             onClick={() => handleClick(longDateFormat(day))}
                         >
-                            {weekDays(day)}{' '}
-                            {isSameDay(new Date(activeDay), day)}
+                            {weekDays(day)} {isSameDay(new Date(activeDay), day)}
                         </ButtonDays>
                     );
                 })}

@@ -31,21 +31,21 @@ export async function getTasks() {
     });
 }
 
-export async function postTask(task: Task) {
+export async function postTaskService(task: Task) {
     return fetcher({
         url: 'http://localhost:5001/api/task',
         method: 'POST',
         body: task,
     });
 }
-export async function deleteTask(taskId: string) {
+export async function deleteTaskService(taskId: string) {
     return fetcher({
         url: `http://localhost:5001/api/task/${taskId}`,
         method: 'DELETE',
     });
 }
 
-export async function updateTask(task: Task) {
+export async function updateTaskService(task: Task) {
     return fetcher({
         url: `http://localhost:5001/api/task/${task.id}`,
         method: 'PUT',
