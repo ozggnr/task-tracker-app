@@ -29,6 +29,7 @@ export const getTask = async (req: Request, res: Response) => {
 export const createTask = async (req: Request, res: Response) => {
     const subTasksToCreate = req.body?.subTasks.map((task: typeof req.body) => {
         return {
+            date: new Date(req.body.date),
             description: task.description,
             start: task.start,
             end: task.end,
@@ -68,26 +69,22 @@ export const updateTask = async (req: Request, res: Response) => {
         },
     };
 
-    const subTasksToUpdate = req.body?.subTasks.reduce(
-        (props: UpdateProps[], task: typeof req.body) => {
-            if (task.id) {
-                obj.data = Object.assign(obj.data, {
-                    description: task.description,
-                    start: task.start,
-                    end: task.end,
-                    status: task.status,
-                });
-                obj.where.id = task.id;
-                props.push(obj);
-            }
-            return props;
-        },
-        []
-    );
+    const subTasksToUpdate = req.body?.subTasks.reduce((props: UpdateProps[], task: typeof req.body) => {
+        if (task.id) {
+            obj.data = Object.assign(obj.data, {
+                date: new Date(req.body.date),
+                description: task.description,
+                start: task.start,
+                end: task.end,
+                status: task.status,
+            });
+            obj.where.id = task.id;
+            props.push(obj);
+        }
+        return props;
+    }, []);
 
-    const subTasksToCreate = req.body?.subTasks.filter(
-        (task: typeof req.body) => !task.id
-    );
+    const subTasksToCreate = req.body?.subTasks.filter((task: typeof req.body) => !task.id);
 
     const updatedTask = await prisma.task.update({
         where: {
@@ -99,6 +96,7 @@ export const updateTask = async (req: Request, res: Response) => {
             description: req.body.description,
             start: req.body.start,
             end: req.body.end,
+            status: req.body.status,
             subTasks: {
                 update: subTasksToUpdate.length ? subTasksToUpdate : [],
                 create: subTasksToCreate,
@@ -108,6 +106,7 @@ export const updateTask = async (req: Request, res: Response) => {
             subTasks: true,
         },
     });
+    console.log(updatedTask);
     res.json({ data: updatedTask });
 };
 
