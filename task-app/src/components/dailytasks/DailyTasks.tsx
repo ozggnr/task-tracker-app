@@ -40,7 +40,7 @@ export const DailyTasks = ({ day }: Props) => {
                 </Sidebar>
             )}
             {dailyTasks.map((task: Task) => {
-                return <TaskCard activeTask={task} key={task.id} />;
+                return <TaskCard task={task} key={task.id} />;
             })}
         </DayContainer>
     );

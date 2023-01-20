@@ -37,8 +37,19 @@ export const tasksSlice = createSlice({
 });
 
 export const { addTask, updateTask, updateTaskStatus, deleteTask, setTasks } = tasksSlice.actions;
-export const tasksSelector = (state: RootState) => state.tasks.tasks;
-export const getTaskSelector = (state: RootState, taskId: string) =>
-    state.tasks.tasks.find((task) => task.id === taskId);
-
+export const tasksSelector = (state: RootState) => {
+    console.log('here1');
+    return state.tasks.tasks;
+};
+// export const getTaskSelector = (state: RootState, taskId: string) => {
+//     console.log('here3');
+//     return state.tasks.tasks.find((task) => task.id === taskId);
+// };
+export const getTaskSelector = (id: string) => {
+    console.log('here2');
+    return createSelector(
+        (state: RootState) => state.tasks.tasks,
+        (tasks) => tasks.find((task) => task.id === id)
+    );
+};
 export default tasksSlice.reducer;

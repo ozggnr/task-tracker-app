@@ -2,7 +2,7 @@ import { PropsWithChildren, useState } from 'react';
 import { Task } from '../../Types';
 import { ProgressBar } from '../progressBar/ProgressBar';
 import Modal from '../modal/Modal';
-import { deleteTaskService } from '../../services/taskService';
+import { deleteTaskService, updateTaskService } from '../../services/taskService';
 import { ICON_TYPE } from '../button/Icon.style';
 import { TaskForm } from './TaskForm';
 import Sidebar from '../sidebar/Sidebar';
@@ -11,20 +11,20 @@ import { CardBody, CardFooter, CardHeader } from '../card/Card.style';
 import Card from '../card/Card';
 import Button, { BUTTON_COLOR } from '../button/Button';
 import { TaskDetails } from './TaskDetails';
-import { useDispatch, useSelector } from 'react-redux';
 import { deleteTask, updateTask } from '../../store/reducers/tasksSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { useTaskStatus } from '../../utils/useTaskStatus';
 
 type TaskProps = {
-    activeTask: Task;
+    task: Task;
 };
 
-export const TaskCard = ({ activeTask }: PropsWithChildren<TaskProps>) => {
+export const TaskCard = ({ task }: PropsWithChildren<TaskProps>) => {
     const [openForm, setOpenForm] = useState(false);
     const [warning, setWarning] = useState(false);
     const [openDetails, setOpenDetails] = useState(false);
-    console.log(activeTask);
     const dispatch = useAppDispatch();
+    const activeTask = useTaskStatus(task);
 
     return (
         <TaskContainer>
@@ -52,9 +52,9 @@ export const TaskCard = ({ activeTask }: PropsWithChildren<TaskProps>) => {
                     </div>
                 </CardHeader>
                 <CardBody>
-                    {/* <div>{date.toLocaleTimeString()}</div> */}
+                    {/* <div>{activeTask.date.toLocaleTimeString()}</div> */}
                     {/* <ProgressBar
-                        startTime={activeTask?..start}
+                        startTime={activeTask?..activeTask.start}
                         endTime={activeTask.end}
                     /> */}
                     <div className="task">
@@ -97,9 +97,8 @@ export const TaskCard = ({ activeTask }: PropsWithChildren<TaskProps>) => {
     function handleCompleteTask() {
         const status = 'COMPLETED';
         const completedTask = { ...activeTask, status: status };
-        // updateTask(completedTask).then((newTask) => {
-        // setActiveTask(newTask);
-        // setStatus(status);
-        // });
+        updateTaskService(completedTask).then((newTask) => {
+            dispatch(updateTask(newTask));
+        });
     }
 };

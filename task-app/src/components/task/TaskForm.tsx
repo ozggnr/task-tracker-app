@@ -8,9 +8,9 @@ import { Form } from '../form/Form';
 import Button, { BUTTON_COLOR } from '../button/Button';
 import { addTask, getTaskSelector, updateTask } from '../../store/reducers/tasksSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-//use immer for the state
+
 type TaskFormProps = {
-    setOpenForm?: Dispatch<SetStateAction<boolean>>;
+    setOpenForm: Dispatch<SetStateAction<boolean>>;
     task?: Task;
     activeDay?: string;
 };
@@ -34,10 +34,10 @@ export const TaskForm = ({ setOpenForm, task, activeDay }: TaskFormProps) => {
     };
     const dispatch = useAppDispatch();
     //We can extract the value that we want withing the selector since record of the value is kept for each individual useSelectorx
-    const activeTask = useAppSelector((state) => getTaskSelector(state, task?.id!)); //TODO check if I can better solution for task.id
+    const activeTask = useAppSelector(getTaskSelector(task?.id!));
     const selectedTask = activeTask || newTask;
     const [taskInputFields, setTaskInputFields] = useState<Task>(selectedTask);
-    console.log(selectedTask);
+
     return (
         <TaskFormContainer>
             <Form onSubmit={handleFormSubmit}>
@@ -86,7 +86,6 @@ export const TaskForm = ({ setOpenForm, task, activeDay }: TaskFormProps) => {
                 {taskInputFields.subTasks.length > 0 &&
                     taskInputFields.subTasks.map((subTask, index) => {
                         return (
-                            // one subtaskline
                             <div>
                                 <FormInput
                                     key={subTask.id}
@@ -132,12 +131,12 @@ export const TaskForm = ({ setOpenForm, task, activeDay }: TaskFormProps) => {
         if (selectedTask.id) {
             return updateTaskService(taskInputFields).then((updatedTask) => {
                 dispatch(updateTask(updatedTask));
-                setOpenForm?.(false);
+                setOpenForm(false);
             });
         } else {
             return postTaskService(taskInputFields).then((newTask) => {
                 dispatch(addTask(newTask));
-                setOpenForm?.(false);
+                setOpenForm(false);
             });
         }
     }
@@ -145,7 +144,6 @@ export const TaskForm = ({ setOpenForm, task, activeDay }: TaskFormProps) => {
     function handleChange(event: ChangeEvent<HTMLInputElement>) {
         event.preventDefault();
         const name = event.target.name;
-        console.log(event.target.value);
         setTaskInputFields((prev) => ({
             ...prev,
             [name]: event.target.value,
@@ -170,6 +168,6 @@ export const TaskForm = ({ setOpenForm, task, activeDay }: TaskFormProps) => {
     }
 
     function handleCancel() {
-        console.log('cancelled');
+        setOpenForm(false);
     }
 };
