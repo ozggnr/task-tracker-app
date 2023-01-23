@@ -1,13 +1,28 @@
+import { SubTask } from '@prisma/client';
 import { Request, Response } from 'express';
 import prisma from '../database/db';
 
 //Get all tasks
 export const getTasks = async (req: Request, res: Response) => {
-    const tasks = await prisma.task.findMany({
+    const data = await prisma.task.findMany({
         include: {
-            subTasks: true,
+            subTasks: {
+                orderBy: {
+                    start: 'asc',
+                },
+            },
         },
     });
+    // since i added date field to subtask later, i need to assign the dates //TODO add date in schema
+    const tasks = data.map((task) => {
+        if (task.subTasks.length > 0) {
+            task.subTasks.forEach((subTask) => {
+                subTask.date = task.date;
+            });
+        }
+        return task;
+    });
+
     res.json({ data: tasks });
 };
 
@@ -62,23 +77,21 @@ export const updateTask = async (req: Request, res: Response) => {
             id: string;
         };
     };
-    const obj: UpdateProps = {
-        data: {},
-        where: {
-            id: '',
-        },
-    };
 
-    const subTasksToUpdate = req.body?.subTasks.reduce((props: UpdateProps[], task: typeof req.body) => {
-        if (task.id) {
-            obj.data = Object.assign(obj.data, {
-                date: new Date(req.body.date),
-                description: task.description,
-                start: task.start,
-                end: task.end,
-                status: task.status,
-            });
-            obj.where.id = task.id;
+    const subTasksToUpdate = req.body?.subTasks.reduce((props: UpdateProps[], subTask: SubTask) => {
+        if (subTask.id) {
+            const obj: UpdateProps = {
+                data: {
+                    date: new Date(req.body.date),
+                    description: subTask.description,
+                    start: subTask.start,
+                    end: subTask.end,
+                    status: subTask.status,
+                },
+                where: {
+                    id: subTask.id,
+                },
+            };
             props.push(obj);
         }
         return props;
@@ -106,7 +119,7 @@ export const updateTask = async (req: Request, res: Response) => {
             subTasks: true,
         },
     });
-    console.log(updatedTask);
+
     res.json({ data: updatedTask });
 };
 
