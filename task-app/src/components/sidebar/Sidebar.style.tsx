@@ -6,6 +6,8 @@ interface SidebarProps {
 
 export const SidebarContainer = styled.div<SidebarProps>`
     position: fixed;
+    display: flex;
+    flex-direction: column;
     top: 0;
     right: 0;
     height: 100%;
@@ -13,5 +15,5 @@ export const SidebarContainer = styled.div<SidebarProps>`
     transition: width linear 0.5s;
     backdrop-filter: blur(16px) saturate(180%);
     background-color: rgb(255 255 255 / 63%);
-    padding: 15px;
+    padding: 1rem;
 `;

@@ -8,11 +8,7 @@ type SidebarProps = {
     isActive: boolean;
 };
 
-export default function Sidebar({
-    isActive,
-    children,
-    onClick,
-}: PropsWithChildren<SidebarProps>) {
+export default function Sidebar({ isActive, children, onClick }: PropsWithChildren<SidebarProps>) {
     return (
         <Portal parentId="sidebar">
             <SidebarContainer isActive={isActive}>

@@ -12,7 +12,7 @@ import Card from '../card/Card';
 import Button, { BUTTON_COLOR } from '../button/Button';
 import { TaskDetails } from './TaskDetails';
 import { deleteTask, updateTask } from '../../store/reducers/tasksSlice';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { useAppDispatch } from '../../store/hooks';
 import { useTaskStatus } from '../../utils/useTaskStatus';
 
 type TaskProps = {
@@ -77,11 +77,9 @@ export const TaskCard = ({ task }: PropsWithChildren<TaskProps>) => {
                     <TaskForm task={activeTask} setOpenForm={setOpenForm} />
                 </Sidebar>
             )}
-            {openDetails && (
-                <Sidebar onClick={() => setOpenDetails(true)} isActive={openDetails}>
-                    {activeTask.subTasks.map((subtask) => (
-                        <TaskDetails subtask={subtask} openDetails={openDetails} key={subtask.id} />
-                    ))}
+            {true && (
+                <Sidebar onClick={() => setOpenDetails(true)} isActive={true}>
+                    <TaskDetails activeTask={activeTask} openDetails={true} />
                 </Sidebar>
             )}
         </TaskContainer>

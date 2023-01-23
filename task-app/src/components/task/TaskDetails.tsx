@@ -1,33 +1,44 @@
-import { PropsWithChildren, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SubTask, Task } from '../../Types';
-import { useTaskStatus } from '../../utils/useTaskStatus';
-import { Checkbox } from '../button/Checkbox';
+import { differenceSeconds } from '../../utils/dateHelpers';
 import { FormInput } from '../form/FormInput';
+import { SubTaskComp } from '../subtask/Subtask';
+import { TaskDetailsContainer } from './Task.style';
 
 type TaskDetailsProps = {
-    subtask: SubTask;
+    activeTask: Task;
     openDetails: boolean;
 };
 
-export const TaskDetails = ({ subtask, openDetails }: TaskDetailsProps) => {
-    const [subActiveTask, setSubActiveTask] = useState(subtask);
+export const TaskDetails = ({ activeTask }: TaskDetailsProps) => {
+    // const [subActiveTask, setSubActiveTask] = useState(subtask);
 
     return (
-        <div>
-            <FormInput
-                type="checkbox"
-                name="subtask"
-                value={subActiveTask.id}
-                id={subActiveTask.id}
-                key={subActiveTask.id}
-                label={subActiveTask.description}
-                onChange={handleCompleteTask}
-            />
-        </div>
+        <TaskDetailsContainer>
+            {activeTask.subTasks.map((subtask, index) => (
+                <SubTaskComp
+                    index={index}
+                    subtask={subtask}
+                    key={subtask.id}
+                    getDurationForSubtasks={getDurationForSubtasks}
+                />
+            ))}
+        </TaskDetailsContainer>
     );
-
     function handleCompleteTask() {
-        console.log(subActiveTask);
+        // console.log(subActiveTask);
         // setCompleted(!completed);
+    }
+
+    function getDurationForSubtasks() {
+        const indexLastEl = activeTask.subTasks.length - 1;
+        const totalTimeDifference = differenceSeconds(
+            { earlierDate: new Date(activeTask.subTasks[0].date!), earlierTime: activeTask.subTasks[0].start! },
+            {
+                laterDate: new Date(activeTask.subTasks[indexLastEl].date!),
+                laterTime: activeTask.subTasks[indexLastEl].end!,
+            }
+        );
+        return totalTimeDifference;
     }
 };

@@ -2,18 +2,18 @@ import { useEffect, useState } from 'react';
 import { useAppDispatch } from '../store/hooks';
 import { updateTaskStatus } from '../store/reducers/tasksSlice';
 import { SubTask, Task } from '../Types';
-import { getDateTime, timeDifferenceWithRealTime } from './dateHelpers';
+import { getDateTime, timeDifferenceWithCurrentTime } from './dateHelpers';
 
 export function useTaskStatus(activeTask: Task): Task {
     const dispatch = useAppDispatch();
     useEffect(() => {
         let timerId: number;
-        const getRemainingSecsStart = timeDifferenceWithRealTime(activeTask.date, activeTask.start);
-        const getRemainingSecsEnd = timeDifferenceWithRealTime(activeTask.date, activeTask.end);
+        const getRemainingSecsStart = timeDifferenceWithCurrentTime(activeTask.date, activeTask.start);
+        const getRemainingSecsEnd = timeDifferenceWithCurrentTime(activeTask.date, activeTask.end);
         const taskStart = getDateTime(new Date(activeTask.date), activeTask.start);
         const taskEnd = getDateTime(new Date(activeTask.date), activeTask.end);
         const currentTime = new Date();
-
+        // console.log(getRemainingSecsStart, getRemainingSecsEnd);
         console.log('render');
         if (activeTask.status !== 'COMPLETED') {
             if (currentTime >= taskStart && currentTime < taskEnd) {
@@ -30,12 +30,12 @@ export function useTaskStatus(activeTask: Task): Task {
     }, [activeTask.status, activeTask.start, activeTask.end]);
 
     function schedule(timeToSet: number, taskStatus: string, id: string) {
-        console.log(timeToSet, taskStatus, id);
+        // console.log(timeToSet, taskStatus, id);
         const timerId = setTimeout(() => {
             dispatch(updateTaskStatus({ id: id, status: taskStatus }));
         }, timeToSet * 1000);
         return timerId;
     }
-    console.log(activeTask);
+    // console.log(activeTask);
     return activeTask;
 }
