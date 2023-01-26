@@ -15,7 +15,7 @@ export const getTasks = async (req: Request, res: Response) => {
     });
     // since i added date field to subtask later, i need to assign the dates //TODO add date in schema
     const tasks = data.map((task) => {
-        if (task.subTasks.length > 0) {
+        if (task.subTasks.length) {
             task.subTasks.forEach((subTask) => {
                 subTask.date = task.date;
             });

@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction, current, createSelector } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import { Task } from '../../Types';
+import { longDateFormat } from '../../utils/dateHelpers';
 
 interface TaskSliceState {
     tasks: Task[];
@@ -38,7 +39,6 @@ export const tasksSlice = createSlice({
 
 export const { addTask, updateTask, updateTaskStatus, deleteTask, setTasks } = tasksSlice.actions;
 export const tasksSelector = (state: RootState) => {
-    console.log('here1');
     return state.tasks.tasks;
 };
 // export const getTaskSelector = (state: RootState, taskId: string) => {
@@ -46,10 +46,15 @@ export const tasksSelector = (state: RootState) => {
 //     return state.tasks.tasks.find((task) => task.id === taskId);
 // };
 export const getTaskSelector = (id: string) => {
-    console.log('here2');
     return createSelector(
         (state: RootState) => state.tasks.tasks,
         (tasks) => tasks.find((task) => task.id === id)
+    );
+};
+export const getDailyTasksSelector = (date: string) => {
+    return createSelector(
+        (state: RootState) => state.tasks.tasks,
+        (tasks) => tasks.filter((task) => longDateFormat(task.date) === date)
     );
 };
 export default tasksSlice.reducer;
