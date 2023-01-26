@@ -15,11 +15,16 @@ import { deleteTask, updateTask } from '../../store/reducers/tasksSlice';
 import { useAppDispatch } from '../../store/hooks';
 import { useTaskStatus } from '../../utils/useTaskStatus';
 
+type ValidationProps = {
+    isValid: boolean;
+    message: string;
+};
 type TaskProps = {
     task: Task;
+    validate(task: Task): ValidationProps;
 };
 
-export const TaskCard = ({ task }: PropsWithChildren<TaskProps>) => {
+export const TaskCard = ({ task, validate }: PropsWithChildren<TaskProps>) => {
     const [openForm, setOpenForm] = useState(false);
     const [warning, setWarning] = useState(false);
     const [openDetails, setOpenDetails] = useState(false);
@@ -74,7 +79,7 @@ export const TaskCard = ({ task }: PropsWithChildren<TaskProps>) => {
             </Card>
             {openForm && (
                 <Sidebar onClick={() => setOpenForm(false)} isActive={openForm}>
-                    <TaskForm task={activeTask} setOpenForm={setOpenForm} />
+                    <TaskForm task={activeTask} setOpenForm={setOpenForm} validate={validate} />
                 </Sidebar>
             )}
             {true && (

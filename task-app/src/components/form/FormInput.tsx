@@ -1,12 +1,15 @@
+import { useState } from 'react';
 import { InputHTMLAttributes } from 'react';
 import { Checkbox } from '../button/Checkbox';
 import { FormInputStyle } from './Form.style';
 
 type FormInputProps = {
     label?: string;
+    error?: boolean;
+    alert?: string;
 } & InputHTMLAttributes<HTMLInputElement>;
 
-export const FormInput = ({ label, type, ...rest }: FormInputProps) => {
+export const FormInput = ({ label, error, type, alert, ...rest }: FormInputProps) => {
     return (
         <>
             {type === 'checkbox' ? (
@@ -17,6 +20,14 @@ export const FormInput = ({ label, type, ...rest }: FormInputProps) => {
                     <input type={type} {...rest} />
                 </FormInputStyle>
             )}
+            {/* <ErrorMessage> */}
+            <div>{alert}</div>
+
+            {/* </ErrorMessage> */}
         </>
     );
 };
+
+export function checkEmptyField(value: string) {
+    return !value.length;
+}
