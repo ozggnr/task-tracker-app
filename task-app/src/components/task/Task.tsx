@@ -16,15 +16,14 @@ import { useAppDispatch } from '../../store/hooks';
 import { useTaskStatus } from '../../utils/useTaskStatus';
 
 type ValidationProps = {
-    isValid: boolean;
-    message: string;
+    [key: string]: string;
 };
 type TaskProps = {
     task: Task;
-    validate(task: Task): ValidationProps;
+    isTaskOverlap: (task: Task) => boolean;
 };
 
-export const TaskCard = ({ task, validate }: PropsWithChildren<TaskProps>) => {
+export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) => {
     const [openForm, setOpenForm] = useState(false);
     const [warning, setWarning] = useState(false);
     const [openDetails, setOpenDetails] = useState(false);
@@ -79,7 +78,7 @@ export const TaskCard = ({ task, validate }: PropsWithChildren<TaskProps>) => {
             </Card>
             {openForm && (
                 <Sidebar onClick={() => setOpenForm(false)} isActive={openForm}>
-                    <TaskForm task={activeTask} setOpenForm={setOpenForm} validate={validate} />
+                    <TaskForm task={activeTask} setOpenForm={setOpenForm} isTaskOverlap={isTaskOverlap} />
                 </Sidebar>
             )}
             {true && (

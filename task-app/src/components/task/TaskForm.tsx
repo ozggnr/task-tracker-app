@@ -1,26 +1,27 @@
 import { FormEvent, useState, ChangeEvent, Dispatch, SetStateAction } from 'react';
-import { Task, SubTask } from '../../Types';
-import { FormInput } from '../form/FormInput';
-import { TaskFormContainer } from './TaskForm.style';
 import { postTaskService, updateTaskService } from '../../services/taskService';
-import { ButtonGroup } from '../button/Button.style';
-import { Form } from '../form/Form';
-import Button, { BUTTON_COLOR } from '../button/Button';
-import { addTask, getDailyTasksSelector, getTaskSelector, updateTask } from '../../store/reducers/tasksSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { addTask, getDailyTasksSelector, getTaskSelector, updateTask } from '../../store/reducers/tasksSlice';
+import { checkSubtasksOverlap, errorMessages, hasExceedTimeTask, mapValidations } from '../../utils/validationHelpers';
+import { Task, SubTask } from '../../Types';
+import Button, { BUTTON_COLOR } from '../button/Button';
+import { FormInput } from '../form/FormInput';
+import { Form } from '../form/Form';
+import { TaskFormContainer } from './TaskForm.style';
+import { ButtonGroup } from '../button/Button.style';
 
-type ValidationProps = {
-    isValid: boolean;
-    message: string;
+type Validation = {
+    [key: string]: string[];
 };
+
 type TaskFormProps = {
     setOpenForm: Dispatch<SetStateAction<boolean>>;
     task?: Task;
     activeDay?: string;
-    validate(task: Task): ValidationProps;
+    isTaskOverlap: (task: Task) => boolean;
 };
 
-export const TaskForm = ({ setOpenForm, task, activeDay, validate }: TaskFormProps) => {
+export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFormProps) => {
     const subTaskField: SubTask = {
         date: activeDay || task?.date!, //Not sure about this
         description: '',
@@ -37,13 +38,15 @@ export const TaskForm = ({ setOpenForm, task, activeDay, validate }: TaskFormPro
         status: 'NOT_STARTED',
         subTasks: [] as SubTask[],
     };
+
     const dispatch = useAppDispatch();
     //We can extract the value that we want withing the selector since record of the value is kept for each individual useSelectorx
     const activeTask = useAppSelector(getTaskSelector(task?.id!));
     const selectedTask = activeTask || newTask;
     const [taskInputFields, setTaskInputFields] = useState<Task>(selectedTask);
-    //TODO refactor -> change with validation message and add field name to create different messages for different fields
-    const [errorMessage, setErrorMessage] = useState('');
+    //TODO refactor validations
+    const [validations, setValidations] = useState<Validation>({});
+    console.log(validations);
     return (
         <TaskFormContainer>
             <Form onSubmit={handleFormSubmit}>
@@ -53,7 +56,6 @@ export const TaskForm = ({ setOpenForm, task, activeDay, validate }: TaskFormPro
                     name="title"
                     value={taskInputFields.title}
                     onChange={handleChange}
-                    required
                 />
                 <FormInput
                     label="Description"
@@ -61,7 +63,6 @@ export const TaskForm = ({ setOpenForm, task, activeDay, validate }: TaskFormPro
                     name="description"
                     value={taskInputFields.description}
                     onChange={handleChange}
-                    alert={errorMessage}
                 />
                 {/* <Row> */}
                 <FormInput
@@ -70,7 +71,7 @@ export const TaskForm = ({ setOpenForm, task, activeDay, validate }: TaskFormPro
                     name="start"
                     value={taskInputFields.start}
                     onChange={handleChange}
-                    alert={errorMessage}
+                    // message={validations['start']}
                 />
                 <FormInput
                     label="End Time"
@@ -79,6 +80,7 @@ export const TaskForm = ({ setOpenForm, task, activeDay, validate }: TaskFormPro
                     value={taskInputFields.end}
                     max="23:59"
                     onChange={handleChange}
+                    // message={validations['end']}
                 />
                 <Button
                     color={BUTTON_COLOR.button}
@@ -93,7 +95,7 @@ export const TaskForm = ({ setOpenForm, task, activeDay, validate }: TaskFormPro
                     Add SubTask
                 </Button>
                 {taskInputFields.subTasks.length > 0 &&
-                    taskInputFields.subTasks.map((subTask) => {
+                    taskInputFields.subTasks.map((subTask, index) => {
                         return (
                             <div>
                                 <FormInput
@@ -102,15 +104,16 @@ export const TaskForm = ({ setOpenForm, task, activeDay, validate }: TaskFormPro
                                     type="text"
                                     name="description"
                                     value={subTask.description}
-                                    onChange={(e: ChangeEvent<HTMLInputElement>) => handleSubTaskChange(subTask.id, e)}
-                                    required
+                                    onChange={(e: ChangeEvent<HTMLInputElement>) => handleSubTaskChange(index, e)}
+                                    // message={validations['description']}
                                 />
                                 <FormInput
                                     label="Start Time"
                                     type="time"
                                     name="start"
                                     value={subTask.start}
-                                    onChange={(e: ChangeEvent<HTMLInputElement>) => handleSubTaskChange(subTask.id, e)}
+                                    onChange={(e: ChangeEvent<HTMLInputElement>) => handleSubTaskChange(index, e)}
+                                    // message={validations['start']}
                                 />
                                 <FormInput
                                     label="End Time"
@@ -118,7 +121,8 @@ export const TaskForm = ({ setOpenForm, task, activeDay, validate }: TaskFormPro
                                     name="end"
                                     value={subTask.end}
                                     max="23:59"
-                                    onChange={(e: ChangeEvent<HTMLInputElement>) => handleSubTaskChange(subTask.id, e)}
+                                    onChange={(e: ChangeEvent<HTMLInputElement>) => handleSubTaskChange(index, e)}
+                                    // message={validations['end']}
                                 />
                             </div>
                         );
@@ -152,10 +156,29 @@ export const TaskForm = ({ setOpenForm, task, activeDay, validate }: TaskFormPro
             }
         }
     }
-
+    //TODO refactor this
     function validateTaskTime() {
-        return validate(taskInputFields).isValid ? true : setErrorMessage(validate(taskInputFields).message);
+        let validation = {} as Validation;
+        if (isTaskOverlap(taskInputFields)) {
+            validation = mapValidations(['start', 'end'], errorMessages['timeOverlap'], validation);
+        }
+        if (hasExceedTimeTask(taskInputFields)) {
+            validation = mapValidations(['start'], errorMessages['timeExceed'], validation);
+        }
+        if (checkSubtasksOverlap(taskInputFields)) {
+            validation = mapValidations(['start', 'end'], errorMessages['subtaskOverlap'], validation);
+        }
+
+        const isErrorMessageEmpty = !Object.keys(validation).length;
+        if (!isErrorMessageEmpty) {
+            const vals = { ...validation };
+            setValidations((prev) => ({ ...prev, ...vals }));
+        } else {
+            setValidations({ ...validation });
+        } //To clear the state
+        return isErrorMessageEmpty;
     }
+
     function handleChange(event: ChangeEvent<HTMLInputElement>) {
         event.preventDefault();
         const name = event.target.name;
@@ -167,15 +190,15 @@ export const TaskForm = ({ setOpenForm, task, activeDay, validate }: TaskFormPro
         }));
     }
 
-    function handleSubTaskChange(id: string | undefined, event: ChangeEvent<HTMLInputElement>) {
+    function handleSubTaskChange(index: number, event: ChangeEvent<HTMLInputElement>) {
         event.preventDefault();
         const name = event?.target.name;
         const value = event.target.value;
 
         setTaskInputFields((prev) => ({
             ...prev,
-            subTasks: prev.subTasks.map((sub) => {
-                return sub.id === id
+            subTasks: prev.subTasks.map((sub, i) => {
+                return index === i
                     ? {
                           ...sub,
                           [name]: value,

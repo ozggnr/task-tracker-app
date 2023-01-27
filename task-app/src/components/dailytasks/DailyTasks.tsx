@@ -10,6 +10,8 @@ import { DayContainer } from './DailyTasks.style';
 import { Row } from '../../App.style';
 import { AddIcon } from '../button/Icon.style';
 import Sidebar from '../sidebar/Sidebar';
+import { checkOverlapTask } from '../../utils/validationHelpers';
+
 type Props = {
     day: string;
 };
@@ -34,27 +36,18 @@ export const DailyTasks = ({ day }: Props) => {
             </Row>
             {openForm && (
                 <Sidebar onClick={() => setOpenForm(false)} isActive={openForm}>
-                    <TaskForm activeDay={day} setOpenForm={setOpenForm} validate={validateTaskTime} />
+                    <TaskForm activeDay={day} setOpenForm={setOpenForm} isTaskOverlap={isTaskOverlap} />
                 </Sidebar>
             )}
             {dailyTasks.map((task: Task) => {
-                return <TaskCard task={task} key={task.id} validate={validateTaskTime} />;
+                return <TaskCard task={task} key={task.id} isTaskOverlap={isTaskOverlap} />;
             })}
         </DayContainer>
     );
 
-    function validateTaskTime(task: Task) {
-        let message: string = '';
-        const overlappingTasks = dailyTasks.filter((t) => {
-            return (task.start > t.start && task.start < t.end) || (task.end > t.start && task.end < t.end);
-        });
-
-        if (overlappingTasks.length > 0) {
-            message =
-                'There are tasks that overlap with the start and end times of this task. Please adjust the times and try again.';
-            return { isValid: false, message };
-        } else {
-            return { isValid: true, message };
-        }
+    //TODO refactor validations
+    function isTaskOverlap(task: Task) {
+        const overlappedTasks = dailyTasks.filter((existTask) => checkOverlapTask(existTask, task));
+        return overlappedTasks.length ? true : false;
     }
 };
