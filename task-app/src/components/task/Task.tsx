@@ -35,7 +35,7 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
         <TaskContainer>
             <Card cardActive={openForm || openDetails}>
                 <CardHeader>
-                    <ButtonGroup>
+                    <ButtonGroup end>
                         <Button icon={ICON_TYPE.delete} color={BUTTON_COLOR.delete} onClick={() => setWarning(true)}>
                             Delete
                         </Button>
@@ -49,19 +49,11 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                         <Button icon={ICON_TYPE.edit} color={BUTTON_COLOR.edit} onClick={() => setOpenForm(true)}>
                             Edit
                         </Button>
-                        {activeTask.status === 'NOT_COMPLETED' && (
-                            <Button color={BUTTON_COLOR.button} onClick={handleCompleteTask}>
-                                Completed
-                            </Button>
-                        )}
                     </ButtonGroup>
                 </CardHeader>
                 <CardBody>
                     {/* <div>{activeTask.date.toLocaleTimeString()}</div> */}
-                    {/* <ProgressBar
-                        startTime={activeTask?..activeTask.start}
-                        endTime={activeTask.end}
-                    /> */}
+                    <ProgressBar startTime={activeTask.start} endTime={activeTask.end} />
                     <div className="task">
                         <div className="col-1">{activeTask.status}</div>
                         <div className="col-1">
@@ -75,7 +67,13 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                     </div>
                 </CardBody>
 
-                <CardFooter></CardFooter>
+                <CardFooter>
+                    {activeTask.status === 'NOT_COMPLETED' && (
+                        <Button color={BUTTON_COLOR.button} onClick={handleCompleteTask}>
+                            Completed
+                        </Button>
+                    )}
+                </CardFooter>
             </Card>
             {openForm && (
                 <Sidebar onClick={() => setOpenForm(false)} isActive={openForm}>

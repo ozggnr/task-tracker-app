@@ -60,11 +60,14 @@ export function differenceSeconds(
     );
 }
 
-export function weekDays(date: Date | string) {
+export function getDayOfWeek(date: Date | string) {
     if (typeof date === 'string') date = new Date(date);
-    return format(date, 'eee dd');
+    return format(date, 'eee');
 }
-
+export function getDayOfMonth(date: Date | string) {
+    if (typeof date === 'string') date = new Date(date);
+    return format(date, 'dd');
+}
 function parseDateAndTime(date: Date, time: string): Date {
     const year = date.getFullYear();
     const month = date.getMonth();

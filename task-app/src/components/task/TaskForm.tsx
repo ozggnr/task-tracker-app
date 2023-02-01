@@ -10,6 +10,8 @@ import { Form } from '../form/Form';
 import { SubtaksInputContainer, TaskFormContainer } from './TaskForm.style';
 import { ButtonGroup } from '../button/Button.style';
 import { FormContent, TimeInputContainer } from '../form/Form.style';
+import { ICON_TYPE } from '../button/Icon.style';
+import { Row } from '../../App.style';
 
 type Validation = {
     [key: string]: string[];
@@ -51,18 +53,21 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
     return (
         <TaskFormContainer>
             <Form onSubmit={handleFormSubmit}>
-                <Button
-                    color={BUTTON_COLOR.button}
-                    type="button"
-                    onClick={() => {
-                        setTaskInputFields({
-                            ...taskInputFields,
-                            subTasks: [...taskInputFields.subTasks, ...[subTaskField]],
-                        });
-                    }}
-                >
-                    Add SubTask
-                </Button>
+                <Row>
+                    <Button
+                        icon={ICON_TYPE.add}
+                        color={BUTTON_COLOR.button}
+                        type="button"
+                        onClick={() => {
+                            setTaskInputFields({
+                                ...taskInputFields,
+                                subTasks: [...taskInputFields.subTasks, ...[subTaskField]],
+                            });
+                        }}
+                    >
+                        Add SubTask
+                    </Button>
+                </Row>
                 <FormContent>
                     <FormInput
                         label="Title"
@@ -138,7 +143,7 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                             );
                         })}
                 </FormContent>
-                <ButtonGroup>
+                <ButtonGroup center>
                     <Button type="submit">Save</Button>
                     <Button type="button" onClick={() => setOpenForm(false)}>
                         Cancel

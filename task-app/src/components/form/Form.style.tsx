@@ -10,6 +10,7 @@ export const FormContent = styled.div`
 export const FormInputStyle = styled.div<InputProps>`
     display: flex;
     flex-direction: column;
+    margin-top: 1rem;
     color: ${(props) => props.isAlert && 'red'};
 `;
 

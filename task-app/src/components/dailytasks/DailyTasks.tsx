@@ -3,12 +3,12 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { getDailyTasksSelector, setTasks } from '../../store/reducers/tasksSlice';
 import { getTasks } from '../../services/taskService';
 import { Task } from '../../Types';
-import Button from '../button/Button';
+import Button, { BUTTON_COLOR } from '../button/Button';
 import { TaskCard } from '../task/Task';
 import { TaskForm } from '../task/TaskForm';
 import { DayContainer } from './DailyTasks.style';
 import { Row } from '../../App.style';
-import { AddIcon } from '../button/Icon.style';
+import { ICON_TYPE } from '../button/Icon.style';
 import Sidebar from '../sidebar/Sidebar';
 import { checkOverlapTask } from '../../utils/validationHelpers';
 
@@ -29,8 +29,7 @@ export const DailyTasks = ({ day }: Props) => {
     return (
         <DayContainer>
             <Row>
-                <Button onClick={() => setOpenForm(true)}>
-                    <AddIcon />
+                <Button icon={ICON_TYPE.add} color={BUTTON_COLOR.button} onClick={() => setOpenForm(true)}>
                     Add Task
                 </Button>
             </Row>

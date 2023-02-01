@@ -1,12 +1,5 @@
 import styled from 'styled-components';
-import {
-    Plus,
-    CircleXmark,
-    CaretLeft,
-    CaretRight,
-    TrashCan,
-    PenToSquare,
-} from '@styled-icons/fa-solid';
+import { Plus, CircleXmark, CaretLeft, CaretRight, TrashCan, PenToSquare } from '@styled-icons/fa-solid';
 
 export enum ICON_TYPE {
     add = 'add',
@@ -47,7 +40,7 @@ export const RightIcon = styled(CaretRight)`
 
 export const DeleteIcon = styled(TrashCan)`
     width: ${(props) => props.size || ICON_SIZE.small};
-    color: #fff;
+    color: #ee6060;
 `;
 
 export const EditIcon = styled(PenToSquare)`
