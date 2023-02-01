@@ -21,7 +21,7 @@ export const FormInput = ({ label, error, type, message, ...rest }: FormInputPro
                 </FormInputStyle>
             )}
             {/* <ErrorMessage> */}
-            <div>{message}</div>
+            {message && <div>{message}</div>}
 
             {/* </ErrorMessage> */}
         </>

@@ -1,9 +1,11 @@
 import styled from 'styled-components';
 
 export const BaseButton = styled.button`
-    width: 10rem;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5em;
     letter-spacing: 0.5px;
-    padding: 0.5rem 0;
     background-color: #362e54;
     color: #fcfaf2;
     text-transform: uppercase;

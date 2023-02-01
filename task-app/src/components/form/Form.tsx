@@ -6,5 +6,9 @@ type Props = {
 };
 
 export const Form = ({ children, onSubmit }: PropsWithChildren<Props>) => {
-    return <form onSubmit={onSubmit}>{children}</form>;
+    return (
+        <form onSubmit={onSubmit} className="form">
+            {children}
+        </form>
+    );
 };

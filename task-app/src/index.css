@@ -23,7 +23,16 @@ html body {
 #root {
     min-height: 100vh;
 }
-
+.form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+input {
+    padding: 0rem 0.5rem;
+    height: 2.25rem;
+    margin: 2px 0;
+}
 /* a {
   font-weight: 500;
   color: #646cff;

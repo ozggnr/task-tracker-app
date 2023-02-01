@@ -14,6 +14,7 @@ import { TaskDetails } from './TaskDetails';
 import { deleteTask, updateTask } from '../../store/reducers/tasksSlice';
 import { useAppDispatch } from '../../store/hooks';
 import { useTaskStatus } from '../../utils/useTaskStatus';
+import { ButtonGroup } from '../button/Button.style';
 
 type ValidationProps = {
     [key: string]: string;
@@ -34,7 +35,7 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
         <TaskContainer>
             <Card cardActive={openForm || openDetails}>
                 <CardHeader>
-                    <div>
+                    <ButtonGroup>
                         <Button icon={ICON_TYPE.delete} color={BUTTON_COLOR.delete} onClick={() => setWarning(true)}>
                             Delete
                         </Button>
@@ -50,10 +51,10 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                         </Button>
                         {activeTask.status === 'NOT_COMPLETED' && (
                             <Button color={BUTTON_COLOR.button} onClick={handleCompleteTask}>
-                                Mark as Completed
+                                Completed
                             </Button>
                         )}
-                    </div>
+                    </ButtonGroup>
                 </CardHeader>
                 <CardBody>
                     {/* <div>{activeTask.date.toLocaleTimeString()}</div> */}
@@ -81,8 +82,8 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                     <TaskForm task={activeTask} setOpenForm={setOpenForm} isTaskOverlap={isTaskOverlap} />
                 </Sidebar>
             )}
-            {true && (
-                <Sidebar onClick={() => setOpenDetails(true)} isActive={true}>
+            {openDetails && (
+                <Sidebar onClick={() => setOpenDetails(false)} isActive={openDetails}>
                     <TaskDetails activeTask={activeTask} openDetails={true} />
                 </Sidebar>
             )}

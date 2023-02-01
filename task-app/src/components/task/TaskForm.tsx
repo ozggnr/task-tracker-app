@@ -7,8 +7,9 @@ import { Task, SubTask } from '../../Types';
 import Button, { BUTTON_COLOR } from '../button/Button';
 import { FormInput } from '../form/FormInput';
 import { Form } from '../form/Form';
-import { TaskFormContainer } from './TaskForm.style';
+import { SubtaksInputContainer, TaskFormContainer } from './TaskForm.style';
 import { ButtonGroup } from '../button/Button.style';
+import { FormContent, TimeInputContainer } from '../form/Form.style';
 
 type Validation = {
     [key: string]: string[];
@@ -50,38 +51,6 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
     return (
         <TaskFormContainer>
             <Form onSubmit={handleFormSubmit}>
-                <FormInput
-                    label="Title"
-                    type="text"
-                    name="title"
-                    value={taskInputFields.title}
-                    onChange={handleChange}
-                />
-                <FormInput
-                    label="Description"
-                    type="text"
-                    name="description"
-                    value={taskInputFields.description}
-                    onChange={handleChange}
-                />
-                {/* <Row> */}
-                <FormInput
-                    label="Start Time"
-                    type="time"
-                    name="start"
-                    value={taskInputFields.start}
-                    onChange={handleChange}
-                    // message={validations['start']}
-                />
-                <FormInput
-                    label="End Time"
-                    type="time"
-                    name="end"
-                    value={taskInputFields.end}
-                    max="23:59"
-                    onChange={handleChange}
-                    // message={validations['end']}
-                />
                 <Button
                     color={BUTTON_COLOR.button}
                     type="button"
@@ -94,40 +63,81 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                 >
                     Add SubTask
                 </Button>
-                {taskInputFields.subTasks.length > 0 &&
-                    taskInputFields.subTasks.map((subTask, index) => {
-                        return (
-                            <div>
-                                <FormInput
-                                    key={subTask.id}
-                                    label="SubDescription"
-                                    type="text"
-                                    name="description"
-                                    value={subTask.description}
-                                    onChange={(e: ChangeEvent<HTMLInputElement>) => handleSubTaskChange(index, e)}
-                                    // message={validations['description']}
-                                />
-                                <FormInput
-                                    label="Start Time"
-                                    type="time"
-                                    name="start"
-                                    value={subTask.start}
-                                    onChange={(e: ChangeEvent<HTMLInputElement>) => handleSubTaskChange(index, e)}
-                                    // message={validations['start']}
-                                />
-                                <FormInput
-                                    label="End Time"
-                                    type="time"
-                                    name="end"
-                                    value={subTask.end}
-                                    max="23:59"
-                                    onChange={(e: ChangeEvent<HTMLInputElement>) => handleSubTaskChange(index, e)}
-                                    // message={validations['end']}
-                                />
-                            </div>
-                        );
-                    })}
-                {/* </Row> */}
+                <FormContent>
+                    <FormInput
+                        label="Title"
+                        type="text"
+                        name="title"
+                        value={taskInputFields.title}
+                        onChange={handleChange}
+                    />
+                    <FormInput
+                        label="Description"
+                        type="text"
+                        name="description"
+                        value={taskInputFields.description}
+                        onChange={handleChange}
+                    />
+                    <TimeInputContainer>
+                        <FormInput
+                            label="Start Time"
+                            type="time"
+                            name="start"
+                            value={taskInputFields.start}
+                            onChange={handleChange}
+                            // message={validations['start']}
+                        />
+                        <FormInput
+                            label="End Time"
+                            type="time"
+                            name="end"
+                            value={taskInputFields.end}
+                            max="23:59"
+                            onChange={handleChange}
+                            // message={validations['end']}
+                        />
+                    </TimeInputContainer>
+
+                    {taskInputFields.subTasks.length > 0 &&
+                        taskInputFields.subTasks.map((subTask, index) => {
+                            return (
+                                <SubtaksInputContainer>
+                                    <FormInput
+                                        key={subTask.id}
+                                        label="SubDescription"
+                                        type="text"
+                                        name="description"
+                                        value={subTask.description}
+                                        onChange={(e: ChangeEvent<HTMLInputElement>) => handleSubTaskChange(index, e)}
+                                        // message={validations['description']}
+                                    />
+                                    <TimeInputContainer>
+                                        <FormInput
+                                            label="Start Time"
+                                            type="time"
+                                            name="start"
+                                            value={subTask.start}
+                                            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                                                handleSubTaskChange(index, e)
+                                            }
+                                            // message={validations['start']}
+                                        />
+                                        <FormInput
+                                            label="End Time"
+                                            type="time"
+                                            name="end"
+                                            value={subTask.end}
+                                            max="23:59"
+                                            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                                                handleSubTaskChange(index, e)
+                                            }
+                                            // message={validations['end']}
+                                        />
+                                    </TimeInputContainer>
+                                </SubtaksInputContainer>
+                            );
+                        })}
+                </FormContent>
                 <ButtonGroup>
                     <Button type="submit">Save</Button>
                     <Button type="button" onClick={() => setOpenForm(false)}>

@@ -32,5 +32,5 @@ export default function Portal({ children, parentId }: PortalProps) {
     /*portals provides the ability for an element to render outside of
     the default hierarchy without compromising the parent
     child relationship between components*/
-    return createPortal(<div>{children}</div>, elRef.current);
+    return createPortal(children, elRef.current);
 }
