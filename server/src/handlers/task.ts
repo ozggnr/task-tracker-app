@@ -5,6 +5,9 @@ import prisma from '../database/db';
 //Get all tasks
 export const getTasks = async (req: Request, res: Response) => {
     const data = await prisma.task.findMany({
+        orderBy: {
+            start: 'asc',
+        },
         include: {
             subTasks: {
                 orderBy: {
