@@ -1,4 +1,5 @@
 import { InputHTMLAttributes } from 'react';
+import { CheckboxContainer } from './Checkbox.style';
 
 type CheckboxProps = {
     label?: string;
@@ -8,15 +9,9 @@ export const Checkbox = (props: CheckboxProps) => {
     const { name, value, label, id, checked, ...rest } = props;
 
     return (
-        <div>
-            <input
-                type="checkbox"
-                name={name}
-                value={value}
-                {...rest}
-                checked={checked}
-            />
+        <CheckboxContainer>
+            <input type="checkbox" name={name} value={value} {...rest} checked={checked} />
             <label>{label}</label>
-        </div>
+        </CheckboxContainer>
     );
 };

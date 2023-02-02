@@ -5,7 +5,7 @@ interface CardProps {
 }
 export const CardComponent = styled.div<CardProps>`
     border-radius: 1rem;
-    padding: 1.5rem;
+    padding: 0.5rem;
     // box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(16px) saturate(180%);
     background-color: rgb(255 255 255 / 63%);
@@ -21,12 +21,10 @@ export const CardComponent = styled.div<CardProps>`
 `;
 
 export const CardHeader = styled.div`
-    border-bottom: solid 2px #535bf238;
     padding: 0.5rem;
 `;
 
 export const CardFooter = styled.div`
-    border-top: solid 2px #535bf238;
     padding: 0.5rem;
 `;
 

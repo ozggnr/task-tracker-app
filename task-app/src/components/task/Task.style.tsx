@@ -2,6 +2,9 @@ import styled from 'styled-components';
 
 export const TaskContainer = styled.div`
     margin-top: 2rem;
+    display: flex;
+    column-gap: 2rem;
+    width: 80%;
 `;
 
 export const TaskDetailsContainer = styled.div`

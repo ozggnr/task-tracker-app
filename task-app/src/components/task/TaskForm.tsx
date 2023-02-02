@@ -8,10 +8,9 @@ import Button, { BUTTON_COLOR } from '../button/Button';
 import { FormInput } from '../form/FormInput';
 import { Form } from '../form/Form';
 import { SubtaksInputContainer, TaskFormContainer } from './TaskForm.style';
-import { ButtonGroup } from '../button/Button.style';
+import { ButtonRow, ButtonGroup } from '../button/Button.style';
 import { FormContent, TimeInputContainer } from '../form/Form.style';
 import { ICON_TYPE } from '../button/Icon.style';
-import { Row } from '../../App.style';
 
 type Validation = {
     [key: string]: string[];
@@ -53,7 +52,7 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
     return (
         <TaskFormContainer>
             <Form onSubmit={handleFormSubmit}>
-                <Row>
+                <ButtonRow end={true}>
                     <Button
                         icon={ICON_TYPE.add}
                         color={BUTTON_COLOR.button}
@@ -67,7 +66,7 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                     >
                         Add SubTask
                     </Button>
-                </Row>
+                </ButtonRow>
                 <FormContent>
                     <FormInput
                         label="Title"

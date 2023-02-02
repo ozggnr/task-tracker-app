@@ -5,9 +5,6 @@ type CardProps = {
     cardActive: boolean;
 };
 
-export default function Card({
-    children,
-    cardActive,
-}: PropsWithChildren<CardProps>) {
+export default function Card({ children, cardActive }: PropsWithChildren<CardProps>) {
     return <CardComponent isActive={cardActive}>{children}</CardComponent>;
 }

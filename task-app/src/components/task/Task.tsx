@@ -1,6 +1,5 @@
-import { PropsWithChildren, useState } from 'react';
+import { PropsWithChildren, useState, useRef, useEffect } from 'react';
 import { Task } from '../../Types';
-import { ProgressBar } from '../progressBar/ProgressBar';
 import Modal from '../modal/Modal';
 import { deleteTaskService, updateTaskService } from '../../services/taskService';
 import { ICON_TYPE } from '../button/Icon.style';
@@ -14,7 +13,9 @@ import { TaskDetails } from './TaskDetails';
 import { deleteTask, updateTask } from '../../store/reducers/tasksSlice';
 import { useAppDispatch } from '../../store/hooks';
 import { useTaskStatus } from '../../utils/useTaskStatus';
-import { ButtonGroup } from '../button/Button.style';
+import { ButtonGroup, ButtonRow } from '../button/Button.style';
+import { Checkbox } from '../button/Checkbox';
+import { format } from 'date-fns';
 
 type ValidationProps = {
     [key: string]: string;
@@ -30,9 +31,35 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
     const [openDetails, setOpenDetails] = useState(false);
     const dispatch = useAppDispatch();
     const activeTask = useTaskStatus(task);
+    const elRef = useRef<null | HTMLDivElement>(null);
+    const executeScroll = () => elRef!.current!.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    useEffect(() => {
+        if (format(new Date(), 'HH:mm') >= activeTask.start) executeScroll();
+    }, []);
 
     return (
-        <TaskContainer>
+        <TaskContainer ref={elRef}>
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    fontWeight: '600',
+                    width: '10%',
+                }}
+            >
+                <div>{activeTask.start}</div>
+                <div
+                    style={{
+                        backgroundColor: 'orange',
+                        width: '0.25rem',
+                        height: '100%',
+                        margin: '0.5rem',
+                    }}
+                ></div>
+                <div>{activeTask.end}</div>
+            </div>
             <Card cardActive={openForm || openDetails}>
                 <CardHeader>
                     <ButtonGroup end>
@@ -46,19 +73,23 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                                 <button>cancel</button>
                             </Modal>
                         )}
-                        <Button icon={ICON_TYPE.edit} color={BUTTON_COLOR.edit} onClick={() => setOpenForm(true)}>
+                        <Button
+                            icon={ICON_TYPE.edit}
+                            color={BUTTON_COLOR.edit}
+                            onClick={() => {
+                                setOpenForm(true);
+                                executeScroll();
+                            }}
+                        >
                             Edit
                         </Button>
                     </ButtonGroup>
                 </CardHeader>
                 <CardBody>
                     {/* <div>{activeTask.date.toLocaleTimeString()}</div> */}
-                    <ProgressBar startTime={activeTask.start} endTime={activeTask.end} />
+                    {/* <ProgressBar startTime={activeTask.start} endTime={activeTask.end} /> */}
                     <div className="task">
                         <div className="col-1">{activeTask.status}</div>
-                        <div className="col-1">
-                            {activeTask.start} - {activeTask.end}
-                        </div>
 
                         <div className="col-1">
                             <div className="task-title">{activeTask.title}</div>
@@ -66,12 +97,16 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                         </div>
                     </div>
                 </CardBody>
-
                 <CardFooter>
                     {activeTask.status === 'NOT_COMPLETED' && (
-                        <Button color={BUTTON_COLOR.button} onClick={handleCompleteTask}>
-                            Completed
-                        </Button>
+                        <ButtonRow end={true}>
+                            <Checkbox
+                                name="completed"
+                                label="Completed"
+                                value={activeTask.status}
+                                onClick={handleCompleteTask}
+                            />
+                        </ButtonRow>
                     )}
                 </CardFooter>
             </Card>

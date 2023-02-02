@@ -7,10 +7,10 @@ import Button, { BUTTON_COLOR } from '../button/Button';
 import { TaskCard } from '../task/Task';
 import { TaskForm } from '../task/TaskForm';
 import { DayContainer } from './DailyTasks.style';
-import { Row } from '../../App.style';
 import { ICON_TYPE } from '../button/Icon.style';
 import Sidebar from '../sidebar/Sidebar';
 import { checkOverlapTask } from '../../utils/validationHelpers';
+import { ButtonRow } from '../button/Button.style';
 
 type Props = {
     day: string;
@@ -27,21 +27,23 @@ export const DailyTasks = ({ day }: Props) => {
     const dailyTasks = useAppSelector(getDailyTasksSelector(day));
 
     return (
-        <DayContainer>
-            <Row>
+        <>
+            <ButtonRow end={true} pt="1.5" pr="6">
                 <Button icon={ICON_TYPE.add} color={BUTTON_COLOR.button} onClick={() => setOpenForm(true)}>
                     Add Task
                 </Button>
-            </Row>
-            {openForm && (
-                <Sidebar onClick={() => setOpenForm(false)} isActive={openForm}>
-                    <TaskForm activeDay={day} setOpenForm={setOpenForm} isTaskOverlap={isTaskOverlap} />
-                </Sidebar>
-            )}
-            {dailyTasks.map((task: Task) => {
-                return <TaskCard task={task} key={task.id} isTaskOverlap={isTaskOverlap} />;
-            })}
-        </DayContainer>
+            </ButtonRow>
+            <DayContainer>
+                {openForm && (
+                    <Sidebar onClick={() => setOpenForm(false)} isActive={openForm}>
+                        <TaskForm activeDay={day} setOpenForm={setOpenForm} isTaskOverlap={isTaskOverlap} />
+                    </Sidebar>
+                )}
+                {dailyTasks.map((task: Task) => {
+                    return <TaskCard task={task} key={task.id} isTaskOverlap={isTaskOverlap} />;
+                })}
+            </DayContainer>
+        </>
     );
 
     //TODO refactor validations
