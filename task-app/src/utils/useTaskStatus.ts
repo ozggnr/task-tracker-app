@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '../store/hooks';
 import { updateTaskStatus } from '../store/reducers/tasksSlice';
-import { SubTask, Task } from '../Types';
+import { Task } from '../Types';
 import { getDateTime, timeDifferenceWithCurrentTime } from './dateHelpers';
 
 export function useTaskStatus(activeTask: Task): Task {
@@ -13,9 +13,8 @@ export function useTaskStatus(activeTask: Task): Task {
         const taskStart = getDateTime(new Date(activeTask.date), activeTask.start);
         const taskEnd = getDateTime(new Date(activeTask.date), activeTask.end);
         const currentTime = new Date();
-        // console.log(getRemainingSecsStart, getRemainingSecsEnd);
-        console.log('render');
-        if (activeTask.status !== 'COMPLETED') {
+
+        if (activeTask.status?.toUpperCase() !== 'COMPLETED') {
             if (currentTime >= taskStart && currentTime < taskEnd) {
                 dispatch(updateTaskStatus({ id: activeTask.id, status: 'IN_PROGRESS' }));
                 timerId = schedule(getRemainingSecsEnd, 'NOT_COMPLETED', activeTask?.id!);
@@ -30,12 +29,11 @@ export function useTaskStatus(activeTask: Task): Task {
     }, [activeTask.status, activeTask.start, activeTask.end]);
 
     function schedule(timeToSet: number, taskStatus: string, id: string) {
-        // console.log(timeToSet, taskStatus, id);
         const timerId = setTimeout(() => {
             dispatch(updateTaskStatus({ id: id, status: taskStatus }));
         }, timeToSet * 1000);
         return timerId;
     }
-    // console.log(activeTask);
+
     return activeTask;
 }

@@ -1,25 +1,23 @@
 import { PropsWithChildren, useState, useRef, useEffect } from 'react';
-import { Task } from '../../Types';
-import Modal from '../modal/Modal';
-import { deleteTaskService, updateTaskService } from '../../services/taskService';
-import { ICON_TYPE } from '../button/Icon.style';
-import { TaskForm } from './TaskForm';
-import Sidebar from '../sidebar/Sidebar';
-import { TaskContainer } from './Task.style';
-import { CardBody, CardFooter, CardHeader } from '../card/Card.style';
-import Card from '../card/Card';
-import Button, { BUTTON_COLOR } from '../button/Button';
-import { TaskDetails } from './TaskDetails';
-import { deleteTask, updateTask } from '../../store/reducers/tasksSlice';
-import { useAppDispatch } from '../../store/hooks';
-import { useTaskStatus } from '../../utils/useTaskStatus';
-import { ButtonGroup, ButtonRow } from '../button/Button.style';
-import { Checkbox } from '../button/Checkbox';
 import { format } from 'date-fns';
+import { deleteTaskService, updateTaskService } from '../../services/taskService';
+import { deleteTask, updateTask } from '../../store/reducers/tasksSlice';
+import { Task } from '../../Types';
+import { isCompleted, isInProgress, isNotCompleted, isOverdue } from '../../utils/validationHelpers';
+import { useTaskStatus } from '../../utils/useTaskStatus';
+import { useAppDispatch } from '../../store/hooks';
+import Modal from '../modal/Modal';
+import Button, { BUTTON_COLOR } from '../button/Button';
+import { Checkbox } from '../button/Checkbox';
+import Sidebar from '../sidebar/Sidebar';
+import Card from '../card/Card';
+import { TaskForm } from './TaskForm';
+import { TaskDetails } from './TaskDetails';
+import { CardBody, CardFooter, CardHeader } from '../card/Card.style';
+import { TaskContainer } from './Task.style';
+import { ButtonGroup, ButtonRow } from '../button/Button.style';
+import { ICON_TYPE } from '../button/Icon.style';
 
-type ValidationProps = {
-    [key: string]: string;
-};
 type TaskProps = {
     task: Task;
     isTaskOverlap: (task: Task) => boolean;
@@ -28,18 +26,20 @@ type TaskProps = {
 export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) => {
     const [openForm, setOpenForm] = useState(false);
     const [warning, setWarning] = useState(false);
-    const [openDetails, setOpenDetails] = useState(false);
     const dispatch = useAppDispatch();
     const activeTask = useTaskStatus(task);
-    const elRef = useRef<null | HTMLDivElement>(null);
-    const executeScroll = () => elRef!.current!.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
+    const [openDetails, setOpenDetails] = useState(true);
+    //scroll to active task
+    const scrollRef = useRef<null | HTMLDivElement>(null);
+    const executeScroll = () => scrollRef!.current!.scrollIntoView({ behavior: 'smooth', block: 'center' });
     useEffect(() => {
         if (format(new Date(), 'HH:mm') >= activeTask.start) executeScroll();
     }, []);
 
+    const openDetailPage = (task: Task) => (isInProgress(task.status!) && task.subTasks.length ? true : false);
+
     return (
-        <TaskContainer ref={elRef}>
+        <TaskContainer ref={scrollRef} overdue={isOverdue(new Date(task.date))}>
             <div
                 style={{
                     display: 'flex',
@@ -60,30 +60,39 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                 ></div>
                 <div>{activeTask.end}</div>
             </div>
-            <Card cardActive={openForm || openDetails}>
+            <Card
+                cardActive={openForm || (openDetails && openDetailPage(activeTask))}
+                statusWarning={activeTask.status}
+            >
                 <CardHeader>
-                    <ButtonGroup end>
-                        <Button icon={ICON_TYPE.delete} color={BUTTON_COLOR.delete} onClick={() => setWarning(true)}>
-                            Delete
-                        </Button>
-                        {warning && (
-                            <Modal onClick={() => setWarning(false)}>
-                                Do you want to delete this task?
-                                <button onClick={handleConfirm}>confirm</button>
-                                <button>cancel</button>
-                            </Modal>
-                        )}
-                        <Button
-                            icon={ICON_TYPE.edit}
-                            color={BUTTON_COLOR.edit}
-                            onClick={() => {
-                                setOpenForm(true);
-                                executeScroll();
-                            }}
-                        >
-                            Edit
-                        </Button>
-                    </ButtonGroup>
+                    {!isCompleted(activeTask.status!) && (
+                        <ButtonGroup $end>
+                            <Button
+                                icon={ICON_TYPE.delete}
+                                color={BUTTON_COLOR.delete}
+                                onClick={() => setWarning(true)}
+                            >
+                                Delete
+                            </Button>
+                            {warning && (
+                                <Modal onClick={() => setWarning(false)}>
+                                    Do you want to delete this task?
+                                    <button onClick={handleConfirm}>confirm</button>
+                                    <button>cancel</button>
+                                </Modal>
+                            )}
+                            <Button
+                                icon={ICON_TYPE.edit}
+                                color={BUTTON_COLOR.edit}
+                                onClick={() => {
+                                    setOpenForm(true);
+                                    executeScroll();
+                                }}
+                            >
+                                Edit
+                            </Button>
+                        </ButtonGroup>
+                    )}
                 </CardHeader>
                 <CardBody>
                     {/* <div>{activeTask.date.toLocaleTimeString()}</div> */}
@@ -98,8 +107,8 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                     </div>
                 </CardBody>
                 <CardFooter>
-                    {activeTask.status === 'NOT_COMPLETED' && (
-                        <ButtonRow end={true}>
+                    {isNotCompleted(activeTask.start) && (
+                        <ButtonRow position="end">
                             <Checkbox
                                 name="completed"
                                 label="Completed"
@@ -115,9 +124,10 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                     <TaskForm task={activeTask} setOpenForm={setOpenForm} isTaskOverlap={isTaskOverlap} />
                 </Sidebar>
             )}
-            {openDetails && (
-                <Sidebar onClick={() => setOpenDetails(false)} isActive={openDetails}>
-                    <TaskDetails activeTask={activeTask} openDetails={true} />
+            {/* TODO - add click event to see details when we click */}
+            {openDetails && openDetailPage(activeTask) && (
+                <Sidebar onClick={() => setOpenDetails(false)} isActive={openDetails && openDetailPage(activeTask)}>
+                    <TaskDetails activeTask={activeTask} openDetails={openDetailPage(activeTask)} />
                 </Sidebar>
             )}
         </TaskContainer>

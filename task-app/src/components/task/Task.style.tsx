@@ -1,10 +1,14 @@
 import styled from 'styled-components';
 
-export const TaskContainer = styled.div`
+interface TaskContainerProps {
+    readonly overdue?: boolean;
+}
+export const TaskContainer = styled.div<TaskContainerProps>`
     margin-top: 2rem;
     display: flex;
     column-gap: 2rem;
     width: 80%;
+    ${(props) => props.overdue && 'opacity: 0.5'}
 `;
 
 export const TaskDetailsContainer = styled.div`

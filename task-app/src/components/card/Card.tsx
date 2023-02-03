@@ -3,8 +3,13 @@ import { CardComponent } from './Card.style';
 
 type CardProps = {
     cardActive: boolean;
+    statusWarning?: string;
 };
 
-export default function Card({ children, cardActive }: PropsWithChildren<CardProps>) {
-    return <CardComponent isActive={cardActive}>{children}</CardComponent>;
+export default function Card({ children, cardActive, statusWarning }: PropsWithChildren<CardProps>) {
+    return (
+        <CardComponent isActive={cardActive} statusWarning={statusWarning}>
+            {children}
+        </CardComponent>
+    );
 }

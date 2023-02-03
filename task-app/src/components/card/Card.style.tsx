@@ -1,13 +1,23 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
+import { isCompleted, isInProgress, isNotCompleted } from '../../utils/validationHelpers';
 
 interface CardProps {
     readonly isActive: boolean;
+    readonly statusWarning?: string;
 }
+//TODO create variables for colors
 export const CardComponent = styled.div<CardProps>`
     border-radius: 1rem;
     padding: 0.5rem;
-    // box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(16px) saturate(180%);
+    border: ${(props) =>
+        isCompleted(props.statusWarning!)
+            ? '2px solid #0B9B8A'
+            : isNotCompleted(props.statusWarning!)
+            ? '2px solid #FF6673'
+            : isInProgress(props.statusWarning!)
+            ? '2px solid #8E65AB'
+            : 'none'};
     background-color: rgb(255 255 255 / 63%);
     width: ${(props) => (props.isActive ? '60%' : '100%')};
     transition: width linear 0.25s;
@@ -15,18 +25,13 @@ export const CardComponent = styled.div<CardProps>`
         props.isActive &&
         `
         transform: translateY(-5px);
-        box-shadow: 0px 10px 20px 2px #535bf238;
-        border: solid 2px #535bf2a6;
+        // box-shadow: 0px 10px 20px 2px #535bf238;
     `}
 `;
 
-export const CardHeader = styled.div`
-    padding: 0.5rem;
-`;
+export const CardHeader = styled.div``;
 
-export const CardFooter = styled.div`
-    padding: 0.5rem;
-`;
+export const CardFooter = styled.div``;
 
 export const CardBody = styled.div`
     display: flex;

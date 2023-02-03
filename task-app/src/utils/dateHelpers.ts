@@ -6,6 +6,7 @@ import {
     startOfWeek,
     endOfWeek,
     isSameSecond,
+    isBefore,
 } from 'date-fns';
 
 //date formats
@@ -68,7 +69,7 @@ export function getDayOfMonth(date: Date | string) {
     if (typeof date === 'string') date = new Date(date);
     return format(date, 'dd');
 }
-function parseDateAndTime(date: Date, time: string): Date {
+function parseDateAndTime(date: Date, time: string = '00:00'): Date {
     const year = date.getFullYear();
     const month = date.getMonth();
     const day = date.getDate();
@@ -90,6 +91,9 @@ export function endOfTheWeek(date: Date | number) {
 //comparation
 export function isSameDay(firstDay: Date, secondDay: Date): boolean {
     return longDateFormat(firstDay) === longDateFormat(secondDay) ? true : false;
+}
+export function isDayBefore(firstDay: Date, secondDay: Date): boolean {
+    return isBefore(parseDateAndTime(firstDay), parseDateAndTime(secondDay));
 }
 export function isTheSameSecond(firstDate: Date, firstTime: string, secondDate: Date, secondTime: string): boolean {
     return isSameSecond(parseDateAndTime(firstDate, firstTime), parseDateAndTime(secondDate, secondTime));
