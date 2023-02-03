@@ -1,11 +1,5 @@
 import { ReactNode, ButtonHTMLAttributes, MouseEventHandler } from 'react';
-import {
-    ButtonCancel,
-    ButtonSave,
-    ButtonDelete,
-    BaseButton,
-    ButtonEdit,
-} from './Button.style';
+import { ButtonCancel, ButtonSave, ButtonDelete, BaseButton, ButtonEdit } from './Button.style';
 import { AddIcon, getIcon, ICON_SIZE, ICON_TYPE } from './Icon.style';
 
 //to create button types

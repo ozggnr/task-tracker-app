@@ -14,6 +14,10 @@ export const BaseButton = styled.button`
     justify-content: center;
     align-items: center;
     gap: 0.25rem;
+    :disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
 `;
 
 export const ButtonSave = styled(BaseButton)`
@@ -69,21 +73,21 @@ export const ButtonDays = styled.button<ButtonDaysProps>`
 `;
 
 //button containers
+// "$" is transient props. We use it since we just want to pass it to styled component and not to DOM or React Node
 interface ButtonGroupProps {
-    readonly start?: boolean;
-    readonly center?: boolean;
-    readonly end?: boolean;
+    readonly $start?: boolean;
+    readonly $center?: boolean;
+    readonly $end?: boolean;
 }
 export const ButtonGroup = styled.div<ButtonGroupProps>`
     display: flex;
-    justify-content: ${(props) => (props.start ? 'flex-start' : props.center ? 'center' : props.end ? 'flex-end' : '')};
+    justify-content: ${(props) =>
+        props.$start ? 'flex-start' : props.$center ? 'center' : props.$end ? 'flex-end' : ''};
     column-gap: 0.5rem;
 `;
 interface ButtonRowProps {
     readonly width?: string;
-    readonly start?: boolean;
-    readonly center?: boolean;
-    readonly end?: boolean;
+    readonly position: string;
     readonly pt?: string;
     readonly pl?: string;
     readonly pr?: string;
@@ -92,7 +96,14 @@ interface ButtonRowProps {
 export const ButtonRow = styled.div<ButtonRowProps>`
     width: ${(props) => (props.width ? props.width + '%' : '100%')};
     display: flex;
-    justify-content: ${(props) => (props.start ? 'flex-start' : props.center ? 'center' : props.end ? 'flex-end' : '')};
+    justify-content: ${(props) =>
+        props.position === 'start'
+            ? 'flex-start'
+            : props.position === 'center'
+            ? 'center'
+            : props.position === 'end'
+            ? 'flex-end'
+            : ''};
     padding-top: ${(props) => props.pt && props.pt + 'rem'};
     padding-left: ${(props) => props.pl && props.pl + 'rem'};
     padding-right: ${(props) => props.pr && props.pr + 'rem'};
