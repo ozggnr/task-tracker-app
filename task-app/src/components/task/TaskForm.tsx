@@ -52,7 +52,7 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
     return (
         <TaskFormContainer>
             <Form onSubmit={handleFormSubmit}>
-                <ButtonRow end={true}>
+                <ButtonRow position="end">
                     <Button
                         icon={ICON_TYPE.add}
                         color={BUTTON_COLOR.button}
@@ -101,7 +101,7 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                             // message={validations['end']}
                         />
                     </TimeInputContainer>
-
+                    {/**TODO Add delete subtask button */}
                     {taskInputFields.subTasks.length > 0 &&
                         taskInputFields.subTasks.map((subTask, index) => {
                             return (
@@ -142,7 +142,7 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                             );
                         })}
                 </FormContent>
-                <ButtonGroup center>
+                <ButtonGroup $center>
                     <Button type="submit">Save</Button>
                     <Button type="button" onClick={() => setOpenForm(false)}>
                         Cancel

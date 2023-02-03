@@ -28,7 +28,7 @@ export const DailyTasks = ({ day }: Props) => {
 
     return (
         <>
-            <ButtonRow end={true} pt="1.5" pr="6">
+            <ButtonRow position="end" pt="1" pr="6" pb="1">
                 <Button icon={ICON_TYPE.add} color={BUTTON_COLOR.button} onClick={() => setOpenForm(true)}>
                     Add Task
                 </Button>
@@ -47,8 +47,10 @@ export const DailyTasks = ({ day }: Props) => {
     );
 
     //TODO refactor validations
-    function isTaskOverlap(task: Task) {
-        const overlappedTasks = dailyTasks.filter((existTask) => checkOverlapTask(existTask, task));
+    function isTaskOverlap(task: Task): boolean {
+        const overlappedTasks = dailyTasks.filter(
+            (existTask: Task) => existTask.id !== task.id && checkOverlapTask(existTask, task)
+        );
         return overlappedTasks.length ? true : false;
     }
 };

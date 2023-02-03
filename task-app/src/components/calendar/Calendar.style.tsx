@@ -12,7 +12,7 @@ export const CalendarContainer = styled.div`
 export const CalendarHeader = styled.header`
     display: flex;
     justify-content: space-between;
-    padding: 3rem 3rem 1rem 3rem;
+    padding: 1rem 3rem 1rem 3rem;
     align-items: center;
     margin: 0.5rem;
 `;
