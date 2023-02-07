@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { MessageContainer } from '../message/Message.style';
 
 //button styling
 export const BaseButton = styled.button`
@@ -53,21 +54,24 @@ export const ButtonToday = styled(BaseButton)`
 //it will help pass the props just to the buttondays and it will not pass to base button
 interface ButtonDaysProps {
     readonly isActive: boolean;
+    readonly taskCompleted?: boolean | null;
 }
 
 export const ButtonDays = styled.button<ButtonDaysProps>`
     display: flex;
     justify-content: center;
     align-items: center;
-    border: none;
+    border: ${(props) =>
+        props.taskCompleted === null ? 'none' : props.taskCompleted ? '2px solid #0B9B8A' : '2px solid #ffa726'};
+
     // before the slash we set horizontal radius, after the slash we set vertical radius
     border-radius: 100px 50% / 20px 30px;
     line-height: 3rem;
     font-weight: 700;
     padding: ${(props) => (props.isActive ? '2rem' : '1rem')};
     font-size: ${(props) => (props.isActive ? '1.25rem' : '1rem')};
-    width: ${(props) => (props.isActive ? '6rem' : '3rem')};
-    height: ${(props) => (props.isActive ? '7rem' : '4rem')};
+    width: ${(props) => (props.isActive ? '6rem' : '5rem')};
+    height: ${(props) => (props.isActive ? '7rem' : '6rem')};
     // color: ${(props) => (props.isActive ? '' : '#362e54')};
     background: ${(props) => (props.isActive ? '#FCFAF2' : 'none')};
 `;

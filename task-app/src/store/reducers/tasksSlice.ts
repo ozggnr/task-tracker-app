@@ -62,19 +62,19 @@ export const getDailyTasksSelector = (date: string) => {
 };
 type GroupType = {
     // [key: string]: Task[];
-    [key: string]: boolean | string;
+    [key: string]: boolean | null;
 };
 export const getWeeklyStatusesSelector = (calendar: Date[]) => {
     //TODO check which one is faster
     return createSelector(
         (state: RootState) => state.tasks.tasks,
         (tasks) => {
-            const days = new Map<string, boolean | string>();
+            const days = new Map<string, boolean | null>();
             calendar.forEach((day) => {
                 const sameDayTasks = tasks.filter((task) => task.date === day.toISOString());
                 const isTasksCompleted = sameDayTasks.length
                     ? sameDayTasks.every((task) => isCompleted(task.status!))
-                    : 'No Task';
+                    : null;
                 days.set(day.toISOString(), isTasksCompleted);
             });
             return days;

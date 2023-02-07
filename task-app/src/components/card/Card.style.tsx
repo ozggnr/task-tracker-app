@@ -14,7 +14,7 @@ export const CardComponent = styled.div<CardProps>`
         isCompleted(props.statusWarning!)
             ? '2px solid #0B9B8A'
             : isNotCompleted(props.statusWarning!)
-            ? '2px solid #FF6673'
+            ? '2px solid #ffa726'
             : isInProgress(props.statusWarning!)
             ? '2px solid #8E65AB'
             : 'none'};
