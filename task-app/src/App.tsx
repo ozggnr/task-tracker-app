@@ -1,6 +1,7 @@
 import { addDays, format, isBefore, isEqual } from 'date-fns';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import { lastWeek, nextWeek, setDay, thisWeek } from './store/reducers/daysOfWeekSlice';
+import { getWeeklyStatusesSelector } from './store/reducers/tasksSlice';
 import {
     endOfTheWeek,
     getDayOfMonth,
@@ -11,6 +12,7 @@ import {
     startOfTheWeek,
 } from './utils/dateHelpers';
 import { DailyTasks } from './components/dailytasks/DailyTasks';
+import { Message, SEVERITY_TYPE } from './components/message/Message';
 import {
     CalendarContainer,
     CalendarContent,
@@ -19,11 +21,10 @@ import {
     CalendarHeader,
     DayMonth,
     DayWeek,
-} from './components/calendar/Calendar.style';
+    Title,
+} from './CalendarApp.style';
 import { ButtonCaret, ButtonDays, ButtonGroup, ButtonToday } from './components/button/Button.style';
 import { LeftIcon, RightIcon } from './components/button/Icon.style';
-import { Title } from './App.style';
-import { getWeeklyStatusesSelector } from './store/reducers/tasksSlice';
 
 export default function CalendarApp() {
     //We will update our state by using dispatch, dispatch gets action with payload
@@ -56,8 +57,14 @@ export default function CalendarApp() {
                                 key={i} //TODO change the key
                                 isActive={isSameDay(new Date(activeDay), day)}
                                 onClick={() => handleClick(longDateFormat(day))}
+                                taskCompleted={weeklyStatuses.get(day.toISOString())}
                             >
-                                <CalendarDate taskCompleted={weeklyStatuses.get(day.toISOString())}>
+                                <Message
+                                    message="You have incompleted Task(s)"
+                                    severity={SEVERITY_TYPE.warning}
+                                ></Message>
+
+                                <CalendarDate>
                                     <DayWeek>{getDayOfWeek(day)}</DayWeek>
                                     <DayMonth>{getDayOfMonth(day)}</DayMonth>
                                 </CalendarDate>
