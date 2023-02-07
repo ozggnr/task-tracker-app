@@ -2,6 +2,7 @@ import { createSlice, PayloadAction, current, createSelector } from '@reduxjs/to
 import { RootState } from '../store';
 import { Task } from '../../Types';
 import { longDateFormat } from '../../utils/dateHelpers';
+import { isCompleted } from '../../utils/validationHelpers';
 
 interface TaskSliceState {
     tasks: Task[];
@@ -46,15 +47,51 @@ export const tasksSelector = (state: RootState) => {
 //     return state.tasks.tasks.find((task) => task.id === taskId);
 // };
 export const getTaskSelector = (id: string) => {
+    console.log('slice1');
     return createSelector(
         (state: RootState) => state.tasks.tasks,
         (tasks) => tasks.find((task) => task.id === id)
     );
 };
 export const getDailyTasksSelector = (date: string) => {
+    console.log('slice2');
     return createSelector(
         (state: RootState) => state.tasks.tasks,
         (tasks) => tasks.filter((task) => longDateFormat(task.date) === date)
     );
 };
+type GroupType = {
+    // [key: string]: Task[];
+    [key: string]: boolean | string;
+};
+export const getWeeklyStatusesSelector = (calendar: Date[]) => {
+    //TODO check which one is faster
+    return createSelector(
+        (state: RootState) => state.tasks.tasks,
+        (tasks) => {
+            const days = new Map<string, boolean | string>();
+            calendar.forEach((day) => {
+                const sameDayTasks = tasks.filter((task) => task.date === day.toISOString());
+                const isTasksCompleted = sameDayTasks.length
+                    ? sameDayTasks.every((task) => isCompleted(task.status!))
+                    : 'No Task';
+                days.set(day.toISOString(), isTasksCompleted);
+            });
+            return days;
+        }
+    );
+    // return createSelector(
+    //     (state: RootState) => state.tasks.tasks,
+    //     (tasks) =>
+    //         calendar.reduce((days, day) => {
+    //             const sameDayTasks = tasks.filter((task) => task.date === day.toISOString());
+    //             const isTasksCompleted = sameDayTasks.length
+    //                 ? sameDayTasks.every((task) => isCompleted(task.status!))
+    //                 : 'No Task';
+    //             days[day.toISOString()] = isTasksCompleted;
+    //             return days;
+    //         }, {} as GroupType)
+    // );
+};
+
 export default tasksSlice.reducer;

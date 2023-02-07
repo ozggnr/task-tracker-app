@@ -25,9 +25,14 @@ export const CalendarContent = styled.div`
     backdrop-filter: blur(16px) saturate(180%);
     background-color: rgb(255 255 255 / 63%);
 `;
-export const CalendarDate = styled.div`
+interface CalendarDateProps {
+    readonly taskCompleted?: boolean | string;
+}
+export const CalendarDate = styled.div<CalendarDateProps>`
     display: flex;
     flex-direction: column;
+    border: ${(props) =>
+        props.taskCompleted === 'No Task' ? '' : props.taskCompleted ? '2px solid #0B9B8A' : '2px solid #FF6673'};
 `;
 export const DayWeek = styled.div``;
 export const DayMonth = styled.div``;

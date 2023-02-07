@@ -23,6 +23,7 @@ import {
 import { ButtonCaret, ButtonDays, ButtonGroup, ButtonToday } from './components/button/Button.style';
 import { LeftIcon, RightIcon } from './components/button/Icon.style';
 import { Title } from './App.style';
+import { getWeeklyStatusesSelector } from './store/reducers/tasksSlice';
 
 export default function CalendarApp() {
     //We will update our state by using dispatch, dispatch gets action with payload
@@ -31,6 +32,7 @@ export default function CalendarApp() {
     const activeDay = useAppSelector((state) => state.daysOfWeek);
     const calendar: Date[] = getWeeklyCalendar(activeDay);
     const activeMonth = shortDateFormat(activeDay);
+    const weeklyStatuses = useAppSelector(getWeeklyStatusesSelector(calendar));
 
     return (
         <CalendarContainer>
@@ -55,7 +57,7 @@ export default function CalendarApp() {
                                 isActive={isSameDay(new Date(activeDay), day)}
                                 onClick={() => handleClick(longDateFormat(day))}
                             >
-                                <CalendarDate>
+                                <CalendarDate taskCompleted={weeklyStatuses.get(day.toISOString())}>
                                     <DayWeek>{getDayOfWeek(day)}</DayWeek>
                                     <DayMonth>{getDayOfMonth(day)}</DayMonth>
                                 </CalendarDate>
