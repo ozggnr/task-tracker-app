@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { MessageContainer } from '../message/Message.style';
 
 //button styling
 export const BaseButton = styled.button`

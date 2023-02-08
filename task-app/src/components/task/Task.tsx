@@ -7,7 +7,7 @@ import { isCompleted, isInProgress, isNotCompleted, isOverdue } from '../../util
 import { useTaskStatus } from '../../utils/useTaskStatus';
 import { useAppDispatch } from '../../store/hooks';
 import Modal from '../modal/Modal';
-import Button, { BUTTON_COLOR } from '../button/Button';
+import Button, { BUTTON_TYPE } from '../button/Button';
 import { Checkbox } from '../button/Checkbox';
 import Sidebar from '../sidebar/Sidebar';
 import Card from '../card/Card';
@@ -69,7 +69,7 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                         <ButtonGroup $end>
                             <Button
                                 icon={ICON_TYPE.delete}
-                                color={BUTTON_COLOR.delete}
+                                btnType={BUTTON_TYPE.delete}
                                 onClick={() => setWarning(true)}
                             >
                                 Delete
@@ -83,7 +83,7 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                             )}
                             <Button
                                 icon={ICON_TYPE.edit}
-                                color={BUTTON_COLOR.edit}
+                                btnType={BUTTON_TYPE.edit}
                                 onClick={() => {
                                     setOpenForm(true);
                                     executeScroll();

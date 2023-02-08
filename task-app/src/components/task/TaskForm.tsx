@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { addTask, getDailyTasksSelector, getTaskSelector, updateTask } from '../../store/reducers/tasksSlice';
 import { checkSubtasksOverlap, errorMessages, hasExceedTimeTask, mapValidations } from '../../utils/validationHelpers';
 import { Task, SubTask } from '../../Types';
-import Button, { BUTTON_COLOR } from '../button/Button';
+import Button, { BUTTON_TYPE } from '../button/Button';
 import { FormInput } from '../form/FormInput';
 import { Form } from '../form/Form';
 import { SubtaksInputContainer, TaskFormContainer } from './TaskForm.style';
@@ -55,7 +55,7 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                 <ButtonRow position="end">
                     <Button
                         icon={ICON_TYPE.add}
-                        color={BUTTON_COLOR.button}
+                        btnType={BUTTON_TYPE.button}
                         type="button"
                         onClick={() => {
                             setTaskInputFields({

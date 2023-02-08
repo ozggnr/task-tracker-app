@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { getDailyTasksSelector, setTasks } from '../../store/reducers/tasksSlice';
 import { getTasks } from '../../services/taskService';
 import { Task } from '../../Types';
-import Button, { BUTTON_COLOR } from '../button/Button';
+import Button, { BUTTON_TYPE } from '../button/Button';
 import { TaskCard } from '../task/Task';
 import { TaskForm } from '../task/TaskForm';
 import { DayContainer } from './DailyTasks.style';
@@ -29,7 +29,7 @@ export const DailyTasks = ({ day }: Props) => {
     return (
         <>
             <ButtonRow position="end" pt="1" pr="6" pb="1">
-                <Button icon={ICON_TYPE.add} color={BUTTON_COLOR.button} onClick={() => setOpenForm(true)}>
+                <Button icon={ICON_TYPE.add} btnType={BUTTON_TYPE.button} onClick={() => setOpenForm(true)}>
                     Add Task
                 </Button>
             </ButtonRow>
