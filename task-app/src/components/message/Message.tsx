@@ -1,25 +1,34 @@
 import { getIcon, ICON_TYPE } from '../button/Icon.style';
-import { MessageContainer } from './Message.style';
+import { ErrorMessage, SuccessMessage, WarningMessage } from './Message.style';
 
-type MessageProps = {
-    message: string;
-    severity: SEVERITY_TYPE;
-    withIcon?: boolean;
-};
 export enum SEVERITY_TYPE {
     error = 'error',
     warning = 'warning',
     success = 'success',
 }
+type MessageProps = {
+    message: string;
+    severity: SEVERITY_TYPE;
+    withIcon?: boolean;
+};
 
-// TODO change this like I did with button comp
 export const Message = ({ message, severity, withIcon }: MessageProps) => {
     const icon = ICON_TYPE[severity as keyof typeof ICON_TYPE];
     const Icon = getIcon(ICON_TYPE[icon]!);
+    const Message = getMessage(severity);
     return (
-        <MessageContainer>
+        <Message>
             {withIcon && <Icon />}
             {message}
-        </MessageContainer>
+        </Message>
     );
+};
+
+const getMessage = (severity: SEVERITY_TYPE) => {
+    const message = {
+        [SEVERITY_TYPE.error]: ErrorMessage,
+        [SEVERITY_TYPE.warning]: WarningMessage,
+        [SEVERITY_TYPE.success]: SuccessMessage,
+    }[severity];
+    return message;
 };

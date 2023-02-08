@@ -56,13 +56,18 @@ export default function CalendarApp() {
                             <ButtonDays
                                 key={i} //TODO change the key
                                 isActive={isSameDay(new Date(activeDay), day)}
-                                onClick={() => handleClick(longDateFormat(day))}
-                                taskCompleted={weeklyStatuses.get(day.toISOString())}
+                                onClick={() => handleDaySelect(longDateFormat(day))}
+                                taskCompleted={checkTasksCompleted(day)}
                             >
-                                <Message
-                                    message="You have incompleted Task(s)"
-                                    severity={SEVERITY_TYPE.warning}
-                                ></Message>
+                                {checkTasksCompleted(day) !== null &&
+                                    (checkTasksCompleted(day) ? (
+                                        <Message message="Task(s) are completed!" severity={SEVERITY_TYPE.success} />
+                                    ) : (
+                                        <Message
+                                            message="You have incompleted Task(s)"
+                                            severity={SEVERITY_TYPE.warning}
+                                        />
+                                    ))}
 
                                 <CalendarDate>
                                     <DayWeek>{getDayOfWeek(day)}</DayWeek>
@@ -77,7 +82,7 @@ export default function CalendarApp() {
         </CalendarContainer>
     );
 
-    function handleClick(selectedDay: string) {
+    function handleDaySelect(selectedDay: string) {
         dispatch(setDay(selectedDay));
     }
 
@@ -91,5 +96,9 @@ export default function CalendarApp() {
             startWeek = addDays(startWeek, 1);
         }
         return calendar;
+    }
+
+    function checkTasksCompleted(day: Date) {
+        return weeklyStatuses.get(day.toISOString());
     }
 }
