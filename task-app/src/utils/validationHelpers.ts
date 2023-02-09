@@ -27,12 +27,14 @@ export function hasExceedTimeTask(task: Task) {
     return !!tasksExceed.length;
 }
 export function checkSubtasksOverlap(task: Task) {
-    task.subTasks.sort((a, b) => {
+    const copiedSubtaskList = [...task.subTasks];
+    copiedSubtaskList.sort((a, b) => {
         return a.start! > b.start! ? 1 : -1;
     });
-    for (let i = 0; i < task.subTasks.length - 1; i++) {
-        const end1 = task.subTasks[i].end as string;
-        const start2 = task.subTasks[i + 1].start as string;
+
+    for (let i = 0; i < copiedSubtaskList.length - 1; i++) {
+        const end1 = copiedSubtaskList[i].end as string;
+        const start2 = copiedSubtaskList[i + 1].start as string;
         if (end1 > start2) {
             console.log(`Tasks ${i + 1} and ${i + 2} overlap`);
             return true;
@@ -59,4 +61,5 @@ export function mapValidations(fieldNames: string[], message: string, vals: Vali
 export const isCompleted = (status: string): boolean => status?.toUpperCase() === 'COMPLETED';
 export const isInProgress = (status: string): boolean => status?.toUpperCase() === 'IN_PROGRESS';
 export const isNotCompleted = (status: string): boolean => status?.toUpperCase() === 'NOT_COMPLETED';
+export const isNotStarted = (status: string): boolean => status?.toUpperCase() === 'NOT_STARTED';
 export const isOverdue = (taskDate: Date): boolean => isDayBefore(taskDate, new Date());

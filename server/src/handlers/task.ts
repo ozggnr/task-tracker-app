@@ -80,8 +80,11 @@ export const updateTask = async (req: Request, res: Response) => {
             id: string;
         };
     };
-
-    const subTasksToUpdate = req.body?.subTasks.reduce((props: UpdateProps[], subTask: SubTask) => {
+    const subtasks = [...req.body.subTasks];
+    subtasks.sort((a, b) => {
+        return a.start! > b.start! ? 1 : -1;
+    });
+    const subTasksToUpdate = subtasks.reduce((props: UpdateProps[], subTask: SubTask) => {
         if (subTask.id) {
             const obj: UpdateProps = {
                 data: {
@@ -100,7 +103,7 @@ export const updateTask = async (req: Request, res: Response) => {
         return props;
     }, []);
 
-    const subTasksToCreate = req.body?.subTasks.filter((task: typeof req.body) => !task.id);
+    const subTasksToCreate = subtasks.filter((task: typeof req.body) => !task.id);
 
     const updatedTask = await prisma.task.update({
         where: {
