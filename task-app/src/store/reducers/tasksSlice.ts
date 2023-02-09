@@ -47,14 +47,14 @@ export const tasksSelector = (state: RootState) => {
 //     return state.tasks.tasks.find((task) => task.id === taskId);
 // };
 export const getTaskSelector = (id: string) => {
-    console.log('slice1');
+    // console.log('slice1');
     return createSelector(
         (state: RootState) => state.tasks.tasks,
         (tasks) => tasks.find((task) => task.id === id)
     );
 };
 export const getDailyTasksSelector = (date: string) => {
-    console.log('slice2');
+    // console.log('slice2');
     return createSelector(
         (state: RootState) => state.tasks.tasks,
         (tasks) => tasks.filter((task) => longDateFormat(task.date) === date)

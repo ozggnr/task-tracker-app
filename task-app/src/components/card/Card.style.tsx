@@ -7,6 +7,7 @@ interface CardProps {
 }
 //TODO create variables for colors
 export const CardComponent = styled.div<CardProps>`
+    height: 150px;
     border-radius: 1rem;
     padding: 0.5rem;
     backdrop-filter: blur(16px) saturate(180%);
@@ -24,17 +25,22 @@ export const CardComponent = styled.div<CardProps>`
     ${(props) =>
         props.isActive &&
         `
-        transform: translateY(-5px);
-        // box-shadow: 0px 10px 20px 2px #535bf238;
+        
     `}
 `;
 
-export const CardHeader = styled.div``;
-
-export const CardFooter = styled.div``;
+export const CardHeader = styled.div`
+    display: flex;
+    justify-content: space-between;
+    height: 25%;
+`;
 
 export const CardBody = styled.div`
     display: flex;
-    text-align: center;
-    padding: 1rem;
+    flex-direction: column;
+    height: 50%;
+    padding: 0.5rem;
+`;
+export const CardFooter = styled.div`
+    height: 25%;
 `;

@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import { deleteTaskService, updateTaskService } from '../../services/taskService';
 import { deleteTask, updateTask } from '../../store/reducers/tasksSlice';
 import { Task } from '../../Types';
-import { isCompleted, isInProgress, isNotCompleted, isOverdue } from '../../utils/validationHelpers';
+import { isCompleted, isInProgress, isNotCompleted, isNotStarted, isOverdue } from '../../utils/validationHelpers';
 import { useTaskStatus } from '../../utils/useTaskStatus';
 import { useAppDispatch } from '../../store/hooks';
 import Modal from '../modal/Modal';
@@ -14,7 +14,7 @@ import Card from '../card/Card';
 import { TaskForm } from './TaskForm';
 import { TaskDetails } from './TaskDetails';
 import { CardBody, CardFooter, CardHeader } from '../card/Card.style';
-import { TaskContainer } from './Task.style';
+import { TaskContainer, TaskTimeBarContainer, TaskTimeBar, TaskTitle, TaskInfo } from './Task.style';
 import { ButtonGroup, ButtonRow } from '../button/Button.style';
 import { ICON_TYPE } from '../button/Icon.style';
 
@@ -40,31 +40,20 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
 
     return (
         <TaskContainer ref={scrollRef} overdue={isOverdue(new Date(task.date))}>
-            <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    fontWeight: '600',
-                    width: '10%',
-                }}
-            >
+            <TaskTimeBarContainer>
                 <div>{activeTask.start}</div>
-                <div
-                    style={{
-                        backgroundColor: 'orange',
-                        width: '0.25rem',
-                        height: '100%',
-                        margin: '0.5rem',
-                    }}
-                ></div>
+                <TaskTimeBar status={activeTask.status!}></TaskTimeBar>
                 <div>{activeTask.end}</div>
-            </div>
+            </TaskTimeBarContainer>
             <Card
                 cardActive={openForm || (openDetails && openDetailPage(activeTask))}
                 statusWarning={activeTask.status}
             >
                 <CardHeader>
+                    <TaskInfo>
+                        {isNotStarted(activeTask.status!) ? '2 hours left' : activeTask.status}{' '}
+                        {` ~ ${activeTask?.subTasks.length} Subtask(s)`}
+                    </TaskInfo>
                     {!isCompleted(activeTask.status!) && (
                         <ButtonGroup $end>
                             <Button
@@ -97,17 +86,11 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                 <CardBody>
                     {/* <div>{activeTask.date.toLocaleTimeString()}</div> */}
                     {/* <ProgressBar startTime={activeTask.start} endTime={activeTask.end} /> */}
-                    <div className="task">
-                        <div className="col-1">{activeTask.status}</div>
-
-                        <div className="col-1">
-                            <div className="task-title">{activeTask.title}</div>
-                            <div className="task-desc">{activeTask.description}</div>
-                        </div>
-                    </div>
+                    <TaskTitle>{activeTask.title}</TaskTitle>
+                    <div className="task-desc">{activeTask.description}</div>
                 </CardBody>
                 <CardFooter>
-                    {isNotCompleted(activeTask.start) && (
+                    {isNotCompleted(activeTask.status!) && (
                         <ButtonRow position="end">
                             <Checkbox
                                 name="completed"
