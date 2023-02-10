@@ -16,4 +16,6 @@ export const SidebarContainer = styled.div<SidebarProps>`
     backdrop-filter: blur(16px) saturate(180%);
     background-color: rgb(255 255 255 / 63%);
     padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-y: auto;
 `;

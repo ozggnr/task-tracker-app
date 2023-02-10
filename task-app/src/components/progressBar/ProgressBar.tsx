@@ -1,62 +1,103 @@
+import { differenceInSeconds } from 'date-fns';
 import { useState, useEffect, useRef, PropsWithChildren } from 'react';
-import {
-    convertTimeString,
-    durationDifferenceInSeconds,
-} from '../../utils/dateHelpers';
+import { differenceSeconds } from '../../utils/dateHelpers';
+import { ProgressBarBack, ProgressBarContainer } from './ProgressBar.style';
 
-export const ProgressBar = () => {
+type ProgressBarProps = {
+    startTime: string;
+    endTime: string;
+};
+
+export const ProgressBar = ({ startTime, endTime }: ProgressBarProps) => {
     const [date, setDate] = useState(new Date());
-    const intervalRef = useRef();
-
-    const convertedEndTime = convertTimeString(date, '23:00');
-    // console.log('--', convertedEndTime);
-
-    const totalSecs = durationDifferenceInSeconds(
-        new Date(),
-        new Date(convertedEndTime)
+    const intervalRef = useRef<number>();
+    const timedifference = differenceSeconds(
+        { earlierDate: new Date(), earlierTime: startTime! },
+        { laterDate: new Date(), laterTime: endTime! }
     );
-    const completed = 360 - totalSecs / 360;
+    useEffect(() => {
+        const timerId = setInterval(() => setDate(new Date()), 1000);
+        intervalRef.current = timerId;
+        return function cleanup() {
+            clearInterval(intervalRef.current);
+        };
+    }, []);
+    //TODO refactor this code
+    const hours = date.getHours();
+    const mins = date.getMinutes();
+    const secs = date.getSeconds();
+    const starthours = Number(startTime.split(':')[0]);
+    const startMins = Number(startTime.split(':')[1]);
+    const result = differenceInSeconds(
+        new Date(2022, 2, 10, hours, mins, secs),
+        new Date(2022, 2, 10, starthours, startMins, 0)
+    );
+    const calcHeight = Math.floor((result * 100) / timedifference);
 
-    // useEffect(() => {
-    //   const timerId = setInterval(refreshClock, 1000);
-    //   intervalRef.current = timerId;
-    //   return function cleanup() {
-    //     clearInterval(intervalRef.current);
-    //   };
-    // }, []);
-
-    const fillerStyles: React.CSSProperties = {
-        position: 'relative',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '250px',
-        width: '250px',
-        borderRadius: '50%',
-        border: '2px solid black',
-        zIndex: '0',
-        background: `conic-gradient(red ${Math.floor(
-            completed
-        )}deg, #fff 0deg)`,
-    };
-
-    if (completed === 360) {
+    if (calcHeight === 100) {
         clearInterval(intervalRef.current);
     }
+    const fillerStyles = {
+        backgroundColor: '#a3aedc',
+        height: `${calcHeight}%`,
+    };
+
     return (
-        <div className="progressContainer">
-            <div style={fillerStyles}>
-                {/* <span className="sth">{`${Math.floor(completed)}%`}</span> */}
-                <div className="progress-value">
-                    {date.toLocaleTimeString()}
-                    <img
-                        src="images/test.jpg"
-                        alt="Task Tag"
-                        className="tagImage"
-                    />
-                </div>
-                {completed === 360 && <div>Completed!</div>}
-            </div>
-        </div>
+        <ProgressBarContainer>
+            <div style={fillerStyles}></div>
+        </ProgressBarContainer>
     );
 };
+
+// import { useState, useEffect, useRef, PropsWithChildren } from 'react';
+// import { durationBetween } from '../../utils/dateHelpers';
+
+// type ProgressBarProps = {
+//     startTime: string;
+//     endTime: string;
+// };
+// export const ProgressBar = ({ startTime, endTime }: ProgressBarProps) => {
+//     const [date, setDate] = useState(new Date());
+//     const intervalRef = useRef<number>();
+
+//     // console.log('--', new Date(convertedEndTime));
+//     // console.log('total', totalSecs);
+//     const completed = 360;
+//     // console.log(completed);
+//     // useEffect(() => {
+//     //     const timerId = setInterval(() => setDate(new Date()), 1000);
+//     //     intervalRef.current = timerId;
+//     //     return function cleanup() {
+//     //         clearInterval(intervalRef.current);
+//     //     };
+//     // }, []);
+
+//     const fillerStyles: React.CSSProperties = {
+//         position: 'relative',
+//         display: 'flex',
+//         alignItems: 'center',
+//         justifyContent: 'center',
+//         height: '100px',
+//         width: '100px',
+//         borderRadius: '50%',
+//         border: '2px solid black',
+//         zIndex: '0',
+//         background: `conic-gradient(red ${Math.floor(completed)}deg, #fff 0deg)`,
+//     };
+
+//     // if (completed === 360) {
+//     //     clearInterval(intervalRef.current);
+//     // }
+
+//     return (
+//         <div className="progressContainer">
+//             <div style={fillerStyles}>
+//                 {/* <span className="sth">{`${Math.floor(completed)}%`}</span> */}
+//                 <div className="progress-value">
+//                     {date.toLocaleTimeString()}
+//                     {/* <img src="images/test.jpg" alt="Task Tag" className="tagImage" /> */}
+//                 </div>
+//             </div>
+//         </div>
+//     );
+// };

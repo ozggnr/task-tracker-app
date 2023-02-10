@@ -1,7 +1,5 @@
-import { useEffect, useState } from 'react';
-import { SubTask, Task } from '../../Types';
+import { Task } from '../../Types';
 import { differenceSeconds } from '../../utils/dateHelpers';
-import { FormInput } from '../form/FormInput';
 import { SubTaskComp } from '../subtask/Subtask';
 import { TaskDetailsContainer } from './Task.style';
 
@@ -15,13 +13,8 @@ export const TaskDetails = ({ activeTask }: TaskDetailsProps) => {
 
     return (
         <TaskDetailsContainer>
-            {activeTask.subTasks.map((subtask, index) => (
-                <SubTaskComp
-                    index={index}
-                    subtask={subtask}
-                    key={subtask.id}
-                    getDurationForSubtasks={getDurationForSubtasks}
-                />
+            {activeTask.subTasks.map((subtask) => (
+                <SubTaskComp subtask={subtask} key={subtask.id} getDurationForSubtasks={getDurationForSubtasks} />
             ))}
         </TaskDetailsContainer>
     );
