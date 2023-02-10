@@ -5,11 +5,10 @@ interface TaskContainerProps {
     readonly overdue?: boolean;
 }
 export const TaskContainer = styled.div<TaskContainerProps>`
-    margin-top: 2rem;
     display: flex;
     column-gap: 2rem;
     width: 80%;
-    ${(props) => props.overdue && 'opacity: 0.5'}
+    ${(props) => props.overdue && 'opacity: 0.6'}
 `;
 
 export const TaskDetailsContainer = styled.div`
@@ -46,7 +45,7 @@ export const TaskTimeBar = styled.div<TimeBarProps>`
             : isNotCompleted(props.status!)
             ? '#ffa726'
             : isInProgress(props.status!)
-            ? '#8E65AB'
+            ? '#A3AEDC'
             : 'red'};
     width: 0.25rem;
     height: 100%;

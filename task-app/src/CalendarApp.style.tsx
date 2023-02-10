@@ -21,9 +21,10 @@ export const CalendarContent = styled.div`
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    margin: 1rem 5rem 1rem 5rem;
+    margin: 0 5rem 1rem 5rem;
     backdrop-filter: blur(16px) saturate(180%);
     background-color: rgb(255 255 255 / 63%);
+    border-radius: 0.5rem;
 `;
 
 export const CalendarDate = styled.div`

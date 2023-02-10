@@ -27,8 +27,10 @@ html body {
 input {
     padding: 0rem 0.5rem;
     height: 2.25rem;
-    margin: 2px 0;
     /* accent-color: red; */
+}
+input[type='checkbox']:checked + label {
+    text-decoration: cornsilk wavy line-through;
 }
 /* a {
   font-weight: 500;
