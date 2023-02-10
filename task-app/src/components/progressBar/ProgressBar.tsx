@@ -1,5 +1,5 @@
 import { differenceInSeconds } from 'date-fns';
-import { useState, useEffect, useRef, PropsWithChildren } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { differenceSeconds } from '../../utils/dateHelpers';
 import { ProgressBarBack, ProgressBarContainer } from './ProgressBar.style';
 
@@ -15,13 +15,6 @@ export const ProgressBar = ({ startTime, endTime }: ProgressBarProps) => {
         { earlierDate: new Date(), earlierTime: startTime! },
         { laterDate: new Date(), laterTime: endTime! }
     );
-    useEffect(() => {
-        const timerId = setInterval(() => setDate(new Date()), 1000);
-        intervalRef.current = timerId;
-        return function cleanup() {
-            clearInterval(intervalRef.current);
-        };
-    }, []);
     //TODO refactor this code
     const hours = date.getHours();
     const mins = date.getMinutes();
@@ -32,14 +25,25 @@ export const ProgressBar = ({ startTime, endTime }: ProgressBarProps) => {
         new Date(2022, 2, 10, hours, mins, secs),
         new Date(2022, 2, 10, starthours, startMins, 0)
     );
-    const calcHeight = Math.floor((result * 100) / timedifference);
+    useEffect(() => {
+        if (`${hours}:${mins}` < endTime) {
+            console.log('in');
+            const timerId = setInterval(() => setDate(new Date()), 1000);
+            intervalRef.current = timerId;
+        }
+        return function cleanup() {
+            clearInterval(intervalRef.current);
+        };
+    }, []);
+
+    let calcHeight = Math.floor((result * 100) / timedifference);
 
     if (calcHeight === 100) {
         clearInterval(intervalRef.current);
     }
     const fillerStyles = {
         backgroundColor: '#a3aedc',
-        height: `${calcHeight}%`,
+        height: `${hours}:${mins}` > endTime ? '100%' : `${calcHeight}%`,
     };
 
     return (
