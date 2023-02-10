@@ -37,9 +37,9 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
     }, []);
 
     const openDetailPage = (task: Task) => (isInProgress(task.status!) && task.subTasks.length ? true : false);
-
+    const isTaskOverdue = isOverdue(new Date(activeTask.date)) ? true : false;
     return (
-        <TaskContainer ref={scrollRef} overdue={isOverdue(new Date(task.date))}>
+        <TaskContainer ref={scrollRef} overdue={isTaskOverdue}>
             <TaskTimeBarContainer>
                 <div>{activeTask.start}</div>
                 <TaskTimeBar status={activeTask.status!}></TaskTimeBar>
@@ -60,6 +60,7 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                                 icon={ICON_TYPE.delete}
                                 btnType={BUTTON_TYPE.delete}
                                 onClick={() => setWarning(true)}
+                                disabled={isTaskOverdue}
                             >
                                 Delete
                             </Button>
@@ -77,6 +78,7 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                                     setOpenForm(true);
                                     executeScroll();
                                 }}
+                                disabled={isTaskOverdue}
                             >
                                 Edit
                             </Button>

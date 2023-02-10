@@ -17,15 +17,17 @@ export const CardComponent = styled.div<CardProps>`
             : isNotCompleted(props.statusWarning!)
             ? '2px solid #ffa726'
             : isInProgress(props.statusWarning!)
-            ? '2px solid #8E65AB'
+            ? '2px solid #A3AEDC'
             : 'none'};
+
     background-color: rgb(255 255 255 / 63%);
     width: ${(props) => (props.isActive ? '60%' : '100%')};
     transition: width linear 0.25s;
     ${(props) =>
-        props.isActive &&
+        (props.isActive || isInProgress(props.statusWarning!)) &&
         `
         
+        background-color: #A3AEDC52;
     `}
 `;
 
@@ -44,3 +46,12 @@ export const CardBody = styled.div`
 export const CardFooter = styled.div`
     height: 25%;
 `;
+
+// background-color: ${(props) =>
+//     isCompleted(props.statusWarning!)
+//         ? '#0b9b8a52'
+//         : isNotCompleted(props.statusWarning!)
+//         ? '#ffa72652'
+//         : isInProgress(props.statusWarning!)
+//         ? '#8E65AB52'
+//         : 'none'};
