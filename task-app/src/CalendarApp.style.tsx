@@ -44,4 +44,5 @@ export const CalendarDateContainer = styled.div`
 
 export const Title = styled.h1`
     color: #362e54;
+    width: 100%;
 `;

@@ -6,6 +6,7 @@ import {
     endOfTheWeek,
     getDayOfMonth,
     getDayOfWeek,
+    isDayBefore,
     isSameDay,
     longDateFormat,
     shortDateFormat,
@@ -23,7 +24,7 @@ import {
     DayWeek,
     Title,
 } from './CalendarApp.style';
-import { ButtonCaret, ButtonDays, ButtonGroup, ButtonToday } from './components/button/Button.style';
+import { ButtonCaret, ButtonDays, ButtonRow, ButtonToday } from './components/button/Button.style';
 import { LeftIcon, RightIcon } from './components/button/Icon.style';
 
 export default function CalendarApp() {
@@ -39,7 +40,7 @@ export default function CalendarApp() {
         <CalendarContainer>
             <CalendarHeader>
                 <Title>{activeMonth}</Title>
-                <ButtonGroup>
+                <ButtonRow $end>
                     <ButtonCaret onClick={() => dispatch(lastWeek(activeDay))}>
                         <LeftIcon />
                     </ButtonCaret>
@@ -47,7 +48,7 @@ export default function CalendarApp() {
                     <ButtonCaret onClick={() => dispatch(nextWeek(activeDay))}>
                         <RightIcon />
                     </ButtonCaret>
-                </ButtonGroup>
+                </ButtonRow>
             </CalendarHeader>
             <CalendarContent>
                 <CalendarDateContainer>
@@ -56,6 +57,7 @@ export default function CalendarApp() {
                             <ButtonDays
                                 key={i} //TODO change the key
                                 isActive={isSameDay(new Date(activeDay), day)}
+                                isDayBefore={isDayBefore(day, new Date())}
                                 onClick={() => handleDaySelect(longDateFormat(day))}
                                 taskCompleted={checkTasksCompleted(day)}
                             >

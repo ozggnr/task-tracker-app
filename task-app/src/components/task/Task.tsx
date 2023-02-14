@@ -15,7 +15,7 @@ import { TaskForm } from './TaskForm';
 import { TaskDetails } from './TaskDetails';
 import { CardBody, CardFooter, CardHeader } from '../card/Card.style';
 import { TaskContainer, TaskTimeBarContainer, TaskTimeBar, TaskTitle, TaskInfo } from './Task.style';
-import { ButtonGroup, ButtonRow } from '../button/Button.style';
+import { ButtonRow } from '../button/Button.style';
 import { ICON_TYPE } from '../button/Icon.style';
 
 type TaskProps = {
@@ -55,7 +55,7 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                         {` ~ ${activeTask?.subTasks.length} Subtask(s)`}
                     </TaskInfo>
                     {!isCompleted(activeTask.status!) && (
-                        <ButtonGroup $end>
+                        <ButtonRow $end width="30">
                             <Button
                                 icon={ICON_TYPE.delete}
                                 btnType={BUTTON_TYPE.delete}
@@ -64,16 +64,9 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                             >
                                 Delete
                             </Button>
-                            {warning && (
-                                <Modal onClick={() => setWarning(false)}>
-                                    Do you want to delete this task?
-                                    <button onClick={handleConfirm}>confirm</button>
-                                    <button>cancel</button>
-                                </Modal>
-                            )}
                             <Button
                                 icon={ICON_TYPE.edit}
-                                btnType={BUTTON_TYPE.edit}
+                                btnType={BUTTON_TYPE.secondary}
                                 onClick={() => {
                                     setOpenForm(true);
                                     executeScroll();
@@ -82,7 +75,18 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                             >
                                 Edit
                             </Button>
-                        </ButtonGroup>
+                            {warning && (
+                                <Modal onClick={() => setWarning(false)}>
+                                    <div>Do you want to delete this task?</div>
+                                    <ButtonRow $center width="40" pb="0.5">
+                                        <Button btnType={BUTTON_TYPE.button} onClick={handleConfirm}>
+                                            Confirm
+                                        </Button>
+                                        <Button btnType={BUTTON_TYPE.secondary}>Cancel</Button>
+                                    </ButtonRow>
+                                </Modal>
+                            )}
+                        </ButtonRow>
                     )}
                 </CardHeader>
                 <CardBody>
@@ -93,7 +97,7 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                 </CardBody>
                 <CardFooter>
                     {isNotCompleted(activeTask.status!) && (
-                        <ButtonRow position="end">
+                        <ButtonRow $end>
                             <Checkbox
                                 name="completed"
                                 label="Completed"

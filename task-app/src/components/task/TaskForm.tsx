@@ -8,7 +8,7 @@ import Button, { BUTTON_TYPE } from '../button/Button';
 import { FormInput } from '../form/FormInput';
 import { Form } from '../form/Form';
 import { SubtaksInputContainer, TaskFormContainer } from './TaskForm.style';
-import { ButtonRow, ButtonGroup } from '../button/Button.style';
+import { ButtonRow } from '../button/Button.style';
 import { FormContent, TimeInputContainer } from '../form/Form.style';
 import { ICON_TYPE } from '../button/Icon.style';
 
@@ -52,7 +52,7 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
     return (
         <TaskFormContainer>
             <Form onSubmit={handleFormSubmit}>
-                <ButtonRow position="end">
+                <ButtonRow $end>
                     <Button
                         icon={ICON_TYPE.add}
                         btnType={BUTTON_TYPE.button}
@@ -64,7 +64,7 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                             });
                         }}
                     >
-                        Add SubTask
+                        SubTask
                     </Button>
                 </ButtonRow>
                 <FormContent>
@@ -142,12 +142,12 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                             );
                         })}
                 </FormContent>
-                <ButtonGroup $center>
-                    <Button type="submit">Save</Button>
-                    <Button type="button" onClick={() => setOpenForm(false)}>
+                <ButtonRow $center>
+                    <Button btnType={BUTTON_TYPE.submit}>Save</Button>
+                    <Button btnType={BUTTON_TYPE.secondary} onClick={() => setOpenForm(false)}>
                         Cancel
                     </Button>
-                </ButtonGroup>
+                </ButtonRow>
             </Form>
         </TaskFormContainer>
     );

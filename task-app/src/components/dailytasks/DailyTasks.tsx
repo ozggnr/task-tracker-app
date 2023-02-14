@@ -28,7 +28,7 @@ export const DailyTasks = ({ day }: Props) => {
 
     return (
         <>
-            <ButtonRow position="end" pt="1" pr="6" pb="1">
+            <ButtonRow pt="1" pr="6" pb="1" $end>
                 <Button icon={ICON_TYPE.add} btnType={BUTTON_TYPE.button} onClick={() => setOpenForm(true)}>
                     Add Task
                 </Button>
