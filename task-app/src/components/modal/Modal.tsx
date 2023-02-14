@@ -1,28 +1,18 @@
 import { PropsWithChildren, MouseEventHandler } from 'react';
 import { CloseIcon } from '../button/Icon.style';
 import Portal from '../portal/Portal';
-import {
-    ModalContainer,
-    ModalBox,
-    ModalContent,
-    CloseButton,
-} from './Modal.style';
+import { ModalContainer, ModalBox, ModalContent } from './Modal.style';
 
 type ModalProps = {
     onClick?: MouseEventHandler;
 };
 
-export default function Modal({
-    children,
-    onClick,
-}: PropsWithChildren<ModalProps>) {
+export default function Modal({ children, onClick }: PropsWithChildren<ModalProps>) {
     return (
         <Portal parentId="modal">
             <ModalContainer>
                 <ModalBox>
-                    <CloseButton>
-                        <CloseIcon onClick={onClick} />
-                    </CloseButton>
+                    <CloseIcon onClick={onClick} />
                     <ModalContent>{children}</ModalContent>
                 </ModalBox>
             </ModalContainer>

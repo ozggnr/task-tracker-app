@@ -11,19 +11,21 @@ export const ModalContainer = styled.div`
     align-items: center;
     justify-content: center;
 `;
-
+//TODO - make modal component generic
 export const ModalBox = styled.div`
+    display: flex;
+    flex-direction: column;
     background-color: #fcfaf2;
-    width: 50%;
-    height: 30%;
+    width: 40%;
+    height: 20%;
     border-radius: 0.5rem;
+    padding: 0.5rem;
 `;
 
 export const ModalContent = styled.div`
     display: flex;
     flex-direction: column;
-`;
-
-export const CloseButton = styled.div`
-    margin: 0.2rem 0 0 0.4rem;
+    height: 100%;
+    align-items: center;
+    justify-content: space-between;
 `;
