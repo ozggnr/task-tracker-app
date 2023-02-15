@@ -12,7 +12,9 @@ export default function Sidebar({ isActive, children, onClick }: PropsWithChildr
     return (
         <Portal parentId="sidebar">
             <SidebarContainer isActive={isActive}>
-                <CloseIcon onClick={onClick} />
+                <div>
+                    <CloseIcon onClick={onClick} />
+                </div>
                 {children}
             </SidebarContainer>
         </Portal>

@@ -1,5 +1,5 @@
 import { ReactNode, ButtonHTMLAttributes, MouseEventHandler } from 'react';
-import { ButtonDelete, BaseButton, SecondaryButton } from './Button.style';
+import { ButtonDelete, BaseButton, SecondaryButton, LinkButton } from './Button.style';
 import { AddIcon, getIcon, ICON_SIZE, ICON_TYPE } from './Icon.style';
 
 //to create button types
@@ -8,6 +8,7 @@ export enum BUTTON_TYPE {
     submit = 'submit',
     delete = 'delete',
     secondary = 'secondary',
+    link = 'link',
 }
 const getButton = (buttonType = BUTTON_TYPE.button) => {
     const selectedButton = {
@@ -15,6 +16,7 @@ const getButton = (buttonType = BUTTON_TYPE.button) => {
         [BUTTON_TYPE.submit]: BaseButton,
         [BUTTON_TYPE.delete]: ButtonDelete,
         [BUTTON_TYPE.secondary]: SecondaryButton,
+        [BUTTON_TYPE.link]: LinkButton,
     }[buttonType];
     return selectedButton;
 };

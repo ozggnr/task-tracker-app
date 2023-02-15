@@ -52,21 +52,6 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
     return (
         <TaskFormContainer>
             <Form onSubmit={handleFormSubmit}>
-                <ButtonRow $end>
-                    <Button
-                        icon={ICON_TYPE.add}
-                        btnType={BUTTON_TYPE.button}
-                        type="button"
-                        onClick={() => {
-                            setTaskInputFields({
-                                ...taskInputFields,
-                                subTasks: [...taskInputFields.subTasks, ...[subTaskField]],
-                            });
-                        }}
-                    >
-                        SubTask
-                    </Button>
-                </ButtonRow>
                 <FormContent>
                     <FormInput
                         label="Title"
@@ -102,6 +87,23 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                         />
                     </TimeInputContainer>
                     {/**TODO Add delete subtask button */}
+                    {/* but collapse for subtask, put button on top just icon */}
+                    <ButtonRow $end>
+                        <Button
+                            icon={ICON_TYPE.add}
+                            btnType={BUTTON_TYPE.link}
+                            type="button"
+                            onClick={() => {
+                                setTaskInputFields({
+                                    ...taskInputFields,
+                                    subTasks: [...taskInputFields.subTasks, ...[subTaskField]],
+                                });
+                            }}
+                        >
+                            Add SubTask
+                        </Button>
+                    </ButtonRow>
+                    {/* <button type="link">Create Subtask</button> */}
                     {taskInputFields.subTasks.length > 0 &&
                         taskInputFields.subTasks.map((subTask, index) => {
                             return (
@@ -142,11 +144,11 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                             );
                         })}
                 </FormContent>
-                <ButtonRow $center>
-                    <Button btnType={BUTTON_TYPE.submit}>Save</Button>
+                <ButtonRow $center pt="1">
                     <Button btnType={BUTTON_TYPE.secondary} onClick={() => setOpenForm(false)}>
                         Cancel
                     </Button>
+                    <Button btnType={BUTTON_TYPE.submit}>Save</Button>
                 </ButtonRow>
             </Form>
         </TaskFormContainer>

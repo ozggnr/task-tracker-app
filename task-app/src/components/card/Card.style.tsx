@@ -11,13 +11,15 @@ export const CardComponent = styled.div<CardProps>`
     border-radius: 1rem;
     padding: 0.5rem;
     backdrop-filter: blur(16px) saturate(180%);
+    ${(props) => props.isActive && 'transform: scale(1.1)'};
+
     border: ${(props) =>
         isCompleted(props.statusWarning!)
             ? '2px solid #0B9B8A'
             : isNotCompleted(props.statusWarning!)
             ? '2px solid #ffa726'
             : isInProgress(props.statusWarning!)
-            ? '2px solid #A3AEDC'
+            ? '2px solid #8707ff'
             : 'none'};
 
     background-color: rgb(255 255 255 / 63%);
@@ -26,8 +28,7 @@ export const CardComponent = styled.div<CardProps>`
     ${(props) =>
         (props.isActive || isInProgress(props.statusWarning!)) &&
         `
-        
-        background-color: #A3AEDC52;
+        box-shadow: 0 25px 50px #a3aedcc7;
     `}
 `;
 

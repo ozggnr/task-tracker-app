@@ -6,6 +6,8 @@ interface InputProps {
 
 export const FormContent = styled.div`
     height: 100%;
+    overflow-y: auto;
+    flex: 1 1 1px;
 `;
 export const FormInputStyle = styled.div<InputProps>`
     display: flex;

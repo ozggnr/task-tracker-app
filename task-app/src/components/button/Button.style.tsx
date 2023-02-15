@@ -24,9 +24,12 @@ export const BaseButton = styled.button`
 
 export const SecondaryButton = styled(BaseButton)`
     background-color: #fcfaf2;
-    // color: #362e54;
-    color: #262525;
+    color: #362e54;
     border: 1px solid #362e54;
+`;
+export const LinkButton = styled(BaseButton)`
+    background: none;
+    color: #362e54;
 `;
 
 export const ButtonDelete = styled(BaseButton)`
