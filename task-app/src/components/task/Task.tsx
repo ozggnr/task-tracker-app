@@ -31,24 +31,22 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
     const [openDetails, setOpenDetails] = useState(true);
     //scroll to active task
     const scrollRef = useRef<null | HTMLDivElement>(null);
-    const executeScroll = () => scrollRef!.current!.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const executeScroll = () => scrollRef!.current!.scrollIntoView({ behavior: 'smooth', block: 'start' });
     useEffect(() => {
         if (format(new Date(), 'HH:mm') >= activeTask.start) executeScroll();
     }, []);
 
     const openDetailPage = (task: Task) => (isInProgress(task.status!) && task.subTasks.length ? true : false);
     const isTaskOverdue = isOverdue(new Date(activeTask.date)) ? true : false;
+    const isCardActive = openForm || (openDetails && openDetailPage(activeTask));
     return (
-        <TaskContainer ref={scrollRef} overdue={isTaskOverdue}>
+        <TaskContainer ref={scrollRef} overdue={isTaskOverdue} cardActive={isCardActive}>
             <TaskTimeBarContainer>
                 <div>{activeTask.start}</div>
                 <TaskTimeBar status={activeTask.status!}></TaskTimeBar>
                 <div>{activeTask.end}</div>
             </TaskTimeBarContainer>
-            <Card
-                cardActive={openForm || (openDetails && openDetailPage(activeTask))}
-                statusWarning={activeTask.status}
-            >
+            <Card cardActive={isCardActive} statusWarning={activeTask.status}>
                 <CardHeader>
                     <TaskInfo>
                         {isNotStarted(activeTask.status!) ? '2 hours left' : activeTask.status}{' '}
@@ -103,6 +101,7 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                                 label="Completed"
                                 value={activeTask.status}
                                 onClick={handleCompleteTask}
+                                disabled={isTaskOverdue}
                             />
                         </ButtonRow>
                     )}

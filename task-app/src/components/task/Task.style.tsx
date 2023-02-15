@@ -3,12 +3,13 @@ import { isCompleted, isInProgress, isNotCompleted } from '../../utils/validatio
 
 interface TaskContainerProps {
     readonly overdue?: boolean;
+    readonly cardActive?: boolean;
 }
 export const TaskContainer = styled.div<TaskContainerProps>`
     display: flex;
-    column-gap: 2rem;
+    column-gap: 3rem;
     width: 80%;
-    ${(props) => props.overdue && 'opacity: 0.6'}
+    ${(props) => props.overdue && 'opacity: 0.6'};
 `;
 
 export const TaskDetailsContainer = styled.div`
@@ -25,7 +26,6 @@ export const TaskTimeBarContainer = styled.div`
     justify-content: space-between;
     align-items: center;
     font-weight: 600;
-    width: 10%;
 `;
 export const TaskTitle = styled.h5`
     text-transform: uppercase;
@@ -46,7 +46,7 @@ export const TaskTimeBar = styled.div<TimeBarProps>`
             ? '#ffa726'
             : isInProgress(props.status!)
             ? '#A3AEDC'
-            : 'red'};
+            : '#80808063'};
     width: 0.25rem;
     height: 100%;
     margin: 0.5rem;
