@@ -1,14 +1,16 @@
 import { differenceInSeconds } from 'date-fns';
 import { useState, useEffect, useRef } from 'react';
 import { differenceSeconds } from '../../utils/dateHelpers';
-import { ProgressBarBack, ProgressBarContainer } from './ProgressBar.style';
+import { isInProgress } from '../../utils/validationHelpers';
+import { ProgressBarContainer, ProgressContainer } from './ProgressBar.style';
 
 type ProgressBarProps = {
     startTime: string;
     endTime: string;
+    status?: string;
 };
 
-export const ProgressBar = ({ startTime, endTime }: ProgressBarProps) => {
+export const ProgressBar = ({ startTime, endTime, status }: ProgressBarProps) => {
     const [date, setDate] = useState(new Date());
     const intervalRef = useRef<number>();
     const timedifference = differenceSeconds(
@@ -25,16 +27,16 @@ export const ProgressBar = ({ startTime, endTime }: ProgressBarProps) => {
         new Date(2022, 2, 10, hours, mins, secs),
         new Date(2022, 2, 10, starthours, startMins, 0)
     );
-    useEffect(() => {
-        if (`${hours}:${mins}` < endTime) {
-            console.log('in');
-            const timerId = setInterval(() => setDate(new Date()), 1000);
-            intervalRef.current = timerId;
-        }
-        return function cleanup() {
-            clearInterval(intervalRef.current);
-        };
-    }, []);
+    // useEffect(() => {
+    //     if (`${hours}:${mins}` < endTime) {
+    //         console.log('in');
+    //         const timerId = setInterval(() => setDate(new Date()), 1000);
+    //         intervalRef.current = timerId;
+    //     }
+    //     return function cleanup() {
+    //         clearInterval(intervalRef.current);
+    //     };
+    // }, []);
 
     let calcHeight = Math.floor((result * 100) / timedifference);
 
@@ -42,14 +44,19 @@ export const ProgressBar = ({ startTime, endTime }: ProgressBarProps) => {
         clearInterval(intervalRef.current);
     }
     const fillerStyles = {
-        backgroundColor: '#a3aedc',
+        backgroundColor: '#8707ff',
+        borderRadius: '0.5rem',
         height: `${hours}:${mins}` > endTime ? '100%' : `${calcHeight}%`,
     };
 
     return (
-        <ProgressBarContainer>
-            <div style={fillerStyles}></div>
-        </ProgressBarContainer>
+        <ProgressContainer>
+            <div>{startTime}</div>
+            <ProgressBarContainer status={status}>
+                {isInProgress(status!) && <div style={fillerStyles}></div>}
+            </ProgressBarContainer>
+            <div>{endTime}</div>
+        </ProgressContainer>
     );
 };
 

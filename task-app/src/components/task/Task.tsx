@@ -10,11 +10,12 @@ import Modal from '../modal/Modal';
 import Button, { BUTTON_TYPE } from '../button/Button';
 import { Checkbox } from '../button/Checkbox';
 import Sidebar from '../sidebar/Sidebar';
+import { ProgressBar } from '../progressBar/ProgressBar';
 import Card from '../card/Card';
 import { TaskForm } from './TaskForm';
 import { TaskDetails } from './TaskDetails';
 import { CardBody, CardFooter, CardHeader } from '../card/Card.style';
-import { TaskContainer, TaskTimeBarContainer, TaskTimeBar, TaskTitle, TaskInfo } from './Task.style';
+import { TaskContainer, TaskTitle, TaskInfo } from './Task.style';
 import { ButtonRow } from '../button/Button.style';
 import { ICON_TYPE } from '../button/Icon.style';
 
@@ -31,7 +32,7 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
     const [openDetails, setOpenDetails] = useState(true);
     //scroll to active task
     const scrollRef = useRef<null | HTMLDivElement>(null);
-    const executeScroll = () => scrollRef!.current!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const executeScroll = () => scrollRef!.current!.scrollIntoView({ behavior: 'smooth', block: 'center' });
     useEffect(() => {
         if (format(new Date(), 'HH:mm') >= activeTask.start) executeScroll();
     }, []);
@@ -39,18 +40,15 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
     const openDetailPage = (task: Task) => (isInProgress(task.status!) && task.subTasks.length ? true : false);
     const isTaskOverdue = isOverdue(new Date(activeTask.date)) ? true : false;
     const isCardActive = openForm || (openDetails && openDetailPage(activeTask));
+
     return (
         <TaskContainer ref={scrollRef} overdue={isTaskOverdue} cardActive={isCardActive}>
-            <TaskTimeBarContainer>
-                <div>{activeTask.start}</div>
-                <TaskTimeBar status={activeTask.status!}></TaskTimeBar>
-                <div>{activeTask.end}</div>
-            </TaskTimeBarContainer>
+            <ProgressBar startTime={activeTask.start!} endTime={activeTask.end!} status={activeTask.status} />
             <Card cardActive={isCardActive} statusWarning={activeTask.status}>
                 <CardHeader>
                     <TaskInfo>
                         {isNotStarted(activeTask.status!) ? '2 hours left' : activeTask.status}{' '}
-                        {` ~ ${activeTask?.subTasks.length} Subtask(s)`}
+                        {` ~ ${activeTask?.subTasks.length} SubTask(s)`}
                     </TaskInfo>
                     {!isCompleted(activeTask.status!) && (
                         <ButtonRow $end width="30">
@@ -88,10 +86,8 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                     )}
                 </CardHeader>
                 <CardBody>
-                    {/* <div>{activeTask.date.toLocaleTimeString()}</div> */}
-                    {/* <ProgressBar startTime={activeTask.start} endTime={activeTask.end} /> */}
                     <TaskTitle>{activeTask.title}</TaskTitle>
-                    <div className="task-desc">{activeTask.description}</div>
+                    <div>{activeTask.description}</div>
                 </CardBody>
                 <CardFooter>
                     {isNotCompleted(activeTask.status!) && (

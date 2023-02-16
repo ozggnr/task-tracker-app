@@ -1,6 +1,6 @@
 import { Task } from '../../Types';
 import { differenceSeconds } from '../../utils/dateHelpers';
-import { SubTaskComp } from '../subtask/Subtask';
+import { SubTaskComp } from '../subTask/SubTask';
 import { TaskDetailsContainer } from './Task.style';
 
 type TaskDetailsProps = {
@@ -9,12 +9,17 @@ type TaskDetailsProps = {
 };
 
 export const TaskDetails = ({ activeTask }: TaskDetailsProps) => {
-    // const [subActiveTask, setSubActiveTask] = useState(subtask);
+    // const [subActiveTask, setSubActiveTask] = useState(subTask);
 
     return (
         <TaskDetailsContainer>
-            {activeTask.subTasks.map((subtask) => (
-                <SubTaskComp subtask={subtask} key={subtask.id} getDurationForSubtasks={getDurationForSubtasks} />
+            {activeTask.subTasks.map((subTask) => (
+                <SubTaskComp
+                    subTask={subTask}
+                    key={subTask.id}
+                    getDurationForSubtasks={getDurationForSubtasks}
+                    taskStatus={activeTask.status}
+                />
             ))}
         </TaskDetailsContainer>
     );

@@ -1,36 +1,33 @@
 import { differenceSeconds } from '../../utils/dateHelpers';
 import { SubTask } from '../../Types';
 import { FormInput } from '../form/FormInput';
-import { SubtaksContainer, SubtaskDesc, SubtaskTime } from './Subtask.style';
+import { SubtaksContainer, SubtaskDesc } from './SubTask.style';
 import { ProgressBar } from '../progressBar/ProgressBar';
 
 type SubtaskProps = {
-    subtask: SubTask;
+    subTask: SubTask;
     getDurationForSubtasks: () => number;
+    taskStatus?: string;
 };
-export const SubTaskComp = ({ subtask, getDurationForSubtasks }: SubtaskProps) => {
+export const SubTaskComp = ({ subTask, getDurationForSubtasks, taskStatus }: SubtaskProps) => {
     const subdiff = differenceSeconds(
-        { earlierDate: new Date(), earlierTime: subtask.start! },
-        { laterDate: new Date(), laterTime: subtask.end! }
+        { earlierDate: new Date(), earlierTime: subTask.start! },
+        { laterDate: new Date(), laterTime: subTask.end! }
     );
     const totalSubtaskSec = getDurationForSubtasks();
     const height = Math.floor((subdiff * 100) / totalSubtaskSec);
 
     return (
         <SubtaksContainer height={height}>
-            <SubtaskTime>
-                <div>{subtask.start}</div>
-                <ProgressBar startTime={subtask.start!} endTime={subtask.end!} />
-                <div>{subtask.end}</div>
-            </SubtaskTime>
+            <ProgressBar startTime={subTask.start!} endTime={subTask.end!} status={taskStatus} />
             <SubtaskDesc>
                 <FormInput
                     type="checkbox"
-                    name="subtask"
-                    value={subtask.id}
-                    id={subtask.id}
-                    key={subtask.id}
-                    label={subtask.description}
+                    name="subTask"
+                    value={subTask.id}
+                    id={subTask.id}
+                    key={subTask.id}
+                    label={subTask.description}
                     // onChange={handleCompleteTask}
                 />
             </SubtaskDesc>

@@ -10,9 +10,4 @@ export const SubtaksContainer = styled.div<SubtaskStyleProps>`
     column-gap: 2rem;
 `;
 
-export const SubtaskTime = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`;
 export const SubtaskDesc = styled.div``;
