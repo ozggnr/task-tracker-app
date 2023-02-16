@@ -15,7 +15,7 @@ import Card from '../card/Card';
 import { TaskForm } from './TaskForm';
 import { TaskDetails } from './TaskDetails';
 import { CardBody, CardFooter, CardHeader } from '../card/Card.style';
-import { TaskContainer, TaskTitle, TaskInfo } from './Task.style';
+import { TaskContainer, TaskTitle, TaskInfo, TaskDescription } from './Task.style';
 import { ButtonRow } from '../button/Button.style';
 import { ICON_TYPE } from '../button/Icon.style';
 
@@ -87,7 +87,7 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                 </CardHeader>
                 <CardBody>
                     <TaskTitle>{activeTask.title}</TaskTitle>
-                    <div>{activeTask.description}</div>
+                    <TaskDescription>{activeTask.description}</TaskDescription>
                 </CardBody>
                 <CardFooter>
                     {isNotCompleted(activeTask.status!) && (
