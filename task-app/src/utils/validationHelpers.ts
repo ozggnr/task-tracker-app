@@ -19,10 +19,10 @@ export function checkOverlapTask(existTask: Task, newTask: Task) {
         (newTask.end > existTask.start && newTask.end < existTask.end)
     );
 }
-//subtask exceed task
+//subTask exceed task
 export function hasExceedTimeTask(task: Task) {
     const tasksExceed = task.subTasks.filter(
-        (subtask: SubTask) => subtask.start! < task.start! || subtask.end! > task.end!
+        (subTask: SubTask) => subTask.start! < task.start! || subTask.end! > task.end!
     );
     return !!tasksExceed.length;
 }

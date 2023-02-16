@@ -86,8 +86,8 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                             // message={validations['end']}
                         />
                     </TimeInputContainer>
-                    {/**TODO Add delete subtask button */}
-                    {/* but collapse for subtask, put button on top just icon */}
+                    {/**TODO Add delete subTask button */}
+                    {/* but collapse for subTask, put button on top just icon */}
                     <ButtonRow $end>
                         <Button
                             icon={ICON_TYPE.add}
@@ -103,7 +103,7 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                             Add SubTask
                         </Button>
                     </ButtonRow>
-                    {/* <button type="link">Create Subtask</button> */}
+                    {/* <button type="link">Create SubTask</button> */}
                     {taskInputFields.subTasks.length > 0 &&
                         taskInputFields.subTasks.map((subTask, index) => {
                             return (
