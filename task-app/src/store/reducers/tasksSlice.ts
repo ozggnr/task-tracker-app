@@ -15,7 +15,9 @@ export const tasksSlice = createSlice({
     initialState: initialState,
     reducers: {
         addTask: (state, action: PayloadAction<Task>) => {
-            state.tasks.push(action.payload);
+            const newTask = action.payload;
+            const tasks = state.tasks;
+            state.tasks = [...tasks, newTask];
         },
         updateTask: (state, action: PayloadAction<Task>) => {
             const task = action.payload;
@@ -54,16 +56,12 @@ export const getTaskSelector = (id: string) => {
     );
 };
 export const getDailyTasksSelector = (date: string) => {
-    // console.log('slice2');
     return createSelector(
         (state: RootState) => state.tasks.tasks,
         (tasks) => tasks.filter((task) => longDateFormat(task.date) === date)
     );
 };
-type GroupType = {
-    // [key: string]: Task[];
-    [key: string]: boolean | null;
-};
+
 export const getWeeklyStatusesSelector = (calendar: Date[]) => {
     //TODO check which one is faster
     return createSelector(

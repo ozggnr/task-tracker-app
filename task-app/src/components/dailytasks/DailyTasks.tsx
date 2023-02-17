@@ -26,6 +26,8 @@ export const DailyTasks = ({ day }: Props) => {
     }, []);
 
     const dailyTasks = useAppSelector(getDailyTasksSelector(day));
+    //I have to sort here since prisma sort doesn't work on the back end
+    const sortedDailyTasks = dailyTasks.sort((a, b) => (a.start > b.start ? 1 : -1));
 
     return (
         <>
@@ -45,7 +47,7 @@ export const DailyTasks = ({ day }: Props) => {
                         <TaskForm activeDay={day} setOpenForm={setOpenForm} isTaskOverlap={isTaskOverlap} />
                     </Sidebar>
                 )}
-                {dailyTasks.map((task: Task) => {
+                {sortedDailyTasks.map((task: Task) => {
                     return <TaskCard task={task} key={task.id} isTaskOverlap={isTaskOverlap} />;
                 })}
             </DayContainer>
@@ -54,7 +56,7 @@ export const DailyTasks = ({ day }: Props) => {
 
     //TODO refactor validations
     function isTaskOverlap(task: Task): boolean {
-        const overlappedTasks = dailyTasks.filter(
+        const overlappedTasks = sortedDailyTasks.filter(
             (existTask: Task) => existTask.id !== task.id && checkOverlapTask(existTask, task)
         );
         return overlappedTasks.length ? true : false;
