@@ -3,7 +3,8 @@ import { format } from 'date-fns';
 import { deleteTaskService, updateTaskService } from '../../services/taskService';
 import { deleteTask, updateTask } from '../../store/reducers/tasksSlice';
 import { Task } from '../../Types';
-import { isCompleted, isInProgress, isNotCompleted, isNotStarted, isOverdue } from '../../utils/taskHelpers';
+import { getStatusText, isCompleted, isInProgress, isNotCompleted } from '../../utils/taskHelpers';
+import { isOverdue } from '../../utils/dateHelpers';
 import { useTaskStatus } from '../../utils/useTaskStatus';
 import { useAppDispatch } from '../../store/hooks';
 import Modal from '../modal/Modal';
@@ -47,7 +48,7 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
             <Card cardActive={isCardActive} statusWarning={activeTask.status}>
                 <CardHeader>
                     <TaskInfo>
-                        {activeTask.status} {` ~ ${activeTask?.subTasks.length} SubTask(s)`}
+                        {getStatusText(activeTask.status!)} {` ~ ${activeTask?.subTasks.length} SubTask(s)`}
                     </TaskInfo>
                     {!isCompleted(activeTask.status!) && (
                         <ButtonRow $end width="30">

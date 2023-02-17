@@ -89,6 +89,7 @@ export function endOfTheWeek(date: Date | number) {
 }
 
 //comparation
+export const isOverdue = (taskDate: Date): boolean => isDayBefore(taskDate, new Date());
 export function isSameDay(firstDay: Date, secondDay: Date): boolean {
     return longDateFormat(firstDay) === longDateFormat(secondDay) ? true : false;
 }
