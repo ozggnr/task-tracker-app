@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { isCompleted, isInProgress, isNotCompleted } from '../../utils/validationHelpers';
+import { isCompleted, isInProgress, isNotCompleted } from '../../utils/taskHelpers';
 
 interface ProgressBarProps {
     readonly height?: number;

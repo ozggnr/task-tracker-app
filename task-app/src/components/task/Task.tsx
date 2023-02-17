@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import { deleteTaskService, updateTaskService } from '../../services/taskService';
 import { deleteTask, updateTask } from '../../store/reducers/tasksSlice';
 import { Task } from '../../Types';
-import { isCompleted, isInProgress, isNotCompleted, isNotStarted, isOverdue } from '../../utils/validationHelpers';
+import { isCompleted, isInProgress, isNotCompleted, isNotStarted, isOverdue } from '../../utils/taskHelpers';
 import { useTaskStatus } from '../../utils/useTaskStatus';
 import { useAppDispatch } from '../../store/hooks';
 import Modal from '../modal/Modal';
@@ -25,9 +25,9 @@ type TaskProps = {
 };
 
 export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) => {
+    const dispatch = useAppDispatch();
     const [openForm, setOpenForm] = useState(false);
     const [warning, setWarning] = useState(false);
-    const dispatch = useAppDispatch();
     const activeTask = useTaskStatus(task);
     const [openDetails, setOpenDetails] = useState(true);
     //scroll to active task
@@ -47,8 +47,7 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
             <Card cardActive={isCardActive} statusWarning={activeTask.status}>
                 <CardHeader>
                     <TaskInfo>
-                        {isNotStarted(activeTask.status!) ? '2 hours left' : activeTask.status}{' '}
-                        {` ~ ${activeTask?.subTasks.length} SubTask(s)`}
+                        {activeTask.status} {` ~ ${activeTask?.subTasks.length} SubTask(s)`}
                     </TaskInfo>
                     {!isCompleted(activeTask.status!) && (
                         <ButtonRow $end width="30">

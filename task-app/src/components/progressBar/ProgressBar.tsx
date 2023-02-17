@@ -1,7 +1,7 @@
 import { differenceInSeconds } from 'date-fns';
 import { useState, useEffect, useRef } from 'react';
 import { differenceSeconds } from '../../utils/dateHelpers';
-import { isInProgress } from '../../utils/validationHelpers';
+import { isInProgress } from '../../utils/taskHelpers';
 import { ProgressBarContainer, ProgressContainer } from './ProgressBar.style';
 
 type ProgressBarProps = {

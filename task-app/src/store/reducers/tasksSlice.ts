@@ -2,7 +2,7 @@ import { createSlice, PayloadAction, current, createSelector } from '@reduxjs/to
 import { RootState } from '../store';
 import { Task } from '../../Types';
 import { longDateFormat } from '../../utils/dateHelpers';
-import { isCompleted } from '../../utils/validationHelpers';
+import { isCompleted } from '../../utils/taskHelpers';
 
 interface TaskSliceState {
     tasks: Task[];
