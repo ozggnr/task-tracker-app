@@ -11,6 +11,7 @@ import { ICON_TYPE } from '../button/Icon.style';
 import Sidebar from '../sidebar/Sidebar';
 import { checkOverlapTask } from '../../utils/validationHelpers';
 import { ButtonRow } from '../button/Button.style';
+import { isOverdue } from '../../utils/dateHelpers';
 
 type Props = {
     day: string;
@@ -29,7 +30,12 @@ export const DailyTasks = ({ day }: Props) => {
     return (
         <>
             <ButtonRow pt="1" pr="6" pb="1" $end>
-                <Button icon={ICON_TYPE.add} btnType={BUTTON_TYPE.button} onClick={() => setOpenForm(true)}>
+                <Button
+                    icon={ICON_TYPE.add}
+                    btnType={BUTTON_TYPE.button}
+                    onClick={() => setOpenForm(true)}
+                    disabled={isOverdue(new Date(day))}
+                >
                     Add Task
                 </Button>
             </ButtonRow>
