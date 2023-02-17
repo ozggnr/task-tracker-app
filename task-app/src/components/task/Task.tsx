@@ -75,10 +75,10 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                                 <Modal onClick={() => setWarning(false)}>
                                     <div>Do you want to delete this task?</div>
                                     <ButtonRow $center width="40" pb="0.5">
+                                        <Button btnType={BUTTON_TYPE.secondary}>Cancel</Button>
                                         <Button btnType={BUTTON_TYPE.button} onClick={handleConfirm}>
                                             Confirm
                                         </Button>
-                                        <Button btnType={BUTTON_TYPE.secondary}>Cancel</Button>
                                     </ButtonRow>
                                 </Modal>
                             )}

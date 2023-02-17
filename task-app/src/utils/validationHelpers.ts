@@ -6,11 +6,10 @@ type Validation = {
 };
 
 export const errorMessages = {
-    timeOverlap:
-        'There are tasks that overlap with the start and end times of this task. Please adjust the times and try again.',
-    timeExceed: 'There are subtasks that exceed the start or end times of this task',
+    timeOverlap: 'This task overlaps with another task',
+    timeExceed: 'Subtask exceeds the start or end times of this task',
     emptyField: "This can't be empty",
-    subtaskOverlap: 'There are subtasks that overlap. Please adjust the times and try again.',
+    subtaskOverlap: 'This subtask overlaps with another subtask',
 };
 //overlap tasks
 export function checkOverlapTask(existTask: Task, newTask: Task) {

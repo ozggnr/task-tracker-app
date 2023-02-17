@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { ButtonDays } from '../button/Button.style';
 
 type MessageProps = {};
+//Button messages
 export const WarningMessage = styled.span<MessageProps>`
     font-size: 0.75rem;
     position: absolute;
@@ -12,24 +13,6 @@ export const WarningMessage = styled.span<MessageProps>`
     background-color: #ffe0b2;
     border-radius: 0.5rem;
     color: #fb8c00;
-    height: 2rem;
-    ${ButtonDays}:hover & {
-        display: flex;
-        align-items: center;
-    }
-`;
-
-//600 - #fb8c00, 400 - #ffa726, 100 - #ffe0b2
-export const ErrorMessage = styled.span<MessageProps>`
-    font-size: 0.75rem;
-    position: absolute;
-    font-weight: 400;
-    top: 0px;
-    display: none;
-    border: 2px solid #ffa726;
-    background-color: #ffcdd2;
-    border-radius: 0.5rem;
-    color: #e53935;
     height: 2rem;
     ${ButtonDays}:hover & {
         display: flex;
@@ -52,3 +35,12 @@ export const SuccessMessage = styled.span<MessageProps>`
         align-items: center;
     }
 `;
+//Form Error Message
+//600 - #fb8c00, 400 - #ffa726, 100 - #ffe0b2
+export const ErrorMessage = styled.span<MessageProps>`
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #e53935;
+`;
+
+export const MessageText = styled.p``;

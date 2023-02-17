@@ -9,13 +9,18 @@ export const FormContent = styled.div`
     overflow-y: auto;
     flex: 1 1 1px;
 `;
-export const FormInputStyle = styled.div<InputProps>`
+export const FormInputStyle = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: 1rem;
-    color: ${(props) => props.isAlert && 'red'};
 `;
-
+export const Input = styled.input<InputProps>`
+    ${(props) =>
+        props.isAlert &&
+        `
+        border: 2px solid #e53935;
+    `}
+`;
 export const TimeInputContainer = styled.div`
     display: flex;
     column-gap: 1rem;

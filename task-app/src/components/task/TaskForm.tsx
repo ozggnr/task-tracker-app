@@ -1,7 +1,7 @@
 import { FormEvent, useState, ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { postTaskService, updateTaskService } from '../../services/taskService';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { addTask, getDailyTasksSelector, getTaskSelector, updateTask } from '../../store/reducers/tasksSlice';
+import { addTask, getTaskSelector, updateTask } from '../../store/reducers/tasksSlice';
 import { checkSubtasksOverlap, errorMessages, hasExceedTimeTask, mapValidations } from '../../utils/validationHelpers';
 import { Task, SubTask } from '../../Types';
 import Button, { BUTTON_TYPE } from '../button/Button';
@@ -13,6 +13,10 @@ import { FormContent, TimeInputContainer } from '../form/Form.style';
 import { ICON_TYPE } from '../button/Icon.style';
 
 type Validation = {
+    subtask: MessageType;
+    task: MessageType;
+};
+type MessageType = {
     [key: string]: string[];
 };
 
@@ -47,7 +51,7 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
     const selectedTask = activeTask || newTask;
     const [taskInputFields, setTaskInputFields] = useState<Task>(selectedTask);
     //TODO refactor validations
-    const [validations, setValidations] = useState<Validation>({});
+    const [validations, setValidations] = useState<Validation>({ subtask: {}, task: {} });
     console.log(validations);
     return (
         <TaskFormContainer>
@@ -59,6 +63,7 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                         name="title"
                         value={taskInputFields.title}
                         onChange={handleChange}
+                        required
                     />
                     <FormInput
                         label="Description"
@@ -74,7 +79,8 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                             name="start"
                             value={taskInputFields.start}
                             onChange={handleChange}
-                            // message={validations['start']}
+                            required
+                            messages={validations['task']}
                         />
                         <FormInput
                             label="End Time"
@@ -83,7 +89,8 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                             value={taskInputFields.end}
                             max="23:59"
                             onChange={handleChange}
-                            // message={validations['end']}
+                            required
+                            messages={validations['task']}
                         />
                     </TimeInputContainer>
                     {/**TODO Add delete subTask button */}
@@ -115,7 +122,7 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                                         name="description"
                                         value={subTask.description}
                                         onChange={(e: ChangeEvent<HTMLInputElement>) => handleSubTaskChange(index, e)}
-                                        // message={validations['description']}
+                                        required
                                     />
                                     <TimeInputContainer>
                                         <FormInput
@@ -126,7 +133,8 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                                             onChange={(e: ChangeEvent<HTMLInputElement>) =>
                                                 handleSubTaskChange(index, e)
                                             }
-                                            // message={validations['start']}
+                                            required
+                                            messages={validations['subtask']}
                                         />
                                         <FormInput
                                             label="End Time"
@@ -137,7 +145,8 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                                             onChange={(e: ChangeEvent<HTMLInputElement>) =>
                                                 handleSubTaskChange(index, e)
                                             }
-                                            // message={validations['end']}
+                                            required
+                                            messages={validations['subtask']}
                                         />
                                     </TimeInputContainer>
                                 </SubtaksInputContainer>
@@ -174,24 +183,31 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
     }
     //TODO refactor this
     function validateTaskTime() {
-        let validation = {} as Validation;
+        let validation = { subtask: {}, task: {} };
+        console.log(validation);
         if (isTaskOverlap(taskInputFields)) {
-            validation = mapValidations(['start', 'end'], errorMessages['timeOverlap'], validation);
+            validation['task'] = mapValidations(['start', 'end'], errorMessages['timeOverlap'], validation['task']);
         }
         if (hasExceedTimeTask(taskInputFields)) {
-            validation = mapValidations(['start'], errorMessages['timeExceed'], validation);
+            validation['subtask'] = mapValidations(['start'], errorMessages['timeExceed'], validation['subtask']);
         }
         if (checkSubtasksOverlap(taskInputFields)) {
-            validation = mapValidations(['start', 'end'], errorMessages['subtaskOverlap'], validation);
+            validation['subtask'] = mapValidations(
+                ['start', 'end'],
+                errorMessages['subtaskOverlap'],
+                validation['subtask']
+            );
         }
 
-        const isErrorMessageEmpty = !Object.keys(validation).length;
+        const isErrorMessageEmpty =
+            !Object.keys(validation['task']).length && !Object.keys(validation['subtask']).length;
         if (!isErrorMessageEmpty) {
             const vals = { ...validation };
             setValidations((prev) => ({ ...prev, ...vals }));
         } else {
+            //To clear the state
             setValidations({ ...validation });
-        } //To clear the state
+        }
         return isErrorMessageEmpty;
     }
 

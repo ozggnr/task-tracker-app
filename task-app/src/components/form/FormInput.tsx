@@ -1,29 +1,34 @@
-import { useState } from 'react';
 import { InputHTMLAttributes } from 'react';
 import { Checkbox } from '../button/Checkbox';
-import { FormInputStyle } from './Form.style';
-import { SubTask } from '../../Types';
+import { Message, SEVERITY_TYPE } from '../message/Message';
+import { FormInputStyle, Input } from './Form.style';
+
+type MessageType = {
+    [key: string]: string[];
+};
 type FormInputProps = {
     label?: string;
-    error?: boolean;
-    message?: string;
+    messages?: MessageType;
 } & InputHTMLAttributes<HTMLInputElement>;
 
-export const FormInput = ({ label, error, type, message, ...rest }: FormInputProps) => {
+export const FormInput = ({ label, type, messages, name, ...rest }: FormInputProps) => {
+    console.log(messages?.[name!]?.length!);
+    const errorExist = !!messages?.[name!]?.length!;
+
     return (
         <>
             {type === 'checkbox' ? (
                 <Checkbox label={label} {...rest} />
             ) : (
-                <FormInputStyle isAlert={!!message?.length}>
+                <FormInputStyle>
                     {label ? <label>{label}</label> : ''}
-                    <input type={type} {...rest} />
+                    <Input type={type} name={name} isAlert={errorExist} {...rest} />
+                    {messages?.[name!]?.length! > 0 &&
+                        messages?.[name!].map((message) => (
+                            <Message message={message} severity={SEVERITY_TYPE.error} />
+                        ))}
                 </FormInputStyle>
             )}
-            {/* <ErrorMessage> */}
-            {message && <div>{message}</div>}
-
-            {/* </ErrorMessage> */}
         </>
     );
 };
