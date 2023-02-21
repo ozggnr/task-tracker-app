@@ -15,7 +15,7 @@ export const ModalContainer = styled.div`
 export const ModalBox = styled.div`
     display: flex;
     flex-direction: column;
-    background-color: #fcfaf2;
+    background-color: ${(props) => props.theme.colors.secondary};
     width: 40%;
     height: 20%;
     border-radius: 0.5rem;

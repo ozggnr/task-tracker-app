@@ -34,21 +34,21 @@ export const getIcon = (iconType: ICON_TYPE) => {
     return icon;
 };
 export const AddIcon = styled(Add)`
-    color: #fcfaf2;
+    color: ${(props) => props.theme.colors.secondary};
     width: ${(props) => props.size || ICON_SIZE.small};
 `;
 
 export const DeleteIcon = styled(Delete)`
     width: ${(props) => props.size || ICON_SIZE.small};
-    color: #ee6060;
+    color: ${(props) => props.theme.colors.danger};
 `;
 
 export const EditIcon = styled(ModeEdit)`
     width: ${(props) => props.size || ICON_SIZE.small};
-    color: #362e54;
+    color: ${(props) => props.theme.colors.primary};
 `;
 export const CloseIcon = styled(CircleXmark)`
-    color: tomato;
+    color: ${(props) => props.theme.colors.danger};
     width: ${(props) => props.size || ICON_SIZE.small};
 `;
 
@@ -61,5 +61,5 @@ export const RightIcon = styled(CaretRight)`
 `;
 export const WarningIcon = styled(WarningAmber)`
     width: ${(props) => props.size || ICON_SIZE.small};
-    color: #fb8c00;
+    color: ${(props) => props.theme.colors.warning};
 `;

@@ -16,7 +16,7 @@ export const Message = ({ message, severity, withIcon }: MessageProps) => {
     const icon = ICON_TYPE[severity as keyof typeof ICON_TYPE];
     const Icon = getIcon(ICON_TYPE[icon]!);
     const Message = getMessage(severity);
-    console.log(Message);
+
     return (
         <Message>
             {withIcon && <Icon />}

@@ -23,9 +23,10 @@ import {
     DayMonth,
     DayWeek,
     Title,
-} from './CalendarApp.style';
+} from './App.style';
 import { ButtonCaret, ButtonDays, ButtonRow, ButtonToday } from './components/button/Button.style';
 import { LeftIcon, RightIcon } from './components/button/Icon.style';
+import Theme from './Theme';
 
 export default function CalendarApp() {
     //We will update our state by using dispatch, dispatch gets action with payload
@@ -37,51 +38,56 @@ export default function CalendarApp() {
     const weeklyStatuses = useAppSelector(getWeeklyStatusesSelector(calendar));
 
     return (
-        <CalendarContainer>
-            <CalendarHeader>
-                <Title>{activeMonth}</Title>
-                <ButtonRow $end>
-                    <ButtonCaret onClick={() => dispatch(lastWeek(activeDay))}>
-                        <LeftIcon />
-                    </ButtonCaret>
-                    <ButtonToday onClick={() => dispatch(thisWeek(activeDay))}>Today</ButtonToday>
-                    <ButtonCaret onClick={() => dispatch(nextWeek(activeDay))}>
-                        <RightIcon />
-                    </ButtonCaret>
-                </ButtonRow>
-            </CalendarHeader>
-            <CalendarContent>
-                <CalendarDateContainer>
-                    {calendar.map((day, i) => {
-                        return (
-                            <ButtonDays
-                                key={i} //TODO change the key
-                                isActive={isSameDay(new Date(activeDay), day)}
-                                isDayBefore={isDayBefore(day, new Date())}
-                                onClick={() => handleDaySelect(longDateFormat(day))}
-                                taskCompleted={checkTasksCompleted(day)}
-                            >
-                                {checkTasksCompleted(day) !== null &&
-                                    (checkTasksCompleted(day) ? (
-                                        <Message message="Task(s) are completed!" severity={SEVERITY_TYPE.success} />
-                                    ) : (
-                                        <Message
-                                            message="You have incompleted Task(s)"
-                                            severity={SEVERITY_TYPE.warning}
-                                        />
-                                    ))}
+        <Theme>
+            <CalendarContainer>
+                <CalendarHeader>
+                    <Title>{activeMonth}</Title>
+                    <ButtonRow $end>
+                        <ButtonCaret onClick={() => dispatch(lastWeek(activeDay))}>
+                            <LeftIcon />
+                        </ButtonCaret>
+                        <ButtonToday onClick={() => dispatch(thisWeek(activeDay))}>Today</ButtonToday>
+                        <ButtonCaret onClick={() => dispatch(nextWeek(activeDay))}>
+                            <RightIcon />
+                        </ButtonCaret>
+                    </ButtonRow>
+                </CalendarHeader>
+                <CalendarContent>
+                    <CalendarDateContainer>
+                        {calendar.map((day, i) => {
+                            return (
+                                <ButtonDays
+                                    key={i} //TODO change the key
+                                    isActive={isSameDay(new Date(activeDay), day)}
+                                    isDayBefore={isDayBefore(day, new Date())}
+                                    onClick={() => handleDaySelect(longDateFormat(day))}
+                                    taskCompleted={checkTasksCompleted(day)}
+                                >
+                                    {checkTasksCompleted(day) !== null &&
+                                        (checkTasksCompleted(day) ? (
+                                            <Message
+                                                message="Task(s) are completed!"
+                                                severity={SEVERITY_TYPE.success}
+                                            />
+                                        ) : (
+                                            <Message
+                                                message="You have incompleted Task(s)"
+                                                severity={SEVERITY_TYPE.warning}
+                                            />
+                                        ))}
 
-                                <CalendarDate>
-                                    <DayWeek>{getDayOfWeek(day)}</DayWeek>
-                                    <DayMonth>{getDayOfMonth(day)}</DayMonth>
-                                </CalendarDate>
-                            </ButtonDays>
-                        );
-                    })}
-                </CalendarDateContainer>
-                <DailyTasks day={activeDay} />
-            </CalendarContent>
-        </CalendarContainer>
+                                    <CalendarDate>
+                                        <DayWeek>{getDayOfWeek(day)}</DayWeek>
+                                        <DayMonth>{getDayOfMonth(day)}</DayMonth>
+                                    </CalendarDate>
+                                </ButtonDays>
+                            );
+                        })}
+                    </CalendarDateContainer>
+                    <DailyTasks day={activeDay} />
+                </CalendarContent>
+            </CalendarContainer>
+        </Theme>
     );
 
     function handleDaySelect(selectedDay: string) {

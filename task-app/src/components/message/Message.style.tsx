@@ -12,7 +12,7 @@ export const WarningMessage = styled.span<MessageProps>`
     border: 2px solid #ffa726;
     background-color: #ffe0b2;
     border-radius: 0.5rem;
-    color: #fb8c00;
+    color: ${(props) => props.theme.colors.warning};
     height: 2rem;
     ${ButtonDays}:hover & {
         display: flex;
@@ -28,7 +28,7 @@ export const SuccessMessage = styled.span<MessageProps>`
     border: 2px solid #66bb6a;
     background-color: #c8e6c9;
     border-radius: 0.5rem;
-    color: #43a047;
+    color: #${(props) => props.theme.colors.success};
     height: 2rem;
     ${ButtonDays}:hover & {
         display: flex;
@@ -40,7 +40,7 @@ export const SuccessMessage = styled.span<MessageProps>`
 export const ErrorMessage = styled.span<MessageProps>`
     font-size: 0.75rem;
     font-weight: 400;
-    color: #e53935;
+    color: ${(props) => props.theme.colors.danger};
 `;
 
 export const MessageText = styled.p``;

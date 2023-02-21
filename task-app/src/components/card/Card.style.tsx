@@ -15,11 +15,11 @@ export const CardComponent = styled.div<CardProps>`
 
     border: ${(props) =>
         isCompleted(props.statusWarning!)
-            ? '2px solid #0B9B8A'
+            ? `2px solid ${props.theme.statusColors.completed.border}`
             : isNotCompleted(props.statusWarning!)
-            ? '2px solid #ffa726'
+            ? `2px solid ${props.theme.statusColors.notCompleted.border}`
             : isInProgress(props.statusWarning!)
-            ? '2px solid #8707ff'
+            ? `2px solid ${props.theme.statusColors.inProgress.border}`
             : 'none'};
 
     background-color: rgb(255 255 255 / 63%);

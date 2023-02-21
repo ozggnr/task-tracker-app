@@ -38,11 +38,11 @@ export const CalendarDateContainer = styled.div`
     justify-content: space-between;
     align-items: center;
     font-weight: 800;
-    color: #2f0147;
+    // color: #2f0147;
     margin: 1.5rem 6rem 0 6rem;
 `;
 
 export const Title = styled.h1`
-    color: #362e54;
+    color: ${(props) => props.theme.colors.primary};
     width: 100%;
 `;

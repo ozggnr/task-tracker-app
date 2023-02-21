@@ -14,11 +14,11 @@ export const ProgressContainer = styled.div`
 export const ProgressBarContainer = styled.div<ProgressBarProps>`
     background-color: ${(props) =>
         isCompleted(props.status!)
-            ? '#0B9B8A6b'
+            ? `${props.theme.statusColors.completed.bg}`
             : isNotCompleted(props.status!)
-            ? '#ffa7266b'
+            ? `${props.theme.statusColors.notCompleted.bg}`
             : isInProgress(props.status!)
-            ? '#a3aedc6b'
+            ? `${props.theme.statusColors.inProgress.bg}`
             : '#8080806b'};
     width: 0.5rem;
     height: 100%;

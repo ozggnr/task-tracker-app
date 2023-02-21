@@ -4,9 +4,9 @@ import styled from 'styled-components';
 export const BaseButton = styled.button`
     width: 120px;
     padding: 0.5rem 0.5rem;
-    background-color: #362e54;
+    background-color: ${(props) => props.theme.colors.primary};
     // background-color: #262525;
-    color: #fcfaf2;
+    color: ${(props) => props.theme.colors.secondary};
     text-transform: uppercase;
     font-weight: bolder;
     border: none;
@@ -23,19 +23,19 @@ export const BaseButton = styled.button`
 `;
 
 export const SecondaryButton = styled(BaseButton)`
-    background-color: #fcfaf2;
-    color: #362e54;
-    border: 1px solid #362e54;
+    background-color: ${(props) => props.theme.colors.secondary};
+    color: ${(props) => props.theme.colors.primary};
+    border: 1px solid ${(props) => props.theme.colors.primary};
 `;
 export const LinkButton = styled(BaseButton)`
     background: none;
-    color: #362e54;
+    color: #${(props) => props.theme.colors.primary};
 `;
 
 export const ButtonDelete = styled(BaseButton)`
-    color: #ee6060;
+    color: ${(props) => props.theme.colors.danger};
     background-color: #fff;
-    border: 1px solid #ee6060;
+    border: 1px solid ${(props) => props.theme.colors.danger};
 `;
 
 export const ButtonCaret = styled(BaseButton)`
@@ -72,10 +72,10 @@ export const ButtonDays = styled.button<ButtonDaysProps>`
     font-size: ${(props) => (props.isActive ? '1.25rem' : '1rem')};
     width: ${(props) => (props.isActive ? '6rem' : '5rem')};
     height: ${(props) => (props.isActive ? '7rem' : '6rem')};
-    color: #362e54;
-    border: ${(props) => (props.isActive ? '2px solid #362e54' : 'none')};
+    color: ${(props) => props.theme.colors.primary};
+    border: ${(props) => (props.isActive ? `2px solid ${props.theme.colors.primary}` : 'none')};
     &:hover {
-        border: 2px solid #362e54;
+        border: 2px solid ${(props) => props.theme.colors.primary};
         background-image: none;
     }
 `;
