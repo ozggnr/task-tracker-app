@@ -1,15 +1,23 @@
-import { createSlice, PayloadAction, current, createSelector } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, current, createSelector, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import { Task } from '../../Types';
 import { longDateFormat } from '../../utils/dateHelpers';
 import { isCompleted } from '../../utils/taskHelpers';
+import { getTasks } from '../../services/taskService';
 
 interface TaskSliceState {
     tasks: Task[];
+    status: 'idle' | 'loading' | 'succeeded' | 'failed';
+    error: string | undefined;
 }
 const initialState: TaskSliceState = {
     tasks: [],
+    status: 'idle',
+    error: '',
 };
+
+export const fetchTasks = createAsyncThunk('/tasks/fethcTasks', getTasks);
+
 export const tasksSlice = createSlice({
     name: 'tasks',
     initialState: initialState,
@@ -33,22 +41,35 @@ export const tasksSlice = createSlice({
             const taskIndex = state.tasks.findIndex((prevTask) => prevTask.id === id);
             state.tasks[taskIndex].status = status;
         },
-        setTasks: (state, action: PayloadAction<Task[]>) => {
-            const tasks = action.payload;
-            state.tasks = [...tasks];
-        },
+    },
+    extraReducers(builder) {
+        builder
+            .addCase(fetchTasks.pending, (state, action) => {
+                state.status = 'loading';
+            })
+            .addCase(fetchTasks.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                const tasks = action.payload;
+                state.tasks = [...tasks];
+            })
+            .addCase(fetchTasks.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message;
+            });
     },
 });
 
-export const { addTask, updateTask, updateTaskStatus, deleteTask, setTasks } = tasksSlice.actions;
 export const tasksSelector = (state: RootState) => {
     return state.tasks.tasks;
 };
-// export const getTaskSelector = (state: RootState, taskId: string) => {
-//     console.log('here3');
-//     return state.tasks.tasks.find((task) => task.id === taskId);
-// };
-export const getTaskSelector = (id: string) => {
+export const tasksStatusSelector = (state: RootState) => {
+    console.log(state.tasks);
+    return state.tasks.status;
+};
+export const tasksErrorSelector = (state: RootState) => {
+    return state.tasks.error;
+};
+export const getTaskByIdSelector = (id: string) => {
     // console.log('slice1');
     return createSelector(
         (state: RootState) => state.tasks.tasks,
@@ -92,4 +113,5 @@ export const getWeeklyStatusesSelector = (calendar: Date[]) => {
     // );
 };
 
+export const { addTask, updateTask, updateTaskStatus, deleteTask } = tasksSlice.actions;
 export default tasksSlice.reducer;

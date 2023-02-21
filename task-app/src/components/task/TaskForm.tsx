@@ -1,7 +1,7 @@
 import { FormEvent, useState, ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { postTaskService, updateTaskService } from '../../services/taskService';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { addTask, getTaskSelector, updateTask } from '../../store/reducers/tasksSlice';
+import { addTask, getTaskByIdSelector, updateTask } from '../../store/reducers/tasksSlice';
 import { checkSubtasksOverlap, errorMessages, hasExceedTimeTask, mapValidations } from '../../utils/validationHelpers';
 import { Task, SubTask } from '../../Types';
 import Button, { BUTTON_TYPE } from '../button/Button';
@@ -47,12 +47,12 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
 
     const dispatch = useAppDispatch();
     //We can extract the value that we want withing the selector since record of the value is kept for each individual useSelectorx
-    const activeTask = useAppSelector(getTaskSelector(task?.id!));
+    const activeTask = useAppSelector(getTaskByIdSelector(task?.id!));
     const selectedTask = activeTask || newTask;
     const [taskInputFields, setTaskInputFields] = useState<Task>(selectedTask);
     //TODO refactor validations
     const [validations, setValidations] = useState<Validation>({ subtask: {}, task: {} });
-    console.log(validations);
+
     return (
         <TaskFormContainer>
             <Form onSubmit={handleFormSubmit}>
