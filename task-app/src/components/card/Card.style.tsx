@@ -10,7 +10,6 @@ export const CardComponent = styled.div<CardProps>`
     height: 150px;
     border-radius: 1rem;
     padding: 0.5rem;
-    backdrop-filter: blur(16px) saturate(180%);
     ${(props) => props.isActive && 'transform: scale(1.1)'};
 
     border: ${(props) =>

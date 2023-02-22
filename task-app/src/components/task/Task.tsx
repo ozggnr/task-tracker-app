@@ -33,7 +33,8 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
     const [openDetails, setOpenDetails] = useState(true);
     //scroll to active task
     const scrollRef = useRef<null | HTMLDivElement>(null);
-    const executeScroll = () => scrollRef!.current!.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const executeScroll = () =>
+        scrollRef!.current!.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
     useEffect(() => {
         if (format(new Date(), 'HH:mm') >= activeTask.start) executeScroll();
     }, []);

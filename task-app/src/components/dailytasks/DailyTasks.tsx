@@ -31,11 +31,13 @@ export const DailyTasks = ({ day }: Props) => {
     const dailyTasks = useAppSelector(getDailyTasksSelector(day));
     //I have to sort here since prisma sort doesn't work on the back end
     const sortedDailyTasks = dailyTasks.sort((a, b) => (a.start > b.start ? 1 : -1));
-
+    if (status === 'loading') {
+        return <h2>🌀 Loading...</h2>;
+    } else if (error) {
+        return <h2>Something went wrong</h2>;
+    }
     return (
         <>
-            {status === 'loading' && <h2>🌀 Loading...</h2>}
-            {error && <h2>Something went wrong</h2>}
             <ButtonRow pt="1" pr="6" pb="1" $end>
                 <Button
                     icon={ICON_TYPE.add}
