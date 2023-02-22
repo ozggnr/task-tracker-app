@@ -1,12 +1,6 @@
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import {
-    getDailyTasksSelector,
-    tasksSelector,
-    tasksStatusSelector,
-    tasksErrorSelector,
-    fetchTasks,
-} from '../../store/reducers/tasksSlice';
+import { getDailyTasksSelector, fetchTasks, getTasksSelector } from '../../store/reducers/tasksSlice';
 import { Task } from '../../Types';
 import Button, { BUTTON_TYPE } from '../button/Button';
 import { TaskCard } from '../task/Task';
@@ -26,14 +20,13 @@ export const DailyTasks = ({ day }: Props) => {
     const [openForm, setOpenForm] = useState(false);
     const dispatch = useAppDispatch();
 
-    const tasksStatus = useAppSelector(tasksStatusSelector);
-    const error = useAppSelector(tasksErrorSelector);
+    const { status, error } = useAppSelector(getTasksSelector());
 
     useEffect(() => {
-        if (tasksStatus === 'idle') {
+        if (status === 'idle') {
             dispatch(fetchTasks());
         }
-    }, [tasksStatus, dispatch]);
+    }, []);
 
     const dailyTasks = useAppSelector(getDailyTasksSelector(day));
     //I have to sort here since prisma sort doesn't work on the back end
@@ -41,7 +34,7 @@ export const DailyTasks = ({ day }: Props) => {
 
     return (
         <>
-            {tasksStatus === 'loading' && <h2>🌀 Loading...</h2>}
+            {status === 'loading' && <h2>🌀 Loading...</h2>}
             {error && <h2>Something went wrong</h2>}
             <ButtonRow pt="1" pr="6" pb="1" $end>
                 <Button

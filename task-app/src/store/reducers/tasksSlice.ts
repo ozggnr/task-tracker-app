@@ -58,17 +58,17 @@ export const tasksSlice = createSlice({
             });
     },
 });
+//created memoized selector, this will change only when status or error has changed
+export const getTasksSelector = () => {
+    return createSelector(
+        (state: RootState) => state.tasks.status,
+        (state: RootState) => state.tasks.error,
+        (status, error) => {
+            return { status, error };
+        }
+    );
+};
 
-export const tasksSelector = (state: RootState) => {
-    return state.tasks.tasks;
-};
-export const tasksStatusSelector = (state: RootState) => {
-    console.log(state.tasks);
-    return state.tasks.status;
-};
-export const tasksErrorSelector = (state: RootState) => {
-    return state.tasks.error;
-};
 export const getTaskByIdSelector = (id: string) => {
     // console.log('slice1');
     return createSelector(
