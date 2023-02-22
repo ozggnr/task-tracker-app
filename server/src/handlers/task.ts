@@ -127,6 +127,15 @@ export const deleteTask = async (req: Request, res: Response) => {
     });
     res.json({ data: deletedTask });
 };
+//delete subtask
+export const deleteSubTask = async (req: Request, res: Response) => {
+    const deletedSubtask = await prisma.subTask.delete({
+        where: {
+            id: req.params.id,
+        },
+    });
+    res.json({ data: deletedSubtask });
+};
 
 type UpdateProps<T> = {
     data: Partial<T>;
