@@ -1,5 +1,5 @@
 import { FormEvent, useState, ChangeEvent, Dispatch, SetStateAction } from 'react';
-import { postTaskService, updateTaskService } from '../../services/taskService';
+import { deleteSubTaskService, postTaskService, updateTaskService } from '../../services/taskService';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { addTask, getTaskByIdSelector, updateTask } from '../../store/reducers/tasksSlice';
 import { checkSubtasksOverlap, errorMessages, hasExceedTimeTask, mapValidations } from '../../utils/validationHelpers';
@@ -93,7 +93,6 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                             messages={validations['task']}
                         />
                     </TimeInputContainer>
-                    {/**TODO Add delete subTask button */}
                     {/* but collapse for subTask, put button on top just icon */}
                     <ButtonRow $end>
                         <Button
@@ -115,6 +114,15 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                         taskInputFields.subTasks.map((subTask, index) => {
                             return (
                                 <SubtaksInputContainer>
+                                    <Button
+                                        icon={ICON_TYPE.delete}
+                                        type="button"
+                                        btnType={BUTTON_TYPE.delete}
+                                        onClick={() => handleDeleteSubTask(subTask.id!)}
+                                    >
+                                        Delete
+                                    </Button>
+
                                     <FormInput
                                         key={subTask.id}
                                         label="SubDescription"
@@ -238,5 +246,13 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                     : sub;
             }),
         }));
+    }
+
+    function handleDeleteSubTask(id: string) {
+        setTaskInputFields({
+            ...taskInputFields,
+            subTasks: [...taskInputFields.subTasks.filter((subs) => subs.id !== id)],
+        });
+        return deleteSubTaskService(id);
     }
 };

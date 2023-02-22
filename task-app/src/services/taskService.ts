@@ -52,3 +52,9 @@ export async function updateTaskService(task: Task) {
         body: task,
     });
 }
+export async function deleteSubTaskService(subTaskId: string) {
+    return fetcher({
+        url: `http://localhost:5001/api/subtask/${subTaskId}`,
+        method: 'DELETE',
+    });
+}
