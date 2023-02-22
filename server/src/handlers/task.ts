@@ -1,4 +1,4 @@
-import { SubTask } from '@prisma/client';
+import { List, SubTask } from '@prisma/client';
 import { Request, Response } from 'express';
 import prisma from '../database/db';
 
@@ -14,6 +14,7 @@ export const getTasks = async (req: Request, res: Response) => {
                     start: 'asc',
                 },
             },
+            list: true,
         },
     });
     // since i added date field to subtask later, i need to assign the dates //TODO add date in schema
@@ -38,6 +39,7 @@ export const getTask = async (req: Request, res: Response) => {
         },
         include: {
             subTasks: true,
+            list: true,
         },
     });
     res.json({ data: task });
@@ -45,13 +47,13 @@ export const getTask = async (req: Request, res: Response) => {
 
 //create task
 export const createTask = async (req: Request, res: Response) => {
-    const subTasksToCreate = req.body?.subTasks.map((task: typeof req.body) => {
+    const subTasksToCreate = req.body?.subTasks.map((subTask: typeof req.body) => {
         return {
             date: new Date(req.body.date),
-            description: task.description,
-            start: task.start,
-            end: task.end,
-            status: task.status,
+            description: subTask.description,
+            start: subTask.start,
+            end: subTask.end,
+            status: subTask.status,
         };
     });
     const newTask = await prisma.task.create({
@@ -67,6 +69,7 @@ export const createTask = async (req: Request, res: Response) => {
         },
         include: {
             subTasks: true,
+            list: true,
         },
     });
     res.json({ data: newTask });
@@ -74,36 +77,17 @@ export const createTask = async (req: Request, res: Response) => {
 
 //update task with related records
 export const updateTask = async (req: Request, res: Response) => {
-    type UpdateProps = {
-        data: {};
-        where: {
-            id: string;
-        };
-    };
     const subtasks = [...req.body.subTasks];
+    const list = [...req.body.list];
     subtasks.sort((a, b) => {
         return a.start! > b.start! ? 1 : -1;
     });
-    const subTasksToUpdate = subtasks.reduce((props: UpdateProps[], subTask: SubTask) => {
-        if (subTask.id) {
-            const obj: UpdateProps = {
-                data: {
-                    date: new Date(req.body.date),
-                    description: subTask.description,
-                    start: subTask.start,
-                    end: subTask.end,
-                    status: subTask.status,
-                },
-                where: {
-                    id: subTask.id,
-                },
-            };
-            props.push(obj);
-        }
-        return props;
-    }, []);
 
-    const subTasksToCreate = subtasks.filter((task: typeof req.body) => !task.id);
+    const listToUpdate = createUpdateFunction<List>(['description', 'status'], list);
+    const subTasksToUpdate = createUpdateFunction<SubTask>(['description', 'start', 'end', 'status'], subtasks);
+
+    const subTasksToCreate = subtasks.filter((subTask: typeof req.body) => !subTask.id);
+    const listToCreate = list.filter((listItem: typeof req.body) => !listItem.id);
 
     const updatedTask = await prisma.task.update({
         where: {
@@ -120,9 +104,14 @@ export const updateTask = async (req: Request, res: Response) => {
                 update: subTasksToUpdate.length ? subTasksToUpdate : [],
                 create: subTasksToCreate,
             },
+            list: {
+                update: listToUpdate.length ? listToUpdate : [],
+                create: listToCreate,
+            },
         },
         include: {
             subTasks: true,
+            list: true,
         },
     });
 
@@ -138,3 +127,24 @@ export const deleteTask = async (req: Request, res: Response) => {
     });
     res.json({ data: deletedTask });
 };
+
+type UpdateProps<T> = {
+    data: Partial<T>;
+    where: {
+        id: string;
+    };
+};
+function createUpdateFunction<T extends { id?: string }>(propsToUpdate: (keyof T)[], items: T[]) {
+    return items
+        .filter((item) => item.id)
+        .map((item) => {
+            console.log('id', item, item.id);
+            const dataToUpdate = propsToUpdate.reduce((data, prop) => {
+                return { ...data, [prop]: item[prop] };
+            }, {});
+            return {
+                data: dataToUpdate,
+                where: { id: item.id },
+            };
+        });
+}

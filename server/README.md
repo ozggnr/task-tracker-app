@@ -8,4 +8,6 @@
 
 -   Generate prisma to use client `npx prisma generate`
 -   To seed the database `npx prisma db seed`
+-   To update database `npx prisma db push`
 -   To browse data on prisma `npx prisma studio`
+-   To format .prisma file `npx prisma format`

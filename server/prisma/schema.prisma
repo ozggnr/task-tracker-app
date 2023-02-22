@@ -27,20 +27,34 @@ model Task {
   end         String
   status      TASK_STATUS @default(NOT_STARTED)
   subTasks    SubTask[]
-  deleted     Boolean @default(false)
+  list        List[]
+  deleted     Boolean     @default(false)
 }
 
 //Embedded document pattern
 model SubTask {
   id          String      @id @default(auto()) @map("_id") @db.ObjectId
   createdAt   DateTime    @default(now())
-  task   Task        @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  taskId String      @db.ObjectId
-  date        DateTime?    @db.Date
-  description String?
-  start       String? 
-  end         String?
+  task        Task        @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId      String      @db.ObjectId
+  date        DateTime?   @db.Date
+  description String
+  start       String
+  end         String
   status      TASK_STATUS @default(NOT_STARTED)
-  deleted     Boolean @default(false)
+  deleted     Boolean     @default(false)
+
+  @@index([taskId, id])
+}
+
+model List {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt   DateTime    @default(now())
+  task        Task        @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId      String      @db.ObjectId
+  description String
+  status      TASK_STATUS @default(NOT_STARTED)
+  deleted     Boolean     @default(false)
+
   @@index([taskId, id])
 }
