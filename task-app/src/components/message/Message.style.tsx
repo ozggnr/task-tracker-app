@@ -36,11 +36,18 @@ export const SuccessMessage = styled.span<MessageProps>`
     }
 `;
 //Form Error Message
-//600 - #fb8c00, 400 - #ffa726, 100 - #ffe0b2
-export const ErrorMessage = styled.span<MessageProps>`
+export const ValidationErrorMessage = styled.span`
     font-size: 0.75rem;
     font-weight: 400;
     color: ${(props) => props.theme.colors.danger};
 `;
 
-export const MessageText = styled.p``;
+export const MessageText = styled.p`
+    padding: 0.5rem;
+`;
+
+export const ErrorMessage = styled.h2`
+    text-align: center;
+    color: ${(props) => props.theme.colors.primary};
+    padding-top: 4rem;
+`;

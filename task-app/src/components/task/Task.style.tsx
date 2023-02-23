@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 interface TaskContainerProps {
     readonly overdue?: boolean;
-    readonly cardActive?: boolean;
 }
 export const TaskContainer = styled.div<TaskContainerProps>`
     display: flex;

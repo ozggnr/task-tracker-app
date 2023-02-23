@@ -6,6 +6,7 @@ type Fetcher = {
     body?: Task;
     json?: boolean;
 };
+//TODO Use TRY CATCH
 const fetcher = async ({ url, method, body, json = true }: Fetcher) => {
     const response = await fetch(url, {
         method,
@@ -17,7 +18,7 @@ const fetcher = async ({ url, method, body, json = true }: Fetcher) => {
     });
 
     if (!response.ok) {
-        throw new Error('API error!');
+        throw new Error(`${response.status} ${response.statusText}`);
     }
 
     const data = await response.json();

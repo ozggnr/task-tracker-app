@@ -5,12 +5,14 @@ import { Task } from '../../Types';
 import Button, { BUTTON_TYPE } from '../button/Button';
 import { TaskCard } from '../task/Task';
 import { TaskForm } from '../task/TaskForm';
-import { DayContainer } from './DailyTasks.style';
-import { ICON_TYPE } from '../button/Icon.style';
 import Sidebar from '../sidebar/Sidebar';
 import { checkOverlapTask } from '../../utils/validationHelpers';
-import { ButtonRow } from '../button/Button.style';
 import { isOverdue } from '../../utils/dateHelpers';
+import { Loading } from '../loading/Loading';
+import { Message, SEVERITY_TYPE } from '../message/Message';
+import { ButtonRow } from '../button/Button.style';
+import { DayContainer } from './DailyTasks.style';
+import { ICON_SIZE, ICON_TYPE } from '../button/Icon.style';
 
 type Props = {
     day: string;
@@ -31,11 +33,19 @@ export const DailyTasks = ({ day }: Props) => {
     const dailyTasks = useAppSelector(getDailyTasksSelector(day));
     //I have to sort here since prisma sort doesn't work on the back end
     const sortedDailyTasks = dailyTasks.sort((a, b) => (a.start > b.start ? 1 : -1));
+
     if (status === 'loading') {
-        return <h2>🌀 Loading...</h2>;
+        return <Loading />;
     } else if (error) {
-        return <h2>Something went wrong</h2>;
+        return (
+            <Message
+                message={error}
+                severity={SEVERITY_TYPE.error}
+                withIcon={{ icon: ICON_TYPE.error, size: ICON_SIZE.large }}
+            />
+        );
     }
+
     return (
         <>
             <ButtonRow pt="1" pr="6" pb="1" $end>

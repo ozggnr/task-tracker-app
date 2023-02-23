@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Add, Delete, ModeEdit, WarningAmber } from '@styled-icons/material';
+import { Add, Delete, ModeEdit, WarningAmber, Error } from '@styled-icons/material';
 import {
     Plus,
     CircleXmark,
@@ -15,7 +15,7 @@ export enum ICON_TYPE {
     edit = 'edit',
     delete = 'delete',
     warning = 'warning',
-    // error = 'error',
+    error = 'error',
     // success = 'success'
 }
 export enum ICON_SIZE {
@@ -30,6 +30,7 @@ export const getIcon = (iconType: ICON_TYPE) => {
         [ICON_TYPE.edit]: EditIcon,
         [ICON_TYPE.delete]: DeleteIcon,
         [ICON_TYPE.warning]: WarningIcon,
+        [ICON_TYPE.error]: ErrorIcon,
     }[iconType];
     return icon;
 };
@@ -62,4 +63,8 @@ export const RightIcon = styled(CaretRight)`
 export const WarningIcon = styled(WarningAmber)`
     width: ${(props) => props.size || ICON_SIZE.small};
     color: ${(props) => props.theme.colors.warning};
+`;
+export const ErrorIcon = styled(Error)`
+    width: ${(props) => props.size || ICON_SIZE.small};
+    color: ${(props) => props.theme.colors.danger};
 `;

@@ -12,7 +12,6 @@ type FormInputProps = {
 } & InputHTMLAttributes<HTMLInputElement>;
 
 export const FormInput = ({ label, type, messages, name, ...rest }: FormInputProps) => {
-    console.log(messages?.[name!]?.length!);
     const errorExist = !!messages?.[name!]?.length!;
 
     return (
@@ -25,7 +24,7 @@ export const FormInput = ({ label, type, messages, name, ...rest }: FormInputPro
                     <Input type={type} name={name} isAlert={errorExist} {...rest} />
                     {messages?.[name!]?.length! > 0 &&
                         messages?.[name!].map((message) => (
-                            <Message message={message} severity={SEVERITY_TYPE.error} />
+                            <Message message={message} severity={SEVERITY_TYPE.validationError} />
                         ))}
                 </FormInputStyle>
             )}

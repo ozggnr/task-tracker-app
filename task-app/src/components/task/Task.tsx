@@ -31,6 +31,7 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
     const [warning, setWarning] = useState(false);
     const activeTask = useTaskStatus(task);
     const [openDetails, setOpenDetails] = useState(true);
+    console.log(task);
     //scroll to active task
     const scrollRef = useRef<null | HTMLDivElement>(null);
     const executeScroll = () =>
@@ -44,7 +45,7 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
     const isCardActive = openForm || (openDetails && openDetailPage(activeTask));
 
     return (
-        <TaskContainer ref={scrollRef} overdue={isTaskOverdue} cardActive={isCardActive}>
+        <TaskContainer ref={scrollRef} overdue={isTaskOverdue}>
             <ProgressBar startTime={activeTask.start!} endTime={activeTask.end!} status={activeTask.status} />
             <Card cardActive={isCardActive} statusWarning={activeTask.status}>
                 <CardHeader>
