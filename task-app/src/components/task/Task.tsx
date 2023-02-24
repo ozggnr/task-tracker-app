@@ -16,9 +16,9 @@ import Card from '../card/Card';
 import { TaskForm } from './TaskForm';
 import { TaskDetails } from './TaskDetails';
 import { CardBody, CardFooter, CardHeader } from '../card/Card.style';
-import { TaskContainer, TaskTitle, TaskInfo, TaskDescription } from './Task.style';
-import { ButtonRow } from '../button/Button.style';
+import { TaskContainer, TaskTitle, TaskInfo, TaskDescription, TaskStatus } from './Task.style';
 import { ICON_TYPE } from '../button/Icon.style';
+import { Row } from '../../Main.style';
 
 type TaskProps = {
     task: Task;
@@ -31,7 +31,6 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
     const [warning, setWarning] = useState(false);
     const activeTask = useTaskStatus(task);
     const [openDetails, setOpenDetails] = useState(true);
-    console.log(task);
     //scroll to active task
     const scrollRef = useRef<null | HTMLDivElement>(null);
     const executeScroll = () =>
@@ -50,10 +49,11 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
             <Card cardActive={isCardActive} statusWarning={activeTask.status}>
                 <CardHeader>
                     <TaskInfo>
-                        {getStatusText(activeTask.status!)} {` ~ ${activeTask?.subTasks.length} SubTask(s)`}
+                        <TaskStatus statusWarning={activeTask.status}>{getStatusText(activeTask.status!)}</TaskStatus>
+                        {` ~ ${activeTask?.subTasks.length} SubTask(s)`}
                     </TaskInfo>
                     {!isCompleted(activeTask.status!) && (
-                        <ButtonRow $end width="30">
+                        <Row $end width="30">
                             <Button
                                 icon={ICON_TYPE.delete}
                                 btnType={BUTTON_TYPE.delete}
@@ -74,17 +74,17 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                                 Edit
                             </Button>
                             {warning && (
-                                <Modal onClick={() => setWarning(false)}>
+                                <Modal onClick={() => setWarning(false)} size="small">
                                     <div>Do you want to delete this task?</div>
-                                    <ButtonRow $center width="40" pb="0.5">
+                                    <Row $center width="40" pb="0.5">
                                         <Button btnType={BUTTON_TYPE.secondary}>Cancel</Button>
-                                        <Button btnType={BUTTON_TYPE.button} onClick={handleConfirm}>
+                                        <Button btnType={BUTTON_TYPE.primary} onClick={handleConfirm}>
                                             Confirm
                                         </Button>
-                                    </ButtonRow>
+                                    </Row>
                                 </Modal>
                             )}
-                        </ButtonRow>
+                        </Row>
                     )}
                 </CardHeader>
                 <CardBody>
@@ -93,7 +93,7 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                 </CardBody>
                 <CardFooter>
                     {isNotCompleted(activeTask.status!) && (
-                        <ButtonRow $end>
+                        <Row $end>
                             <Checkbox
                                 name="completed"
                                 label="Completed"
@@ -101,7 +101,7 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                                 onClick={handleCompleteTask}
                                 disabled={isTaskOverdue}
                             />
-                        </ButtonRow>
+                        </Row>
                     )}
                 </CardFooter>
             </Card>

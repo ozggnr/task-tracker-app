@@ -24,9 +24,10 @@ import {
     DayWeek,
     Title,
 } from './App.style';
-import { ButtonCaret, ButtonDays, ButtonRow, ButtonToday } from './components/button/Button.style';
+import { ButtonCaret, ButtonDays, ButtonToday } from './components/button/Button.style';
 import { LeftIcon, RightIcon } from './components/button/Icon.style';
 import Theme from './Theme';
+import { Row } from './Main.style';
 
 export default function CalendarApp() {
     //We will update our state by using dispatch, dispatch gets action with payload
@@ -42,7 +43,7 @@ export default function CalendarApp() {
             <CalendarContainer>
                 <CalendarHeader>
                     <Title>{activeMonth}</Title>
-                    <ButtonRow $end>
+                    <Row $end>
                         <ButtonCaret onClick={() => dispatch(lastWeek(activeDay))}>
                             <LeftIcon />
                         </ButtonCaret>
@@ -50,7 +51,7 @@ export default function CalendarApp() {
                         <ButtonCaret onClick={() => dispatch(nextWeek(activeDay))}>
                             <RightIcon />
                         </ButtonCaret>
-                    </ButtonRow>
+                    </Row>
                 </CalendarHeader>
                 <CalendarContent>
                     <CalendarDateContainer>

@@ -5,14 +5,14 @@ import { Task } from '../../Types';
 import Button, { BUTTON_TYPE } from '../button/Button';
 import { TaskCard } from '../task/Task';
 import { TaskForm } from '../task/TaskForm';
-import Sidebar from '../sidebar/Sidebar';
 import { checkOverlapTask } from '../../utils/validationHelpers';
 import { isOverdue } from '../../utils/dateHelpers';
 import { Loading } from '../loading/Loading';
 import { Message, SEVERITY_TYPE } from '../message/Message';
-import { ButtonRow } from '../button/Button.style';
 import { DayContainer } from './DailyTasks.style';
 import { ICON_SIZE, ICON_TYPE } from '../button/Icon.style';
+import Modal from '../modal/Modal';
+import { Row } from '../../Main.style';
 
 type Props = {
     day: string;
@@ -48,21 +48,21 @@ export const DailyTasks = ({ day }: Props) => {
 
     return (
         <>
-            <ButtonRow pt="1" pr="6" pb="1" $end>
+            <Row pt="1" pr="6" pb="1" $end>
                 <Button
                     icon={ICON_TYPE.add}
-                    btnType={BUTTON_TYPE.button}
+                    btnType={BUTTON_TYPE.primary}
                     onClick={() => setOpenForm(true)}
                     disabled={isOverdue(new Date(day))}
                 >
                     Add Task
                 </Button>
-            </ButtonRow>
+            </Row>
             <DayContainer>
                 {openForm && (
-                    <Sidebar onClick={() => setOpenForm(false)} isActive={openForm}>
+                    <Modal onClick={() => setOpenForm(false)} size="large">
                         <TaskForm activeDay={day} setOpenForm={setOpenForm} isTaskOverlap={isTaskOverlap} />
-                    </Sidebar>
+                    </Modal>
                 )}
                 {sortedDailyTasks.map((task: Task) => {
                     return <TaskCard task={task} key={task.id} isTaskOverlap={isTaskOverlap} />;
@@ -71,7 +71,6 @@ export const DailyTasks = ({ day }: Props) => {
         </>
     );
 
-    //TODO refactor validations
     function isTaskOverlap(task: Task): boolean {
         const overlappedTasks = sortedDailyTasks.filter(
             (existTask: Task) => existTask.id !== task.id && checkOverlapTask(existTask, task)
