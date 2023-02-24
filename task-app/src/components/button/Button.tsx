@@ -4,19 +4,16 @@ import { AddIcon, getIcon, ICON_SIZE, ICON_TYPE } from './Icon.style';
 
 //to create button types
 export enum BUTTON_TYPE {
-    button = 'button',
-    submit = 'submit',
-    delete = 'delete',
+    primary = 'primary',
     secondary = 'secondary',
+    delete = 'delete',
     link = 'link',
 }
-//TODO there is something wrong with submit and button check this
-export const getButton = (buttonType = BUTTON_TYPE.button) => {
+export const getButton = (buttonType = BUTTON_TYPE.primary) => {
     const selectedButton = {
-        [BUTTON_TYPE.button]: BaseButton,
-        [BUTTON_TYPE.submit]: BaseButton,
-        [BUTTON_TYPE.delete]: ButtonDelete,
+        [BUTTON_TYPE.primary]: BaseButton,
         [BUTTON_TYPE.secondary]: SecondaryButton,
+        [BUTTON_TYPE.delete]: ButtonDelete,
         [BUTTON_TYPE.link]: LinkButton,
     }[buttonType];
     return selectedButton;

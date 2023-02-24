@@ -1,14 +1,6 @@
 import styled from 'styled-components';
 import { Add, Delete, ModeEdit, WarningAmber, Error } from '@styled-icons/material';
-import {
-    Plus,
-    CircleXmark,
-    CaretLeft,
-    CaretRight,
-    TrashCan,
-    PenToSquare,
-    TriangleExclamation,
-} from '@styled-icons/fa-solid';
+import { CircleXmark, CaretLeft, CaretRight } from '@styled-icons/fa-solid';
 
 export enum ICON_TYPE {
     add = 'add',
@@ -35,7 +27,6 @@ export const getIcon = (iconType: ICON_TYPE) => {
     return icon;
 };
 export const AddIcon = styled(Add)`
-    color: ${(props) => props.theme.colors.secondary};
     width: ${(props) => props.size || ICON_SIZE.small};
 `;
 
