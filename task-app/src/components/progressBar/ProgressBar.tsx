@@ -11,35 +11,34 @@ type ProgressBarProps = {
 };
 
 export const ProgressBar = ({ startTime, endTime, status }: ProgressBarProps) => {
-    const [date, setDate] = useState(new Date());
+    const [now, setNow] = useState(new Date());
     const intervalRef = useRef<number>();
-    const timedifference = differenceSeconds(
+    const totalTime = differenceSeconds(
         { earlierDate: new Date(), earlierTime: startTime! },
         { laterDate: new Date(), laterTime: endTime! }
     );
-    //TODO refactor this code
-    const hours = date.getHours();
-    const mins = date.getMinutes();
-    const secs = date.getSeconds();
-    const starthours = Number(startTime.split(':')[0]);
-    const startMins = Number(startTime.split(':')[1]);
-    const result = differenceInSeconds(
-        new Date(2022, 2, 10, hours, mins, secs),
-        new Date(2022, 2, 10, starthours, startMins, 0)
+
+    const hours = now.getHours();
+    const mins = now.getMinutes();
+    const secs = now.getSeconds();
+    //difference between now and start time of the task
+    const passedTime = differenceSeconds(
+        { earlierDate: new Date(), earlierTime: startTime },
+        { laterDate: new Date(), laterTime: `${hours}:${mins}:${secs}` }
     );
-    // useEffect(() => {
-    //     if (`${hours}:${mins}` < endTime) {
-    //         console.log('in');
-    //         const timerId = setInterval(() => setDate(new Date()), 1000);
-    //         intervalRef.current = timerId;
-    //     }
-    //     return function cleanup() {
-    //         clearInterval(intervalRef.current);
-    //     };
-    // }, []);
 
-    let calcHeight = Math.floor((result * 100) / timedifference);
-
+    useEffect(() => {
+        if (`${hours}:${mins}` < endTime) {
+            const timerId = setInterval(() => setNow(new Date()), 1000);
+            intervalRef.current = timerId;
+        }
+        return function cleanup() {
+            clearInterval(intervalRef.current);
+        };
+    }, []);
+    //passed time converted into height
+    let calcHeight = Math.floor((passedTime * 100) / totalTime);
+    //end timer
     if (calcHeight === 100) {
         clearInterval(intervalRef.current);
     }
@@ -59,56 +58,3 @@ export const ProgressBar = ({ startTime, endTime, status }: ProgressBarProps) =>
         </ProgressContainer>
     );
 };
-
-// import { useState, useEffect, useRef, PropsWithChildren } from 'react';
-// import { durationBetween } from '../../utils/dateHelpers';
-
-// type ProgressBarProps = {
-//     startTime: string;
-//     endTime: string;
-// };
-// export const ProgressBar = ({ startTime, endTime }: ProgressBarProps) => {
-//     const [date, setDate] = useState(new Date());
-//     const intervalRef = useRef<number>();
-
-//     // console.log('--', new Date(convertedEndTime));
-//     // console.log('total', totalSecs);
-//     const completed = 360;
-//     // console.log(completed);
-//     // useEffect(() => {
-//     //     const timerId = setInterval(() => setDate(new Date()), 1000);
-//     //     intervalRef.current = timerId;
-//     //     return function cleanup() {
-//     //         clearInterval(intervalRef.current);
-//     //     };
-//     // }, []);
-
-//     const fillerStyles: React.CSSProperties = {
-//         position: 'relative',
-//         display: 'flex',
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//         height: '100px',
-//         width: '100px',
-//         borderRadius: '50%',
-//         border: '2px solid black',
-//         zIndex: '0',
-//         background: `conic-gradient(red ${Math.floor(completed)}deg, #fff 0deg)`,
-//     };
-
-//     // if (completed === 360) {
-//     //     clearInterval(intervalRef.current);
-//     // }
-
-//     return (
-//         <div className="progressContainer">
-//             <div style={fillerStyles}>
-//                 {/* <span className="sth">{`${Math.floor(completed)}%`}</span> */}
-//                 <div className="progress-value">
-//                     {date.toLocaleTimeString()}
-//                     {/* <img src="images/test.jpg" alt="Task Tag" className="tagImage" /> */}
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// };
