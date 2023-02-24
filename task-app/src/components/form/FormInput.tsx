@@ -9,9 +9,10 @@ type MessageType = {
 type FormInputProps = {
     label?: string;
     messages?: MessageType;
+    grow?: string;
 } & InputHTMLAttributes<HTMLInputElement>;
 
-export const FormInput = ({ label, type, messages, name, ...rest }: FormInputProps) => {
+export const FormInput = ({ label, type, messages, name, grow, ...rest }: FormInputProps) => {
     const errorExist = !!messages?.[name!]?.length!;
 
     return (
@@ -19,7 +20,7 @@ export const FormInput = ({ label, type, messages, name, ...rest }: FormInputPro
             {type === 'checkbox' ? (
                 <Checkbox label={label} {...rest} />
             ) : (
-                <FormInputStyle>
+                <FormInputStyle grow={grow}>
                     {label ? <label>{label}</label> : ''}
                     <Input type={type} name={name} isAlert={errorExist} {...rest} />
                     {messages?.[name!]?.length! > 0 &&
