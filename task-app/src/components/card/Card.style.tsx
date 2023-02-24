@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { isCompleted, isInProgress, isNotCompleted } from '../../utils/taskHelpers';
+import { Row } from '../../Main.style';
+import { isInProgress } from '../../utils/taskHelpers';
 
 interface CardProps {
     readonly isActive: boolean;
@@ -20,8 +21,7 @@ export const CardComponent = styled.div<CardProps>`
     transition: width linear 0.25s;
 `;
 
-export const CardHeader = styled.div`
-    display: flex;
+export const CardHeader = styled(Row)`
     justify-content: space-between;
     height: 25%;
 `;
@@ -32,6 +32,13 @@ export const CardBody = styled.div`
     height: 50%;
     padding: 0.5rem;
 `;
-export const CardFooter = styled.div`
+export const CardFooter = styled(Row)`
     height: 25%;
+    justify-content: flex-end;
+`;
+export const CardButtonGroup = styled(Row)`
+    width: 20%;
+    padding: 0 0 0.5rem 0;
+    column-gap: 0.5rem;
+    justify-content: flex-end;
 `;

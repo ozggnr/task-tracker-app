@@ -7,10 +7,10 @@ import { Task, SubTask } from '../../Types';
 import Button, { BUTTON_TYPE } from '../button/Button';
 import { FormInput } from '../form/FormInput';
 import { Form } from '../form/Form';
-import { SubtaksInputContainer, TaskFormContainer } from './TaskForm.style';
-import { ButtonRow } from '../button/Button.style';
-import { FormContent, TimeInputContainer } from '../form/Form.style';
-import { ICON_TYPE } from '../button/Icon.style';
+import { SubtakInputContainer, TaskFormContainer, TaskFormHeader } from './TaskForm.style';
+import { FormButtonRow, FormContent, FormInputRow } from '../form/Form.style';
+import { ICON_SIZE, ICON_TYPE } from '../button/Icon.style';
+import { Divider } from '../../Main.style';
 
 type Validation = {
     subtask: MessageType;
@@ -55,24 +55,41 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
 
     return (
         <TaskFormContainer>
+            <TaskFormHeader>
+                <h3>{selectedTask?.date}</h3>
+                <Button
+                    icon={ICON_TYPE.add}
+                    iconSize={ICON_SIZE.small}
+                    btnType={BUTTON_TYPE.secondary}
+                    type="button"
+                    onClick={() => {
+                        setTaskInputFields({
+                            ...taskInputFields,
+                            subTasks: [...taskInputFields.subTasks, ...[subTaskField]],
+                        });
+                    }}
+                />
+            </TaskFormHeader>
             <Form onSubmit={handleFormSubmit}>
                 <FormContent>
-                    <FormInput
-                        label="Title"
-                        type="text"
-                        name="title"
-                        value={taskInputFields.title}
-                        onChange={handleChange}
-                        required
-                    />
-                    <FormInput
-                        label="Description"
-                        type="text"
-                        name="description"
-                        value={taskInputFields.description}
-                        onChange={handleChange}
-                    />
-                    <TimeInputContainer>
+                    <FormInputRow>
+                        <FormInput
+                            label="Title"
+                            type="text"
+                            name="title"
+                            value={taskInputFields.title}
+                            onChange={handleChange}
+                            required
+                        />
+                        <FormInput
+                            label="Description"
+                            type="text"
+                            name="description"
+                            value={taskInputFields.description}
+                            onChange={handleChange}
+                            grow="1"
+                        />
+
                         <FormInput
                             label="Start Time"
                             type="time"
@@ -92,47 +109,35 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                             required
                             messages={validations['task']}
                         />
-                    </TimeInputContainer>
-                    {/* but collapse for subTask, put button on top just icon */}
-                    <ButtonRow $end>
-                        <Button
-                            icon={ICON_TYPE.add}
-                            btnType={BUTTON_TYPE.link}
-                            type="button"
-                            onClick={() => {
-                                setTaskInputFields({
-                                    ...taskInputFields,
-                                    subTasks: [...taskInputFields.subTasks, ...[subTaskField]],
-                                });
-                            }}
-                        >
-                            Add SubTask
-                        </Button>
-                    </ButtonRow>
-                    {/* <button type="link">Create SubTask</button> */}
+                    </FormInputRow>
+                    {taskInputFields.subTasks.length > 0 && <Divider />}
                     {taskInputFields.subTasks.length > 0 &&
                         taskInputFields.subTasks.map((subTask, index) => {
                             return (
-                                <SubtaksInputContainer>
-                                    <Button
-                                        icon={ICON_TYPE.delete}
-                                        type="button"
-                                        btnType={BUTTON_TYPE.delete}
-                                        onClick={() => handleDeleteSubTask(subTask.id!)}
-                                    >
-                                        Delete
-                                    </Button>
+                                <SubtakInputContainer>
+                                    <h3>Subtasks</h3>
+                                    <FormInputRow>
+                                        <Button
+                                            icon={ICON_TYPE.delete}
+                                            type="button"
+                                            btnType={BUTTON_TYPE.delete}
+                                            onClick={() => handleDeleteSubTask(subTask.id!)}
+                                            iconSize={ICON_SIZE.small}
+                                        />
 
-                                    <FormInput
-                                        key={subTask.id}
-                                        label="SubDescription"
-                                        type="text"
-                                        name="description"
-                                        value={subTask.description}
-                                        onChange={(e: ChangeEvent<HTMLInputElement>) => handleSubTaskChange(index, e)}
-                                        required
-                                    />
-                                    <TimeInputContainer>
+                                        <FormInput
+                                            key={subTask.id}
+                                            label="SubDescription"
+                                            type="text"
+                                            name="description"
+                                            value={subTask.description}
+                                            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                                                handleSubTaskChange(index, e)
+                                            }
+                                            required
+                                            grow="1"
+                                        />
+
                                         <FormInput
                                             label="Start Time"
                                             type="time"
@@ -156,17 +161,17 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                                             required
                                             messages={validations['subtask']}
                                         />
-                                    </TimeInputContainer>
-                                </SubtaksInputContainer>
+                                    </FormInputRow>
+                                </SubtakInputContainer>
                             );
                         })}
                 </FormContent>
-                <ButtonRow $center pt="1">
-                    <Button btnType={BUTTON_TYPE.secondary} onClick={() => setOpenForm(false)}>
+                <FormButtonRow>
+                    <Button type="reset" btnType={BUTTON_TYPE.link} onClick={() => setOpenForm(false)}>
                         Cancel
                     </Button>
-                    <Button btnType={BUTTON_TYPE.submit}>Save</Button>
-                </ButtonRow>
+                    <Button btnType={BUTTON_TYPE.primary}>Save</Button>
+                </FormButtonRow>
             </Form>
         </TaskFormContainer>
     );
@@ -253,6 +258,7 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
             ...taskInputFields,
             subTasks: [...taskInputFields.subTasks.filter((subs) => subs.id !== id)],
         });
-        return deleteSubTaskService(id);
+        //not to send empty subtask
+        if (id) return deleteSubTaskService(id);
     }
 };

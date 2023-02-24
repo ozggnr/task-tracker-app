@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Row } from './Main.style';
 
 export const CalendarContainer = styled.div`
     background-image: url('images/back3.png');
@@ -33,6 +34,10 @@ export const CalendarDate = styled.div`
 `;
 export const DayWeek = styled.div``;
 export const DayMonth = styled.div``;
+export const CalendarButtonsRow = styled(Row)`
+    justify-content: flex-end;
+    column-gap: 0.4rem;
+`;
 export const CalendarDateContainer = styled.div`
     display: flex;
     justify-content: space-between;

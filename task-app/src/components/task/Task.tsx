@@ -15,10 +15,11 @@ import { ProgressBar } from '../progressBar/ProgressBar';
 import Card from '../card/Card';
 import { TaskForm } from './TaskForm';
 import { TaskDetails } from './TaskDetails';
-import { CardBody, CardFooter, CardHeader } from '../card/Card.style';
+import { CardBody, CardButtonGroup, CardFooter, CardHeader } from '../card/Card.style';
 import { TaskContainer, TaskTitle, TaskInfo, TaskDescription, TaskStatus } from './Task.style';
 import { ICON_TYPE } from '../button/Icon.style';
 import { Row } from '../../Main.style';
+import { FormButtonRow } from '../form/Form.style';
 
 type TaskProps = {
     task: Task;
@@ -50,13 +51,13 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                 <CardHeader>
                     <TaskStatus statusWarning={activeTask.status}>{getStatusText(activeTask.status!)}</TaskStatus>
                     {!isCompleted(activeTask.status!) && (
-                        <Row $end width="20" pr="0.5" pb="0.5">
+                        <CardButtonGroup>
                             <Button
                                 btnType={BUTTON_TYPE.delete}
                                 icon={ICON_TYPE.delete}
                                 onClick={() => setWarning(true)}
                                 disabled={isTaskOverdue}
-                            ></Button>
+                            />
                             <Button
                                 btnType={BUTTON_TYPE.secondary}
                                 icon={ICON_TYPE.edit}
@@ -65,7 +66,7 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                                     executeScroll();
                                 }}
                                 disabled={isTaskOverdue}
-                            ></Button>
+                            />
                             <Button
                                 btnType={BUTTON_TYPE.secondary}
                                 icon={ICON_TYPE.open}
@@ -74,19 +75,19 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                                     executeScroll();
                                 }}
                                 disabled={isTaskOverdue}
-                            ></Button>
+                            />
                             {warning && (
                                 <Modal onClick={() => setWarning(false)} size="small">
                                     <div>Do you want to delete this task?</div>
-                                    <Row $center width="40" pb="0.5">
+                                    <FormButtonRow>
                                         <Button btnType={BUTTON_TYPE.link}>Cancel</Button>
                                         <Button btnType={BUTTON_TYPE.primary} onClick={handleConfirm}>
                                             Confirm
                                         </Button>
-                                    </Row>
+                                    </FormButtonRow>
                                 </Modal>
                             )}
-                        </Row>
+                        </CardButtonGroup>
                     )}
                 </CardHeader>
                 <CardBody>
@@ -98,15 +99,13 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                 </CardBody>
                 <CardFooter>
                     {isNotCompleted(activeTask.status!) && (
-                        <Row $end>
-                            <Checkbox
-                                name="completed"
-                                label="Completed"
-                                value={activeTask.status}
-                                onClick={handleCompleteTask}
-                                disabled={isTaskOverdue}
-                            />
-                        </Row>
+                        <Checkbox
+                            name="completed"
+                            label="Completed"
+                            value={activeTask.status}
+                            onClick={handleCompleteTask}
+                            disabled={isTaskOverdue}
+                        />
                     )}
                 </CardFooter>
             </Card>

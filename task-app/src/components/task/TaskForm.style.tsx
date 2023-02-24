@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Row } from '../../Main.style';
 
 export const TaskFormContainer = styled.div`
     display: flex;
@@ -7,4 +8,11 @@ export const TaskFormContainer = styled.div`
     height: 100%;
     gap: 1rem;
 `;
-export const SubtakInputContainer = styled.div``;
+export const TaskFormHeader = styled(Row)`
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+`;
+export const SubtakInputContainer = styled.div`
+    margin-top: 2rem;
+`;

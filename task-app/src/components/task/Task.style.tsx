@@ -29,17 +29,13 @@ export const TaskTimeBarContainer = styled.div`
 `;
 export const TaskTitle = styled.h5`
     text-transform: uppercase;
-    // padding: 0.5rem 0;
 `;
 export const TaskDescription = styled.p`
     padding: 0.5rem 0 0 0.5rem;
 `;
-export const TaskInfo = styled.div`
-    display: flex;
-    align-items: center;
+export const TaskInfo = styled.span`
     font-size: 0.75rem;
     color: #9e9e9e;
-    padding: 0.25rem 0 0 0.25rem;
 `;
 
 interface TaskStatusProps {
@@ -48,13 +44,16 @@ interface TaskStatusProps {
 export const TaskStatus = styled.div<TaskStatusProps>`
     background-color: ${(props) =>
         isCompleted(props.statusWarning!)
-            ? `${props.theme.statusColors.completed.border}`
+            ? `${props.theme.statusColors.completed.badge}`
             : isNotCompleted(props.statusWarning!)
-            ? `${props.theme.statusColors.notCompleted.border}`
+            ? `${props.theme.statusColors.notCompleted.badge}`
             : isInProgress(props.statusWarning!)
-            ? `${props.theme.statusColors.inProgress.border}`
+            ? `${props.theme.statusColors.inProgress.badge}`
             : 'none'};
-    padding: 0.2rem;
+    padding: 0 0.2rem;
+    height: 75%;
+    display: flex;
+    align-items: center;
     border-radius: 357px 1200% / 30px 20px;
-    color: #fff;
+    color: ${(props) => props.theme.colors.secondary};
 `;

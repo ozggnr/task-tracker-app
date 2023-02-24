@@ -14,7 +14,9 @@ import {
 } from './utils/dateHelpers';
 import { DailyTasks } from './components/dailytasks/DailyTasks';
 import { Message, SEVERITY_TYPE } from './components/message/Message';
+import Theme from './Theme';
 import {
+    CalendarButtonsRow,
     CalendarContainer,
     CalendarContent,
     CalendarDate,
@@ -26,8 +28,6 @@ import {
 } from './App.style';
 import { ButtonCaret, ButtonDays, ButtonToday } from './components/button/Button.style';
 import { LeftIcon, RightIcon } from './components/button/Icon.style';
-import Theme from './Theme';
-import { Row } from './Main.style';
 
 export default function CalendarApp() {
     //We will update our state by using dispatch, dispatch gets action with payload
@@ -43,7 +43,7 @@ export default function CalendarApp() {
             <CalendarContainer>
                 <CalendarHeader>
                     <Title>{activeMonth}</Title>
-                    <Row $end>
+                    <CalendarButtonsRow>
                         <ButtonCaret onClick={() => dispatch(lastWeek(activeDay))}>
                             <LeftIcon />
                         </ButtonCaret>
@@ -51,7 +51,7 @@ export default function CalendarApp() {
                         <ButtonCaret onClick={() => dispatch(nextWeek(activeDay))}>
                             <RightIcon />
                         </ButtonCaret>
-                    </Row>
+                    </CalendarButtonsRow>
                 </CalendarHeader>
                 <CalendarContent>
                     <CalendarDateContainer>

@@ -9,10 +9,9 @@ import { checkOverlapTask } from '../../utils/validationHelpers';
 import { isOverdue } from '../../utils/dateHelpers';
 import { Loading } from '../loading/Loading';
 import { Message, SEVERITY_TYPE } from '../message/Message';
-import { DayContainer } from './DailyTasks.style';
-import { ICON_SIZE, ICON_TYPE } from '../button/Icon.style';
 import Modal from '../modal/Modal';
-import { Row } from '../../Main.style';
+import { AddTaskButtonRow, DayContainer } from './DailyTasks.style';
+import { ICON_SIZE, ICON_TYPE } from '../button/Icon.style';
 
 type Props = {
     day: string;
@@ -48,7 +47,7 @@ export const DailyTasks = ({ day }: Props) => {
 
     return (
         <>
-            <Row pt="1" pr="6" pb="1" $end>
+            <AddTaskButtonRow>
                 <Button
                     icon={ICON_TYPE.add}
                     btnType={BUTTON_TYPE.link}
@@ -57,7 +56,8 @@ export const DailyTasks = ({ day }: Props) => {
                 >
                     Add Task
                 </Button>
-            </Row>
+            </AddTaskButtonRow>
+
             <DayContainer>
                 {openForm && (
                     <Modal onClick={() => setOpenForm(false)} size="large">

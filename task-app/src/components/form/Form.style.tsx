@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Row } from '../../Main.style';
 
 interface InputProps {
     readonly isAlert: boolean;
@@ -11,6 +12,7 @@ export const FormContent = styled.div`
     height: 100%;
     overflow-y: auto;
     flex: 1 1 1px;
+    padding: 0 2rem;
 `;
 export const FormInputStyle = styled.div<FormProps>`
     display: flex;
@@ -24,4 +26,12 @@ export const Input = styled.input<InputProps>`
         `
         border: 2px solid #e53935;
     `}
+`;
+export const FormInputRow = styled(Row)`
+    column-gap: 0.5rem;
+    align-items: flex-end;
+`;
+export const FormButtonRow = styled(Row)`
+    justify-content: center;
+    margin: 0.5rem 0;
 `;
