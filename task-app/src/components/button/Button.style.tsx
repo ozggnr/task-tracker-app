@@ -49,7 +49,11 @@ export const ButtonToday = styled(BaseButton)`
     font-size: 0.75rem;
 `;
 
-//it will help pass the props just to the buttondays and it will not pass to base button
+export const ButtonIcon = styled.button`
+    background: none;
+    border: none;
+`;
+//it will help pass the props only to the buttondays and it will not pass to base button
 interface ButtonDaysProps {
     readonly isActive: boolean;
     readonly taskCompleted?: boolean | null;

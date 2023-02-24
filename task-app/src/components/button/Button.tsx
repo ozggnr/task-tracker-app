@@ -1,4 +1,4 @@
-import { ReactNode, ButtonHTMLAttributes, MouseEventHandler } from 'react';
+import { ReactNode, ButtonHTMLAttributes } from 'react';
 import { ButtonDelete, BaseButton, SecondaryButton, LinkButton } from './Button.style';
 import { AddIcon, getIcon, ICON_SIZE, ICON_TYPE } from './Icon.style';
 
@@ -10,7 +10,8 @@ export enum BUTTON_TYPE {
     secondary = 'secondary',
     link = 'link',
 }
-const getButton = (buttonType = BUTTON_TYPE.button) => {
+//TODO there is something wrong with submit and button check this
+export const getButton = (buttonType = BUTTON_TYPE.button) => {
     const selectedButton = {
         [BUTTON_TYPE.button]: BaseButton,
         [BUTTON_TYPE.submit]: BaseButton,
@@ -22,7 +23,7 @@ const getButton = (buttonType = BUTTON_TYPE.button) => {
 };
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    children: ReactNode;
+    children?: ReactNode;
     icon?: ICON_TYPE;
     iconSize?: ICON_SIZE;
     btnType?: BUTTON_TYPE;
