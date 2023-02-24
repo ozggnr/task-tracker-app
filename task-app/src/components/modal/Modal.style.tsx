@@ -12,12 +12,16 @@ export const ModalContainer = styled.div`
     justify-content: center;
 `;
 //TODO - make modal component generic
-export const ModalBox = styled.div`
+interface ModalProps {
+    readonly size: string;
+}
+export const ModalBox = styled.div<ModalProps>`
     display: flex;
     flex-direction: column;
-    background-color: ${(props) => props.theme.colors.secondary};
-    width: 40%;
-    height: 20%;
+    backdrop-filter: blur(32px) saturate(180%);
+    background-color: #ffffffde;
+    width: ${(props) => (props.size === 'small' ? '40%' : '60%')};
+    height: ${(props) => (props.size === 'small' ? '20%' : '60%')};
     border-radius: 0.5rem;
     padding: 0.5rem;
 `;

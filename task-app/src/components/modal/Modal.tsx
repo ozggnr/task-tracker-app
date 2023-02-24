@@ -5,13 +5,14 @@ import { ModalContainer, ModalBox, ModalContent } from './Modal.style';
 
 type ModalProps = {
     onClick?: MouseEventHandler;
+    size: string;
 };
 
-export default function Modal({ children, onClick }: PropsWithChildren<ModalProps>) {
+export default function Modal({ children, onClick, size }: PropsWithChildren<ModalProps>) {
     return (
         <Portal parentId="modal">
             <ModalContainer>
-                <ModalBox>
+                <ModalBox size={size}>
                     <CloseIcon onClick={onClick} />
                     <ModalContent>{children}</ModalContent>
                 </ModalBox>
