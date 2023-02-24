@@ -41,43 +41,45 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
 
     const openDetailPage = (task: Task) => (isInProgress(task.status!) && task.subTasks.length ? true : false);
     const isTaskOverdue = isOverdue(new Date(activeTask.date)) ? true : false;
-    const isCardActive = openForm || (openDetails && openDetailPage(activeTask));
+    const isCardActive = openDetails && openDetailPage(activeTask);
 
     return (
         <TaskContainer ref={scrollRef} overdue={isTaskOverdue}>
             <ProgressBar startTime={activeTask.start!} endTime={activeTask.end!} status={activeTask.status} />
             <Card cardActive={isCardActive} statusWarning={activeTask.status}>
                 <CardHeader>
-                    <TaskInfo>
-                        <TaskStatus statusWarning={activeTask.status}>{getStatusText(activeTask.status!)}</TaskStatus>
-                        {` ~ ${activeTask?.subTasks.length} SubTask(s)`}
-                    </TaskInfo>
+                    <TaskStatus statusWarning={activeTask.status}>{getStatusText(activeTask.status!)}</TaskStatus>
                     {!isCompleted(activeTask.status!) && (
-                        <Row $end width="30">
+                        <Row $end width="20" pr="0.5" pb="0.5">
                             <Button
-                                icon={ICON_TYPE.delete}
                                 btnType={BUTTON_TYPE.delete}
+                                icon={ICON_TYPE.delete}
                                 onClick={() => setWarning(true)}
                                 disabled={isTaskOverdue}
-                            >
-                                Delete
-                            </Button>
+                            ></Button>
                             <Button
-                                icon={ICON_TYPE.edit}
                                 btnType={BUTTON_TYPE.secondary}
+                                icon={ICON_TYPE.edit}
                                 onClick={() => {
                                     setOpenForm(true);
                                     executeScroll();
                                 }}
                                 disabled={isTaskOverdue}
-                            >
-                                Edit
-                            </Button>
+                            ></Button>
+                            <Button
+                                btnType={BUTTON_TYPE.secondary}
+                                icon={ICON_TYPE.open}
+                                onClick={() => {
+                                    setOpenDetails(true);
+                                    executeScroll();
+                                }}
+                                disabled={isTaskOverdue}
+                            ></Button>
                             {warning && (
                                 <Modal onClick={() => setWarning(false)} size="small">
                                     <div>Do you want to delete this task?</div>
                                     <Row $center width="40" pb="0.5">
-                                        <Button btnType={BUTTON_TYPE.secondary}>Cancel</Button>
+                                        <Button btnType={BUTTON_TYPE.link}>Cancel</Button>
                                         <Button btnType={BUTTON_TYPE.primary} onClick={handleConfirm}>
                                             Confirm
                                         </Button>
@@ -88,7 +90,10 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                     )}
                 </CardHeader>
                 <CardBody>
-                    <TaskTitle>{activeTask.title}</TaskTitle>
+                    <TaskTitle>
+                        {activeTask.title}
+                        <TaskInfo>{` ~ ${activeTask?.subTasks.length} SubTask(s)`}</TaskInfo>
+                    </TaskTitle>
                     <TaskDescription>{activeTask.description}</TaskDescription>
                 </CardBody>
                 <CardFooter>
@@ -106,9 +111,9 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                 </CardFooter>
             </Card>
             {openForm && (
-                <Sidebar onClick={() => setOpenForm(false)} isActive={openForm}>
+                <Modal onClick={() => setOpenForm(false)} size="large">
                     <TaskForm task={activeTask} setOpenForm={setOpenForm} isTaskOverlap={isTaskOverlap} />
-                </Sidebar>
+                </Modal>
             )}
             {/* TODO - add click event to see details when we click */}
             {openDetails && openDetailPage(activeTask) && (

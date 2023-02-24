@@ -25,7 +25,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     iconSize?: ICON_SIZE;
     btnType?: BUTTON_TYPE;
 }
-
+//TODO - maybe there is a better way to create button component to use for only icon, icon + text, text
 export default function Button(props: ButtonProps) {
     const { children, icon, iconSize, btnType, ...rest } = props;
     const Button = getButton(btnType);

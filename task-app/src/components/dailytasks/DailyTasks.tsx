@@ -51,7 +51,7 @@ export const DailyTasks = ({ day }: Props) => {
             <Row pt="1" pr="6" pb="1" $end>
                 <Button
                     icon={ICON_TYPE.add}
-                    btnType={BUTTON_TYPE.primary}
+                    btnType={BUTTON_TYPE.link}
                     onClick={() => setOpenForm(true)}
                     disabled={isOverdue(new Date(day))}
                 >

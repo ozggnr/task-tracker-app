@@ -2,15 +2,14 @@ import styled from 'styled-components';
 
 //button styling
 export const BaseButton = styled.button`
-    width: 120px;
-    padding: 0.5rem 0.5rem;
+    height: 32px;
+    padding: 0.5rem 1.5rem;
     background-color: ${(props) => props.theme.colors.primary};
-    // background-color: #262525;
     color: ${(props) => props.theme.colors.secondary};
     text-transform: uppercase;
     font-weight: bolder;
     border: none;
-    border-radius: 0.75rem;
+    border-radius: 0.5rem;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -23,16 +22,18 @@ export const BaseButton = styled.button`
 `;
 
 export const SecondaryButton = styled(BaseButton)`
+    padding: 0.5rem 0.5rem;
     background-color: ${(props) => props.theme.colors.secondary};
     color: ${(props) => props.theme.colors.primary};
     border: 1px solid ${(props) => props.theme.colors.primary};
 `;
 export const LinkButton = styled(BaseButton)`
     background: none;
-    color: #${(props) => props.theme.colors.primary};
+    color: ${(props) => props.theme.colors.primary};
 `;
 
 export const ButtonDelete = styled(BaseButton)`
+    padding: 0.5rem 0.5rem;
     color: ${(props) => props.theme.colors.danger};
     background-color: #fff;
     border: 1px solid ${(props) => props.theme.colors.danger};
@@ -47,11 +48,6 @@ export const ButtonToday = styled(BaseButton)`
     width: 4rem;
     padding: 0;
     font-size: 0.75rem;
-`;
-
-export const ButtonIcon = styled.button`
-    background: none;
-    border: none;
 `;
 //it will help pass the props only to the buttondays and it will not pass to base button
 interface ButtonDaysProps {
