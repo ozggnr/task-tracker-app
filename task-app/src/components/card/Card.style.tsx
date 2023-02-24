@@ -5,7 +5,7 @@ interface CardProps {
     readonly isActive: boolean;
     readonly statusWarning?: string;
 }
-//TODO create variables for colors
+
 export const CardComponent = styled.div<CardProps>`
     height: 150px;
     border-radius: 1rem;

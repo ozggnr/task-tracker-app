@@ -11,15 +11,15 @@ const theme = {
     },
     statusColors: {
         completed: {
-            border: '#0B9B8A',
+            badge: '#0B9B8A',
             bg: '#0B9B8A54',
         },
         notCompleted: {
-            border: '#ffa726',
+            badge: '#ffa726',
             bg: '#ffa72654',
         },
         inProgress: {
-            border: '#8707ff',
+            badge: '#8707ff',
             bg: '#8707ff54',
         },
     },
