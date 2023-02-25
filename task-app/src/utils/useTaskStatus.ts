@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAppDispatch } from '../store/hooks';
 import { updateTaskStatus } from '../store/reducers/tasksSlice';
 import { Task } from '../Types';
-import { getDateTime, timeDifferenceWithCurrentTime } from './dateHelpers';
+import { setDateTime, timeDifferenceWithCurrentTime } from './dateHelpers';
 
 export function useTaskStatus(activeTask: Task): Task {
     const dispatch = useAppDispatch();
@@ -10,8 +10,8 @@ export function useTaskStatus(activeTask: Task): Task {
         let timerId: number;
         const getRemainingSecsStart = timeDifferenceWithCurrentTime(activeTask.date, activeTask.start);
         const getRemainingSecsEnd = timeDifferenceWithCurrentTime(activeTask.date, activeTask.end);
-        const taskStart = getDateTime(new Date(activeTask.date), activeTask.start);
-        const taskEnd = getDateTime(new Date(activeTask.date), activeTask.end);
+        const taskStart = setDateTime(new Date(activeTask.date), activeTask.start);
+        const taskEnd = setDateTime(new Date(activeTask.date), activeTask.end);
         const currentTime = new Date();
 
         if (activeTask.status?.toUpperCase() !== 'COMPLETED') {

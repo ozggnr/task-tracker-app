@@ -1,6 +1,5 @@
-import { differenceInSeconds } from 'date-fns';
 import { useState, useEffect, useRef } from 'react';
-import { differenceSeconds } from '../../utils/dateHelpers';
+import { differenceSeconds, getLocalizedTime, setDateTime } from '../../utils/dateHelpers';
 import { isInProgress } from '../../utils/taskHelpers';
 import { ProgressBarContainer, ProgressContainer } from './ProgressBar.style';
 
@@ -47,14 +46,16 @@ export const ProgressBar = ({ startTime, endTime, status }: ProgressBarProps) =>
         borderRadius: '0.5rem',
         height: `${hours}:${mins}` > endTime ? '100%' : `${calcHeight}%`,
     };
+    const getStartLocalizedTime = getLocalizedTime(setDateTime(new Date(), startTime));
+    const getEndLocalizedTime = getLocalizedTime(setDateTime(new Date(), endTime));
 
     return (
         <ProgressContainer>
-            <div>{startTime}</div>
+            <div>{getStartLocalizedTime}</div>
             <ProgressBarContainer status={status}>
                 {isInProgress(status!) && <div style={fillerStyles}></div>}
             </ProgressBarContainer>
-            <div>{endTime}</div>
+            <div>{getEndLocalizedTime}</div>
         </ProgressContainer>
     );
 };

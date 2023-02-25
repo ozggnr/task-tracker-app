@@ -8,7 +8,7 @@ import {
     isSameSecond,
     isBefore,
 } from 'date-fns';
-
+//TODO refactor this helpers, there are so many functions
 //date formats
 export function longDateFormat(date: Date | string) {
     if (typeof date === 'string') date = new Date(date);
@@ -45,10 +45,13 @@ export function timeDifferenceWithCurrentTime(date: string, time: string) {
     );
 }
 
-export function getDateTime(date: Date, time: string): Date {
+export function setDateTime(date: Date, time: string): Date {
     const hours = Number(time.split(':')[0]);
     const minutes = Number(time.split(':')[1]);
     return new Date(date.setHours(hours, minutes));
+}
+export function getLocalizedTime(date: Date): string {
+    return format(date, 'p');
 }
 // earlier: {date: Date, time: string}, later: {date: Date, time: string}
 export function differenceSeconds(
