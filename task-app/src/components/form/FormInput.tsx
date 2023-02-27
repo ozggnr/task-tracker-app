@@ -10,15 +10,16 @@ type FormInputProps = {
     label?: string;
     messages?: MessageType;
     grow?: string;
+    labelPosition?: 'left' | 'right';
 } & InputHTMLAttributes<HTMLInputElement>;
 
-export const FormInput = ({ label, type, messages, name, grow, ...rest }: FormInputProps) => {
+export const FormInput = ({ label, type, messages, name, grow, labelPosition, ...rest }: FormInputProps) => {
     const errorExist = !!messages?.[name!]?.length!;
 
     return (
         <>
             {type === 'checkbox' ? (
-                <Checkbox label={label} {...rest} />
+                <Checkbox label={label} labelPosition={labelPosition} {...rest} />
             ) : (
                 <FormInputStyle grow={grow}>
                     {label ? <label>{label}</label> : ''}

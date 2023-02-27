@@ -1,4 +1,5 @@
 import { PropsWithChildren } from 'react';
+import { SForm } from './Form.style';
 
 type Props = {
     children?: React.ReactNode;
@@ -6,9 +7,5 @@ type Props = {
 };
 
 export const Form = ({ children, onSubmit }: PropsWithChildren<Props>) => {
-    return (
-        <form onSubmit={onSubmit} className="form">
-            {children}
-        </form>
-    );
+    return <SForm onSubmit={onSubmit}>{children}</SForm>;
 };

@@ -1,7 +1,7 @@
 import { differenceSeconds } from '../../utils/dateHelpers';
 import { SubTask } from '../../Types';
 import { FormInput } from '../form/FormInput';
-import { SubtaksContainer, SubtaskDesc } from './SubTask.style';
+import { SubtaksContainer, SubtaskDesc, SubtaskProgressBarContainer } from './SubTask.style';
 import { ProgressBar } from '../progressBar/ProgressBar';
 
 type SubtaskProps = {
@@ -19,7 +19,9 @@ export const SubTaskComp = ({ subTask, getDurationForSubtasks, taskStatus }: Sub
 
     return (
         <SubtaksContainer height={height}>
-            <ProgressBar startTime={subTask.start!} endTime={subTask.end!} status={taskStatus} />
+            <SubtaskProgressBarContainer>
+                <ProgressBar startTime={subTask.start!} endTime={subTask.end!} status={taskStatus} />
+            </SubtaskProgressBarContainer>
             <SubtaskDesc>
                 <FormInput
                     type="checkbox"
@@ -28,6 +30,7 @@ export const SubTaskComp = ({ subTask, getDurationForSubtasks, taskStatus }: Sub
                     id={subTask.id}
                     key={subTask.id}
                     label={subTask.description}
+                    labelPosition="left"
                     // onChange={handleCompleteTask}
                 />
             </SubtaskDesc>

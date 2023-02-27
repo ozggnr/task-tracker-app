@@ -1,7 +1,16 @@
 import styled from 'styled-components';
 
-export const CheckboxContainer = styled.div`
+interface CheckboxContainerProps {
+    readonly label: 'right' | 'left';
+}
+export const CheckboxContainer = styled.div<CheckboxContainerProps>`
     display: flex;
     align-items: center;
     column-gap: 0.5rem;
+    ${(props) =>
+        props.label === 'left' &&
+        `
+            justify-content: space-between;
+            width: 100%;
+        `}
 `;

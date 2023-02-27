@@ -19,16 +19,5 @@ html body {
 #root {
     max-height: 100vh;
 }
-.form {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-input {
-    padding: 0rem 0.5rem;
-    height: 2rem;
-    /* accent-color: red; */
-}
-input[type='checkbox']:checked + label {
-    text-decoration: cornsilk wavy line-through;
-}
+
+/* Why display flex is not working?? */
