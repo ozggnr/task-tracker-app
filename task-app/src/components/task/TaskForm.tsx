@@ -104,18 +104,21 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                             type="time"
                             name="end"
                             value={taskInputFields.end}
-                            max="23:59"
                             onChange={handleChange}
                             required
                             messages={validations['task']}
                         />
                     </FormInputRow>
-                    {taskInputFields.subTasks.length > 0 && <Divider />}
+                    {taskInputFields.subTasks.length > 0 && (
+                        <>
+                            <Divider />
+                            <h3>Subtasks</h3>
+                        </>
+                    )}
                     {taskInputFields.subTasks.length > 0 &&
                         taskInputFields.subTasks.map((subTask, index) => {
                             return (
                                 <SubtakInputContainer>
-                                    <h3>Subtasks</h3>
                                     <FormInputRow>
                                         <Button
                                             icon={ICON_TYPE.delete}

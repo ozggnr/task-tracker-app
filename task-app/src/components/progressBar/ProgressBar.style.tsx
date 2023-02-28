@@ -10,6 +10,7 @@ export const ProgressContainer = styled.div`
     flex-direction: column;
     align-items: center;
     font-weight: 600;
+    height: 100%;
 `;
 export const ProgressBarContainer = styled.div<ProgressBarProps>`
     background-color: ${(props) =>
@@ -25,14 +26,6 @@ export const ProgressBarContainer = styled.div<ProgressBarProps>`
     margin: 0.5rem;
     border-radius: 0.5rem;
 `;
-
-export const ProgressBarBack = styled.div<ProgressBarProps>`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    height: ${(props) => props.height + '%'};
-    background-color: #fff;
-    border: 2px solid rgb(20, 116, 20);
+export const ProgressTime = styled.div`
+    width: max-content;
 `;
