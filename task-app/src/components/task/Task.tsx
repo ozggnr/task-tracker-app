@@ -18,7 +18,6 @@ import { TaskDetails } from './TaskDetails';
 import { CardBody, CardButtonGroup, CardFooter, CardHeader } from '../card/Card.style';
 import { TaskContainer, TaskTitle, TaskInfo, TaskDescription, TaskStatus } from './Task.style';
 import { ICON_TYPE } from '../button/Icon.style';
-import { Row } from '../../Main.style';
 import { FormButtonRow } from '../form/Form.style';
 
 type TaskProps = {
@@ -43,7 +42,7 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
     const openDetailPage = (task: Task) => (isInProgress(task.status!) && task.subTasks.length ? true : false);
     const isTaskOverdue = isOverdue(new Date(activeTask.date)) ? true : false;
     const isCardActive = openDetails && openDetailPage(activeTask);
-
+    console.log(activeTask);
     return (
         <TaskContainer ref={scrollRef} overdue={isTaskOverdue}>
             <ProgressBar startTime={activeTask.start!} endTime={activeTask.end!} status={activeTask.status} />
@@ -114,10 +113,9 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                     <TaskForm task={activeTask} setOpenForm={setOpenForm} isTaskOverlap={isTaskOverlap} />
                 </Modal>
             )}
-            {/* TODO - add click event to see details when we click */}
             {openDetails && openDetailPage(activeTask) && (
                 <Sidebar onClick={() => setOpenDetails(false)} isActive={openDetails && openDetailPage(activeTask)}>
-                    <TaskDetails activeTask={activeTask} openDetails={openDetailPage(activeTask)} />
+                    <TaskDetails activeTask={activeTask} setOpenDetails={setOpenDetails} />
                 </Sidebar>
             )}
         </TaskContainer>

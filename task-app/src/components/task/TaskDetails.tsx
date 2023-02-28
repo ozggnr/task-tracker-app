@@ -1,16 +1,23 @@
-import { Task } from '../../Types';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { updateTaskService } from '../../services/taskService';
+import { useAppDispatch } from '../../store/hooks';
+import { updateTask } from '../../store/reducers/tasksSlice';
+import { SubTask, Task } from '../../Types';
 import { differenceSeconds } from '../../utils/dateHelpers';
+import Button, { BUTTON_TYPE } from '../button/Button';
 import { SubTaskComp } from '../subTask/SubTask';
 import { TaskDetailsContainer } from './Task.style';
 
 type TaskDetailsProps = {
     activeTask: Task;
-    openDetails: boolean;
+    setOpenDetails: Dispatch<SetStateAction<boolean>>;
 };
 
-export const TaskDetails = ({ activeTask }: TaskDetailsProps) => {
-    // const [subActiveTask, setSubActiveTask] = useState(subTask);
-
+export const TaskDetails = ({ activeTask, setOpenDetails }: TaskDetailsProps) => {
+    const dispatch = useAppDispatch();
+    const subtasks = [...activeTask.subTasks];
+    const [completedSubtasks, setCompletedSubtasks] = useState<SubTask[]>(subtasks);
+    console.log(activeTask);
     return (
         <TaskDetailsContainer>
             {activeTask.subTasks.map((subTask) => (
@@ -19,13 +26,34 @@ export const TaskDetails = ({ activeTask }: TaskDetailsProps) => {
                     key={subTask.id}
                     getDurationForSubtasks={getDurationForSubtasks}
                     taskStatus={activeTask.status}
+                    handleCompletedSubtasks={handleCompletedSubtasks}
                 />
             ))}
+            <Button btnType={BUTTON_TYPE.primary} onClick={handleCompleteTask}>
+                Completed
+            </Button>
         </TaskDetailsContainer>
     );
+
     function handleCompleteTask() {
-        // console.log(subActiveTask);
-        // setCompleted(!completed);
+        const updatedTask = { ...activeTask, subTasks: completedSubtasks };
+        updateTaskService(updatedTask).then((newTask) => {
+            dispatch(updateTask(newTask));
+            setOpenDetails(false);
+        });
+    }
+
+    function handleCompletedSubtasks(id: string, completed: boolean) {
+        const getStatus = completed ? 'COMPLETED' : 'NOT_COMPLETED';
+        setCompletedSubtasks((prev) => {
+            return prev.map((subtask) => {
+                if (subtask.id === id) {
+                    return { ...subtask, status: getStatus };
+                } else {
+                    return subtask;
+                }
+            });
+        });
     }
 
     function getDurationForSubtasks() {
