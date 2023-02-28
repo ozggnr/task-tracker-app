@@ -58,60 +58,48 @@ export const tasksSlice = createSlice({
             });
     },
 });
+export const selectTaskSlice = (state: RootState) => state.tasks;
+
 //created memoized selector, this will change only when status or error has changed
-export const getTasksSelector = () => {
-    return createSelector(
-        (state: RootState) => state.tasks.status,
-        (state: RootState) => state.tasks.error,
-        (status, error) => {
-            return { status, error };
-        }
-    );
-};
+export const getTasksSelector = createSelector(selectTaskSlice, (taskSlice) => ({
+    status: taskSlice.status,
+    error: taskSlice.error,
+}));
 
 export const getTaskByIdSelector = (id: string) => {
-    // console.log('slice1');
-    return createSelector(
-        (state: RootState) => state.tasks.tasks,
-        (tasks) => tasks.find((task) => task.id === id)
-    );
+    return createSelector(selectTaskSlice, (tasks) => tasks.tasks.find((task) => task.id === id));
 };
 export const getDailyTasksSelector = (date: string) => {
-    return createSelector(
-        (state: RootState) => state.tasks.tasks,
-        (tasks) => tasks.filter((task) => longDateFormat(task.date) === date)
-    );
+    return createSelector(selectTaskSlice, (tasks) => tasks.tasks.filter((task) => longDateFormat(task.date) === date));
 };
 
 export const getWeeklyStatusesSelector = (calendar: Date[]) => {
     //TODO check which one is faster
-    return createSelector(
-        (state: RootState) => state.tasks.tasks,
-        (tasks) => {
-            const days = new Map<string, boolean | null>();
-            calendar.forEach((day) => {
-                const sameDayTasks = tasks.filter((task) => task.date === day.toISOString());
-                const isTasksCompleted = sameDayTasks.length
-                    ? sameDayTasks.every((task) => isCompleted(task.status!))
-                    : null;
-                days.set(day.toISOString(), isTasksCompleted);
-            });
-            return days;
-        }
-    );
-    // return createSelector(
-    //     (state: RootState) => state.tasks.tasks,
-    //     (tasks) =>
-    //         calendar.reduce((days, day) => {
-    //             const sameDayTasks = tasks.filter((task) => task.date === day.toISOString());
-    //             const isTasksCompleted = sameDayTasks.length
-    //                 ? sameDayTasks.every((task) => isCompleted(task.status!))
-    //                 : 'No Task';
-    //             days[day.toISOString()] = isTasksCompleted;
-    //             return days;
-    //         }, {} as GroupType)
-    // );
+    return createSelector(selectTaskSlice, (tasks) => {
+        const days = new Map<string, boolean | null>();
+        calendar.forEach((day) => {
+            const sameDayTasks = tasks.tasks.filter((task) => task.date === day.toISOString());
+            const isTasksCompleted = sameDayTasks.length
+                ? sameDayTasks.every((task) => isCompleted(task.status!))
+                : null;
+            days.set(day.toISOString(), isTasksCompleted);
+        });
+        return days;
+    });
 };
 
 export const { addTask, updateTask, updateTaskStatus, deleteTask } = tasksSlice.actions;
 export default tasksSlice.reducer;
+
+// return createSelector(
+//     (state: RootState) => state.tasks.tasks,
+//     (tasks) =>
+//         calendar.reduce((days, day) => {
+//             const sameDayTasks = tasks.filter((task) => task.date === day.toISOString());
+//             const isTasksCompleted = sameDayTasks.length
+//                 ? sameDayTasks.every((task) => isCompleted(task.status!))
+//                 : 'No Task';
+//             days[day.toISOString()] = isTasksCompleted;
+//             return days;
+//         }, {} as GroupType)
+// );

@@ -21,7 +21,7 @@ export const DailyTasks = ({ day }: Props) => {
     const [openForm, setOpenForm] = useState(false);
     const dispatch = useAppDispatch();
 
-    const { status, error } = useAppSelector(getTasksSelector());
+    const { status, error } = useAppSelector(getTasksSelector);
 
     useEffect(() => {
         if (status === 'idle') {
