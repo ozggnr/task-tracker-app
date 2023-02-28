@@ -68,7 +68,11 @@ export const createTask = async (req: Request, res: Response) => {
             },
         },
         include: {
-            subTasks: true,
+            subTasks: {
+                orderBy: {
+                    start: 'asc',
+                },
+            },
             list: true,
         },
     });
@@ -110,7 +114,11 @@ export const updateTask = async (req: Request, res: Response) => {
             },
         },
         include: {
-            subTasks: true,
+            subTasks: {
+                orderBy: {
+                    start: 'asc',
+                },
+            },
             list: true,
         },
     });
@@ -137,17 +145,10 @@ export const deleteSubTask = async (req: Request, res: Response) => {
     res.json({ data: deletedSubtask });
 };
 
-type UpdateProps<T> = {
-    data: Partial<T>;
-    where: {
-        id: string;
-    };
-};
 function createUpdateFunction<T extends { id?: string }>(propsToUpdate: (keyof T)[], items: T[]) {
     return items
         .filter((item) => item.id)
         .map((item) => {
-            console.log('id', item, item.id);
             const dataToUpdate = propsToUpdate.reduce((data, prop) => {
                 return { ...data, [prop]: item[prop] };
             }, {});
