@@ -56,6 +56,7 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                                 icon={ICON_TYPE.delete}
                                 onClick={() => setWarning(true)}
                                 disabled={isTaskOverdue}
+                                tooltip="Delete Task"
                             />
                             <Button
                                 btnType={BUTTON_TYPE.secondary}
@@ -65,6 +66,7 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                                     executeScroll();
                                 }}
                                 disabled={isTaskOverdue}
+                                tooltip="Edit Task"
                             />
                             <Button
                                 btnType={BUTTON_TYPE.secondary}
@@ -74,6 +76,7 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                                     executeScroll();
                                 }}
                                 disabled={isTaskOverdue}
+                                tooltip="Open Task Details"
                             />
                             {warning && (
                                 <Modal onClick={() => setWarning(false)} size="small">

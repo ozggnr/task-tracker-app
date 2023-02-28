@@ -12,9 +12,30 @@ export const BaseButton = styled.button`
     border-radius: 0.5rem;
     cursor: pointer;
     display: flex;
+    position: relative;
     justify-content: center;
     align-items: center;
     gap: 0.25rem;
+    #tooltipId {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    &:hover #tooltipId {
+        background-color: ${(props) => props.theme.colors.primary};
+        color: ${(props) => props.theme.colors.secondary};
+        padding: 0.25rem;
+        margin-top: 0.2rem;
+        border-radius: 0.25rem;
+        font-size: 0.75rem;
+        font-weight: 400;
+        white-space: nowrap;
+        z-index: 1;
+        display: block;
+        font-size: ;
+    }
     :disabled {
         opacity: 0.6;
         cursor: not-allowed;
@@ -79,3 +100,18 @@ export const ButtonDays = styled.button<ButtonDaysProps>`
         background-image: none;
     }
 `;
+
+// &:hover::before {
+//     content: attr(aria-describedby);
+//     position: absolute;
+//     top: 100%;
+//     left: 50%;
+//     transform: translateX(-50%);
+//     background-color: #000;
+//     color: #fff;
+//     padding: 0.5rem;
+//     border-radius: 0.25rem;
+//     font-size: 0.8rem;
+//     white-space: nowrap;
+//     z-index: 1;
+// }
