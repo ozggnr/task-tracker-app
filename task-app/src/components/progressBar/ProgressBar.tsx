@@ -25,9 +25,14 @@ export const ProgressBar = ({ startTime, endTime, status }: ProgressBarProps) =>
         { earlierDate: new Date(), earlierTime: startTime },
         { laterDate: new Date(), laterTime: `${hours}:${mins}:${secs}` }
     );
+    //eif end time is bigger then this should be bigger than zero
+    const remainingTime = differenceSeconds(
+        { earlierDate: new Date(), earlierTime: `${hours}:${mins}:${secs}` },
+        { laterDate: new Date(), laterTime: endTime }
+    );
 
     useEffect(() => {
-        if (`${hours}:${mins}` < endTime) {
+        if (remainingTime > 0) {
             const timerId = setInterval(() => setNow(new Date()), 1000);
             intervalRef.current = timerId;
         }
@@ -41,10 +46,11 @@ export const ProgressBar = ({ startTime, endTime, status }: ProgressBarProps) =>
     if (calcHeight === 100) {
         clearInterval(intervalRef.current);
     }
+
     const fillerStyles = {
         backgroundColor: '#8707ff',
         borderRadius: '0.5rem',
-        height: `${hours}:${mins}` > endTime ? '100%' : `${calcHeight}%`,
+        height: remainingTime < 0 ? '100%' : `${calcHeight}%`,
     };
     const getStartLocalizedTime = getLocalizedTime(setDateTime(new Date(), startTime));
     const getEndLocalizedTime = getLocalizedTime(setDateTime(new Date(), endTime));
