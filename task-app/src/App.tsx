@@ -26,8 +26,9 @@ import {
     DayWeek,
     Title,
 } from './App.style';
-import { ButtonCaret, ButtonDays, ButtonToday } from './components/button/Button.style';
-import { LeftIcon, RightIcon } from './components/button/Icon.style';
+import { ButtonDays } from './components/button/Button.style';
+import { ICON_TYPE } from './components/button/Icon.style';
+import Button, { BUTTON_TYPE } from './components/button/Button';
 
 export default function CalendarApp() {
     //We will update our state by using dispatch, dispatch gets action with payload
@@ -44,13 +45,19 @@ export default function CalendarApp() {
                 <CalendarHeader>
                     <Title>{activeMonth}</Title>
                     <CalendarButtonsRow>
-                        <ButtonCaret onClick={() => dispatch(lastWeek(activeDay))}>
-                            <LeftIcon />
-                        </ButtonCaret>
-                        <ButtonToday onClick={() => dispatch(thisWeek(activeDay))}>Today</ButtonToday>
-                        <ButtonCaret onClick={() => dispatch(nextWeek(activeDay))}>
-                            <RightIcon />
-                        </ButtonCaret>
+                        <Button
+                            btnType={BUTTON_TYPE.primary}
+                            icon={ICON_TYPE.left}
+                            onClick={() => dispatch(lastWeek(activeDay))}
+                        />
+                        <Button btnType={BUTTON_TYPE.primary} onClick={() => dispatch(thisWeek(activeDay))}>
+                            Today
+                        </Button>
+                        <Button
+                            btnType={BUTTON_TYPE.primary}
+                            icon={ICON_TYPE.right}
+                            onClick={() => dispatch(nextWeek(activeDay))}
+                        />
                     </CalendarButtonsRow>
                 </CalendarHeader>
                 <CalendarContent>

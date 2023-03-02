@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Add, Delete, ModeEdit, WarningAmber, Error, OpenInNew, ArrowLeft, ArrowRight } from '@styled-icons/material';
-import { CircleXmark, CaretLeft, CaretRight } from '@styled-icons/fa-solid';
+import { CircleXmark } from '@styled-icons/fa-solid';
 
 export enum ICON_TYPE {
     add = 'add',
@@ -9,12 +9,14 @@ export enum ICON_TYPE {
     delete = 'delete',
     warning = 'warning',
     error = 'error',
+    left = 'left',
+    right = 'right',
     // success = 'success'
 }
 export enum ICON_SIZE {
     small = '1rem',
-    medium = '2rem',
-    large = '3rem',
+    medium = '1.5rem',
+    large = '2rem',
 }
 
 export const getIcon = (iconType: ICON_TYPE) => {
@@ -25,6 +27,8 @@ export const getIcon = (iconType: ICON_TYPE) => {
         [ICON_TYPE.delete]: DeleteIcon,
         [ICON_TYPE.warning]: WarningIcon,
         [ICON_TYPE.error]: ErrorIcon,
+        [ICON_TYPE.left]: LeftIcon,
+        [ICON_TYPE.right]: RightIcon,
     }[iconType];
     return icon;
 };
@@ -51,11 +55,11 @@ export const CloseIcon = styled(CircleXmark)`
 `;
 
 export const LeftIcon = styled(ArrowLeft)`
-    width: ${(props) => props.size || ICON_SIZE.small};
+    width: ${(props) => props.size || ICON_SIZE.medium};
 `;
 
 export const RightIcon = styled(ArrowRight)`
-    width: ${(props) => props.size || ICON_SIZE.small};
+    width: ${(props) => props.size || ICON_SIZE.medium};
 `;
 export const WarningIcon = styled(WarningAmber)`
     width: ${(props) => props.size || ICON_SIZE.small};
