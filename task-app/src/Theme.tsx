@@ -29,18 +29,6 @@ const theme = {
         m: '992px',
         l: '1200px',
     },
-    // buttonHeight: {
-    //     xs: '24px',
-    //     s: '28px',
-    //     m: '32px',
-    //     l: '46px',
-    // },
-    // fontSize: {
-    //     xs: '12px',
-    //     s: '14px',
-    //     m: '16px',
-    //     l: '18px',
-    // },
 };
 
 export default function Theme({ children }: PropsWithChildren) {

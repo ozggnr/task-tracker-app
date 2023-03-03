@@ -16,21 +16,15 @@ export const CardComponent = styled.div<CardProps>`
     border: ${(props) =>
         isInProgress(props.statusWarning!) ? `2px solid ${props.theme.statusColors.inProgress.badge}` : 'none'};
     width: ${(props) => (props.isActive ? '50%' : '100%')};
-    @media (max-width: ${(props) => props.theme.deviceSize.s}) {
-        width: 100%;
-        margin-bottom: 1rem;
-    }
 `;
 
 export const CardHeader = styled(Row)``;
 
 export const CardBody = styled(Row)`
     flex-direction: column;
-    height: 50%;
     padding: 0.5rem;
 `;
 export const CardFooter = styled(Row)`
-    height: 25%;
     justify-content: flex-end;
 `;
 export const CardButtonGroup = styled(Row)`

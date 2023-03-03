@@ -75,7 +75,7 @@ export const ButtonDays = styled.button<ButtonDaysProps>`
     line-height: 2em;
     font-weight: 700;
     font-size: 100%;
-    padding-inline: 0.75rem;
+    padding-inline: 0.75em;
     background-color: ${(props) =>
         props.taskCompleted === null ? '#8080807a' : props.taskCompleted ? '#0B9B8Ab5' : '#ffa726b5'};
     background-image: linear-gradient(45deg, rgb(255 255 255 / 20%) 50%, transparent 50%);
@@ -86,5 +86,8 @@ export const ButtonDays = styled.button<ButtonDaysProps>`
     &:hover {
         border: 2px solid ${(props) => props.theme.colors.primary};
         background-image: none;
+    }
+    @media (max-width: ${(props) => props.theme.deviceSize.xs}) {
+        padding-inline: 0.65em;
     }
 `;

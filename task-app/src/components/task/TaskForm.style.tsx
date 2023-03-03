@@ -11,7 +11,7 @@ export const TaskFormContainer = styled.div`
 export const TaskFormHeader = styled(Row)`
     justify-content: space-between;
     align-items: center;
-    padding: 0 2rem;
+    padding: 0 1.5em;
 `;
 export const SubtakInputContainer = styled.div`
     margin-top: 2rem;

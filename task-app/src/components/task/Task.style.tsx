@@ -13,8 +13,8 @@ export const TaskContainer = styled.div<TaskContainerProps>`
     justify-content: flex-start;
     ${(props) => props.overdue && 'opacity: 0.6'};
     padding-top: 0.5rem;
-    @media (max-width: ${(props) => props.theme.deviceSize.s}}) {
-        flex-direction: column;
+    @media (max-width: ${(props) => props.theme.deviceSize.xs}) {
+        column-gap: 1rem;
         align-items: center;
     }
 `;
@@ -49,6 +49,9 @@ export const TaskDescription = styled.p`
             props.theme.deviceSize.m}) {
         max-inline-size: 20em;
     }
+    @media (min-width: ${(props) => props.theme.deviceSize.m}) {
+        max-inline-size: 30em;
+    } ;
 `;
 export const TaskInfo = styled.span`
     color: #9e9e9e;

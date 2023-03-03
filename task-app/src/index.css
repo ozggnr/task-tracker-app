@@ -3,7 +3,7 @@ html body {
 
     font-family: 'Poppins', sans-serif;
     /* font-family: 'Itim', cursive; */
-    font-size: clamp(0.75rem, 0.35rem + 1vw, 2rem);
+    font-size: clamp(0.65rem, 0.35rem + 1vw, 2rem);
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

@@ -18,4 +18,7 @@ export const SidebarContainer = styled.div<SidebarProps>`
     padding: 1rem;
     border-radius: 0.5rem;
     overflow-y: auto;
+    @media (max-width: ${(props) => props.theme.deviceSize.xs}) {
+        width: ${(props) => props.isActive && '50%'};
+    }
 `;

@@ -17,7 +17,7 @@ export const FormContent = styled.div`
     height: 100%;
     overflow-y: auto;
     flex: 1 1 1px;
-    padding: 0 2rem;
+    padding: 0 1.5em;
     margin-bottom: 0.5rem;
 `;
 export const FormInputStyle = styled.div<FormProps>`
