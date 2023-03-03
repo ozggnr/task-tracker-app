@@ -7,14 +7,15 @@ type ProgressBarProps = {
     startTime: string;
     endTime: string;
     status?: string;
+    date: string;
 };
 
-export const ProgressBar = ({ startTime, endTime, status }: ProgressBarProps) => {
+export const ProgressBar = ({ startTime, endTime, status, date }: ProgressBarProps) => {
     const [now, setNow] = useState(new Date());
     const intervalRef = useRef<number>();
     const totalTime = differenceSeconds(
-        { earlierDate: new Date(), earlierTime: startTime! },
-        { laterDate: new Date(), laterTime: endTime! }
+        { earlierDate: new Date(date), earlierTime: startTime! },
+        { laterDate: new Date(date), laterTime: endTime! }
     );
 
     const hours = now.getHours();
@@ -22,13 +23,13 @@ export const ProgressBar = ({ startTime, endTime, status }: ProgressBarProps) =>
     const secs = now.getSeconds();
     //difference between now and start time of the task
     const passedTime = differenceSeconds(
-        { earlierDate: new Date(), earlierTime: startTime },
+        { earlierDate: new Date(date), earlierTime: startTime },
         { laterDate: new Date(), laterTime: `${hours}:${mins}:${secs}` }
     );
     //eif end time is bigger then this should be bigger than zero
     const remainingTime = differenceSeconds(
         { earlierDate: new Date(), earlierTime: `${hours}:${mins}:${secs}` },
-        { laterDate: new Date(), laterTime: endTime }
+        { laterDate: new Date(date), laterTime: endTime }
     );
 
     useEffect(() => {

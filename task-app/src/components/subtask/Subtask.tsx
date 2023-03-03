@@ -15,15 +15,15 @@ type SubtaskProps = {
 export const SubTaskComp = ({ subTask, getDurationForSubtasks, taskStatus, handleCompletedSubtasks }: SubtaskProps) => {
     const [isChecked, setIsChecked] = useState(isCompleted(subTask.status!));
     const subdiff = differenceSeconds(
-        { earlierDate: new Date(), earlierTime: subTask.start! },
-        { laterDate: new Date(), laterTime: subTask.end! }
+        { earlierDate: new Date(subTask.date), earlierTime: subTask.start! },
+        { laterDate: new Date(subTask.date), laterTime: subTask.end! }
     );
     const totalSubtaskSec = getDurationForSubtasks();
     const height = Math.floor((subdiff * 100) / totalSubtaskSec);
 
     return (
         <SubtaksContainer height={height}>
-            <ProgressBar startTime={subTask.start!} endTime={subTask.end!} status={taskStatus} />
+            <ProgressBar startTime={subTask.start} endTime={subTask.end} date={subTask.date} status={taskStatus} />
             <SubtaskDesc>
                 <FormInput
                     type="checkbox"
