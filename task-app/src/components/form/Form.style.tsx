@@ -30,14 +30,16 @@ export const FormInputStyle = styled.div<FormProps>`
 export const FormInputRow = styled(Row)`
     column-gap: 0.5rem;
     align-items: flex-end;
+    flex-wrap: wrap;
 `;
 export const FormButtonRow = styled(Row)`
     justify-content: center;
     margin: 0.5rem 0;
 `;
 export const Input = styled.input<InputProps>`
-    padding: 0rem 0.5rem;
-    height: 2rem;
+    padding-inline: 0.5rem;
+    font-size: 100%;
+    height: 100%;
     ${(props) =>
         props.isAlert &&
         `
@@ -50,16 +52,16 @@ export const StyledCheckbox = styled.input.attrs({ type: 'checkbox' })`
     margin: 0;
     font: inherit;
     color: ${(props) => props.theme.colors.primary};
-    width: 1.2rem;
-    height: 1.2rem;
+    width: 1em;
+    height: 1em;
     border: 2px solid ${(props) => props.theme.colors.primary};
     border-radius: 50%;
     display: grid;
     place-content: center;
     &:after {
         content: '';
-        width: 0.8rem;
-        height: 0.8rem;
+        width: 0.6em;
+        height: 0.6em;
         border-radius: 50%;
         transform: scale(0);
         transition: 120ms transform ease-in-out;

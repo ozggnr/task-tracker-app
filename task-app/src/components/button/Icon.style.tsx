@@ -14,9 +14,9 @@ export enum ICON_TYPE {
     // success = 'success'
 }
 export enum ICON_SIZE {
-    small = '1rem',
-    medium = '1.5rem',
-    large = '2rem',
+    small = '1em',
+    medium = '1.5em',
+    large = '2em',
 }
 
 export const getIcon = (iconType: ICON_TYPE) => {

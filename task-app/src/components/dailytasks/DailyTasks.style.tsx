@@ -1,15 +1,18 @@
 import styled from 'styled-components';
-import { Row } from '../../Main.style';
 
 export const DayContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0 6rem 1rem 6rem;
+    margin: 0 auto;
+    width: 90%;
+    // padding: 0 6rem 1rem;
     overflow-y: auto;
     row-gap: 2rem;
 `;
-export const AddTaskButtonRow = styled(Row)`
-    justify-content: flex-end;
-    padding: 1rem 6rem 1rem 0;
+export const AddTaskButtonRow = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 0.5rem 3rem 1rem;
 `;

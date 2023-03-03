@@ -13,16 +13,18 @@ export const CalendarContainer = styled.div`
 export const CalendarHeader = styled.header`
     display: flex;
     justify-content: space-between;
-    padding: 1rem 3rem 1rem 3rem;
+    padding: 0.5rem 2rem 1rem 2rem;
     align-items: center;
-    margin: 0.5rem;
+    margin: 0 auto;
+    width: 100%;
 `;
-export const CalendarContent = styled.div`
+export const CalendarContent = styled.main`
     flex-grow: 1;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    margin: 0 5rem 1rem 5rem;
+    margin: 0 auto 1rem auto;
+    width: 90%;
     backdrop-filter: blur(16px) saturate(180%);
     background-color: rgb(255 255 255 / 63%);
     border-radius: 0.5rem;
@@ -43,8 +45,8 @@ export const CalendarDateContainer = styled.div`
     justify-content: space-between;
     align-items: center;
     font-weight: 800;
-    // color: #2f0147;
-    margin: 1.5rem 6rem 0 6rem;
+    margin: 1.5em auto 1em auto;
+    width: 90%;
 `;
 
 export const Title = styled.h1`

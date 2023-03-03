@@ -6,7 +6,7 @@ interface CheckboxContainerProps {
 export const CheckboxContainer = styled.div<CheckboxContainerProps>`
     display: flex;
     align-items: center;
-    column-gap: 0.5rem;
+    column-gap: 0.25rem;
     ${(props) =>
         props.label === 'left' &&
         `

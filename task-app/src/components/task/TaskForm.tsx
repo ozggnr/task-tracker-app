@@ -80,6 +80,7 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                             value={taskInputFields.title}
                             onChange={handleChange}
                             required
+                            grow="1"
                         />
                         <FormInput
                             label="Description"
@@ -87,7 +88,7 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                             name="description"
                             value={taskInputFields.description}
                             onChange={handleChange}
-                            grow="1"
+                            grow="3"
                         />
 
                         <FormInput
