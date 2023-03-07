@@ -1,10 +1,10 @@
-import { differenceSeconds } from '../../utils/dateHelpers';
-import { SubTask } from '../../Types';
-import { FormInput } from '../form/FormInput';
-import { SubtaksContainer, SubtaskDesc, SubtaskProgressBarContainer } from './SubTask.style';
-import { ProgressBar } from '../progressBar/ProgressBar';
 import { ChangeEvent, useState } from 'react';
+import { ProgressBar } from '../progressBar/ProgressBar';
+import { SubTask } from '../../Types';
 import { isCompleted } from '../../utils/taskHelpers';
+import { differenceSeconds } from '../../utils/dateHelpers';
+import { FormInput } from '../form/FormInput';
+import { SubtaksContainer, SubtaskDesc } from './SubTask.style';
 
 type SubtaskProps = {
     subTask: SubTask;
