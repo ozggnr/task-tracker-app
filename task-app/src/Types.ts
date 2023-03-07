@@ -11,9 +11,9 @@ export interface Task {
 
 export interface SubTask {
     id?: string;
-    date?: string;
-    description?: string;
-    start?: string;
-    end?: string;
+    date: string;
+    description: string;
+    start: string;
+    end: string;
     status?: string;
 }

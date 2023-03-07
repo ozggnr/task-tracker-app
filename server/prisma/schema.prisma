@@ -37,7 +37,7 @@ model SubTask {
   createdAt   DateTime    @default(now())
   task        Task        @relation(fields: [taskId], references: [id], onDelete: Cascade)
   taskId      String      @db.ObjectId
-  date        DateTime?   @db.Date
+  date        DateTime   @db.Date
   description String
   start       String
   end         String
