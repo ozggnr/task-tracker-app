@@ -1,5 +1,8 @@
 import app from './server';
+import * as dotenv from 'dotenv';
+import config from './config';
+dotenv.config();
 
-app.listen(5001, () => {
-  console.log('Server started on 5001');
+app.listen(config.port, () => {
+    console.log(`Server started on ${config.port}`);
 });
