@@ -6,6 +6,7 @@ type Fetcher = {
     body?: Task;
     json?: boolean;
 };
+const apiUrl = import.meta.env.API_URL;
 //TODO Use TRY CATCH
 const fetcher = async ({ url, method, body, json = true }: Fetcher) => {
     const response = await fetch(url, {
@@ -27,35 +28,35 @@ const fetcher = async ({ url, method, body, json = true }: Fetcher) => {
 
 export async function getTasks() {
     return fetcher({
-        url: 'http://localhost:5001/api/task',
+        url: `${apiUrl}/api/task`,
         method: 'GET',
     });
 }
 
 export async function postTaskService(task: Task) {
     return fetcher({
-        url: 'http://localhost:5001/api/task',
+        url: `${apiUrl}/api/task`,
         method: 'POST',
         body: task,
     });
 }
 export async function deleteTaskService(taskId: string) {
     return fetcher({
-        url: `http://localhost:5001/api/task/${taskId}`,
+        url: `${apiUrl}/api/task/${taskId}`,
         method: 'DELETE',
     });
 }
 
 export async function updateTaskService(task: Task) {
     return fetcher({
-        url: `http://localhost:5001/api/task/${task.id}`,
+        url: `${apiUrl}/api/task/${task.id}`,
         method: 'PUT',
         body: task,
     });
 }
 export async function deleteSubTaskService(subTaskId: string) {
     return fetcher({
-        url: `http://localhost:5001/api/subtask/${subTaskId}`,
+        url: `${apiUrl}/api/subtask/${subTaskId}`,
         method: 'DELETE',
     });
 }
