@@ -6,7 +6,7 @@ type Fetcher = {
     body?: Task;
     json?: boolean;
 };
-const apiUrl = import.meta.env.API_URL || 'http://localhost:5001';
+const apiUrl = import.meta.env.VITE_APP_API_URL || 'http://localhost:5001';
 //TODO Use TRY CATCH
 const fetcher = async ({ url, method, body, json = true }: Fetcher) => {
     const response = await fetch(url, {
