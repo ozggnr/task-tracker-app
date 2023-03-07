@@ -87,6 +87,24 @@ export const ButtonDays = styled.button<ButtonDaysProps>`
         border: 2px solid ${(props) => props.theme.colors.primary};
         background-image: none;
     }
+    position: relative;
+    &:hover::before {
+        content: attr(aria-describedby);
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #000;
+        color: #fff;
+        margin-top: 0.5em;
+        padding-inline: 0.2em;
+        border-radius: 0.25rem;
+        font-size: 0.5em;
+        white-space: nowrap;
+        z-index: 1;
+        background-color: ${(props) =>
+            props.taskCompleted === null ? '#8080807a' : props.taskCompleted ? '#0B9B8Ab5' : '#ffa726b5'};
+    }
     @media (max-width: ${(props) => props.theme.deviceSize.xs}) {
         padding-inline: 0.65em;
     }

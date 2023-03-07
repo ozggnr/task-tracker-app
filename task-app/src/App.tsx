@@ -70,20 +70,8 @@ export default function CalendarApp() {
                                     isDayBefore={isDayBefore(day, new Date())}
                                     onClick={() => handleDaySelect(longDateFormat(day))}
                                     taskCompleted={checkTasksCompleted(day)}
+                                    aria-describedby={getTooltipText(day)}
                                 >
-                                    {checkTasksCompleted(day) !== null &&
-                                        (checkTasksCompleted(day) ? (
-                                            <Message
-                                                message="Task(s) are completed!"
-                                                severity={SEVERITY_TYPE.success}
-                                            />
-                                        ) : (
-                                            <Message
-                                                message="You have incompleted Task(s)"
-                                                severity={SEVERITY_TYPE.warning}
-                                            />
-                                        ))}
-
                                     <CalendarDate>
                                         <DayWeek>{getDayOfWeek(day)}</DayWeek>
                                         <DayMonth>{getDayOfMonth(day)}</DayMonth>
@@ -97,6 +85,15 @@ export default function CalendarApp() {
             </CalendarContainer>
         </Theme>
     );
+
+    function getTooltipText(day: Date) {
+        let text: string;
+        if (checkTasksCompleted(day) === null) return 'No task assigned';
+        else {
+            checkTasksCompleted(day) ? (text = 'Task(s) are completed!') : (text = 'You have incompleted Task(s)');
+            return text;
+        }
+    }
 
     function handleDaySelect(selectedDay: string) {
         dispatch(setDay(selectedDay));
