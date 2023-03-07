@@ -5,7 +5,7 @@ import { updateTask } from '../../store/reducers/tasksSlice';
 import { SubTask, Task } from '../../Types';
 import { differenceSeconds } from '../../utils/dateHelpers';
 import Button, { BUTTON_TYPE } from '../button/Button';
-import { SubTaskComp } from '../subTask/SubTask';
+import { SubTaskComp } from '../subtask/Subtask';
 import { TaskDetailsContainer } from './Task.style';
 
 type TaskDetailsProps = {

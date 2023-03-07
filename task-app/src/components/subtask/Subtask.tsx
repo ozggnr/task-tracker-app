@@ -4,7 +4,7 @@ import { SubTask } from '../../Types';
 import { isCompleted } from '../../utils/taskHelpers';
 import { differenceSeconds } from '../../utils/dateHelpers';
 import { FormInput } from '../form/FormInput';
-import { SubtaksContainer, SubtaskDesc } from './SubTask.style';
+import { SubtaksContainer, SubtaskDesc } from './Subtask.style';
 
 type SubtaskProps = {
     subTask: SubTask;
