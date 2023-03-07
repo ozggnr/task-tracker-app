@@ -1,12 +1,13 @@
 import { Task } from '../Types';
-
+import config from '../config';
 type Fetcher = {
     url: string;
     method: string;
     body?: Task;
     json?: boolean;
 };
-const apiUrl = import.meta.env.VITE_APP_API_URL || 'http://localhost:5001';
+const apiUrl = config.apiHost;
+console.log('here', apiUrl);
 //TODO Use TRY CATCH
 const fetcher = async ({ url, method, body, json = true }: Fetcher) => {
     const response = await fetch(url, {
