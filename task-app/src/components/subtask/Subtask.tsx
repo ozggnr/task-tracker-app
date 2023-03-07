@@ -4,7 +4,7 @@ import { SubTask } from '../../Types';
 import { isCompleted } from '../../utils/taskHelpers';
 import { differenceSeconds } from '../../utils/dateHelpers';
 import { FormInput } from '../form/FormInput';
-import { SubtaksContainer, SubtaskDesc } from './SubTask.style';
+// import { SubtaksContainer, SubtaskDesc } from './SubTask.style';
 
 type SubtaskProps = {
     subTask: SubTask;
@@ -22,21 +22,23 @@ export const SubTaskComp = ({ subTask, getDurationForSubtasks, taskStatus, handl
     const height = Math.floor((subdiff * 100) / totalSubtaskSec);
 
     return (
-        <SubtaksContainer height={height}>
+        <>
+            {/* // <SubtaksContainer height={height}> */}
             <ProgressBar startTime={subTask.start} endTime={subTask.end} date={subTask.date} status={taskStatus} />
-            <SubtaskDesc>
-                <FormInput
-                    type="checkbox"
-                    name="subTask"
-                    value={subTask.status}
-                    key={subTask.id}
-                    label={subTask.description}
-                    labelPosition="left"
-                    onChange={handleChangeSubtask}
-                    checked={isChecked}
-                />
-            </SubtaskDesc>
-        </SubtaksContainer>
+            {/* <SubtaskDesc> */}
+            <FormInput
+                type="checkbox"
+                name="subTask"
+                value={subTask.status}
+                key={subTask.id}
+                label={subTask.description}
+                labelPosition="left"
+                onChange={handleChangeSubtask}
+                checked={isChecked}
+            />
+            {/* </SubtaskDesc>
+        </SubtaksContainer> */}
+        </>
     );
     function handleChangeSubtask(ev: ChangeEvent<HTMLInputElement>) {
         setIsChecked(ev.target.checked);

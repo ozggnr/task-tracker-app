@@ -5,7 +5,7 @@ import { updateTask } from '../../store/reducers/tasksSlice';
 import { SubTask, Task } from '../../Types';
 import { differenceSeconds } from '../../utils/dateHelpers';
 import Button, { BUTTON_TYPE } from '../button/Button';
-import { SubTaskComp } from '../subTask/SubTask';
+// import { SubTaskComp } from '../subTask/SubTask';
 import { TaskDetailsContainer } from './Task.style';
 
 type TaskDetailsProps = {
@@ -20,7 +20,7 @@ export const TaskDetails = ({ activeTask, setOpenDetails }: TaskDetailsProps) =>
     console.log(activeTask);
     return (
         <TaskDetailsContainer>
-            {activeTask.subTasks.map((subTask) => (
+            {/* {activeTask.subTasks.map((subTask) => (
                 <SubTaskComp
                     subTask={subTask}
                     key={subTask.id}
@@ -28,7 +28,7 @@ export const TaskDetails = ({ activeTask, setOpenDetails }: TaskDetailsProps) =>
                     taskStatus={activeTask.status}
                     handleCompletedSubtasks={handleCompletedSubtasks}
                 />
-            ))}
+            ))} */}
             <Button btnType={BUTTON_TYPE.primary} onClick={handleCompleteTask}>
                 Completed
             </Button>
