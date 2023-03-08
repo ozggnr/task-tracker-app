@@ -91,7 +91,9 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
                                 <Modal onClick={() => setWarning(false)} size="small">
                                     <div>Do you want to delete this task?</div>
                                     <FormButtonRow>
-                                        <Button btnType={BUTTON_TYPE.link}>Cancel</Button>
+                                        <Button btnType={BUTTON_TYPE.link} onClick={() => setWarning(false)}>
+                                            Cancel
+                                        </Button>
                                         <Button btnType={BUTTON_TYPE.primary} onClick={handleConfirm}>
                                             Confirm
                                         </Button>

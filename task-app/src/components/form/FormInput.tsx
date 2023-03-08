@@ -1,7 +1,7 @@
 import { InputHTMLAttributes } from 'react';
 import { Checkbox } from '../button/Checkbox';
 import { Message, SEVERITY_TYPE } from '../message/Message';
-import { FormInputStyle, Input } from './Form.style';
+import { FormInputStyle, Input, InputComp } from './Form.style';
 
 type MessageType = {
     [key: string]: string[];
@@ -23,8 +23,10 @@ export const FormInput = ({ label, type, messages, name, grow, labelPosition, ch
                 <Checkbox label={label} labelPosition={labelPosition} type="checkbox" checked={checked} {...rest} />
             ) : (
                 <FormInputStyle grow={grow}>
-                    {label ? <label>{label}</label> : ''}
-                    <Input type={type} name={name} isAlert={errorExist} {...rest} />
+                    <InputComp>
+                        {label ? <label>{label}</label> : ''}
+                        <Input type={type} name={name} isAlert={errorExist} {...rest} />
+                    </InputComp>
                     {messages?.[name!]?.length! > 0 &&
                         messages?.[name!].map((message) => (
                             <Message message={message} severity={SEVERITY_TYPE.validationError} />

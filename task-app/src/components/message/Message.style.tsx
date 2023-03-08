@@ -57,6 +57,8 @@ export const ErrorMessage = styled.h2`
 `;
 //Form Error Message
 export const ValidationErrorMessage = styled.span`
+    position: absolute;
+    top: 100%;
     font-size: 0.75rem;
     font-weight: 400;
     color: ${(props) => props.theme.colors.danger};

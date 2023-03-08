@@ -23,6 +23,7 @@ export const FormContent = styled.div`
 export const FormInputStyle = styled.div<FormProps>`
     display: flex;
     flex-direction: column;
+    position: relative;
     margin-top: 1rem;
     ${(props) => props.grow && 'flex-grow:' + props.grow}
 `;
@@ -31,6 +32,10 @@ export const FormInputRow = styled(Row)`
     column-gap: 0.5rem;
     align-items: flex-end;
     flex-wrap: wrap;
+`;
+export const InputComp = styled.div`
+    display: flex;
+    flex-direction: column;
 `;
 export const FormButtonRow = styled(Row)`
     justify-content: center;

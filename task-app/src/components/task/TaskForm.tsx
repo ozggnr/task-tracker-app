@@ -119,7 +119,7 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                     {taskInputFields.subTasks.length > 0 &&
                         taskInputFields.subTasks.map((subTask, index) => {
                             return (
-                                <SubtakInputContainer>
+                                <SubtakInputContainer key={subTask.id}>
                                     <FormInputRow>
                                         <Button
                                             icon={ICON_TYPE.delete}
@@ -130,7 +130,6 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                                         />
 
                                         <FormInput
-                                            key={subTask.id}
                                             label="SubDescription"
                                             type="text"
                                             name="description"
