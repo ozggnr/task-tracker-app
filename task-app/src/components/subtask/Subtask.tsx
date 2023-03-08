@@ -22,7 +22,7 @@ export const SubTaskComp = ({ subTask, getDurationForSubtasks, taskStatus, handl
     const height = Math.floor((subdiff * 100) / totalSubtaskSec);
 
     return (
-        <SubtaksContainer height={height}>
+        <SubtaksContainer height={height} completed={isChecked}>
             <ProgressBar startTime={subTask.start} endTime={subTask.end} date={subTask.date} status={taskStatus} />
             <SubtaskDesc>
                 <FormInput

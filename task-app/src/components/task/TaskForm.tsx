@@ -27,6 +27,7 @@ type TaskFormProps = {
     activeDay?: string;
     isTaskOverlap: (task: Task) => boolean;
 };
+//TODO create id's for the new tasks, bson package is not working
 export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFormProps) => {
     const subTaskField: SubTask = {
         date: activeDay || task?.date!, //Not sure about this

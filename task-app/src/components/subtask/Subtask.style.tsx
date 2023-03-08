@@ -3,12 +3,14 @@ import { ProgressContainer } from '../progressBar/ProgressBar.style';
 
 interface SubtaskStyleProps {
     height?: number;
+    completed?: boolean;
 }
 
 export const SubtaksContainer = styled.div<SubtaskStyleProps>`
     display: flex;
-    height: ${(props) => props.height + '%'};
     column-gap: 2rem;
+    height: ${(props) => props.height + '%'};
+    ${(props) => props.completed && 'opacity: 0.6'};
 `;
 export const SubtaskProgressBarContainer = styled(ProgressContainer)`
     width: 20%;
