@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { differenceSeconds, getLocalizedTime, setDateTime } from '../../utils/dateHelpers';
+import { convertStringToDate, differenceSeconds, getLocalizedTime, setDateTime } from '../../utils/dateHelpers';
 import { isInProgress } from '../../utils/taskHelpers';
 import { ProgressBarContainer, ProgressContainer, ProgressTime } from './ProgressBar.style';
 
@@ -14,8 +14,8 @@ export const ProgressBar = ({ startTime, endTime, status, date }: ProgressBarPro
     const [now, setNow] = useState(new Date());
     const intervalRef = useRef<number>();
     const totalTime = differenceSeconds(
-        { earlierDate: new Date(date), earlierTime: startTime! },
-        { laterDate: new Date(date), laterTime: endTime! }
+        { earlierDate: convertStringToDate(date), earlierTime: startTime! },
+        { laterDate: convertStringToDate(date), laterTime: endTime! }
     );
 
     const hours = now.getHours();
@@ -23,13 +23,13 @@ export const ProgressBar = ({ startTime, endTime, status, date }: ProgressBarPro
     const secs = now.getSeconds();
     //difference between now and start time of the task
     const passedTime = differenceSeconds(
-        { earlierDate: new Date(date), earlierTime: startTime },
+        { earlierDate: convertStringToDate(date), earlierTime: startTime },
         { laterDate: new Date(), laterTime: `${hours}:${mins}:${secs}` }
     );
     //eif end time is bigger then this should be bigger than zero
     const remainingTime = differenceSeconds(
         { earlierDate: new Date(), earlierTime: `${hours}:${mins}:${secs}` },
-        { laterDate: new Date(date), laterTime: endTime }
+        { laterDate: convertStringToDate(date), laterTime: endTime }
     );
 
     useEffect(() => {

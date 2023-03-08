@@ -10,8 +10,8 @@ export function useTaskStatus(activeTask: Task): Task {
         let timerId: number;
         const getRemainingSecsStart = timeDifferenceWithCurrentTime(activeTask.date, activeTask.start);
         const getRemainingSecsEnd = timeDifferenceWithCurrentTime(activeTask.date, activeTask.end);
-        const taskStart = setDateTime(new Date(activeTask.date), activeTask.start);
-        const taskEnd = setDateTime(new Date(activeTask.date), activeTask.end);
+        const taskStart = setDateTime(activeTask.date, activeTask.start);
+        const taskEnd = setDateTime(activeTask.date, activeTask.end);
         const currentTime = new Date();
 
         if (activeTask.status?.toUpperCase() !== 'COMPLETED') {

@@ -2,7 +2,7 @@ import { ChangeEvent, useState } from 'react';
 import { ProgressBar } from '../progressBar/ProgressBar';
 import { SubTask } from '../../Types';
 import { isCompleted } from '../../utils/taskHelpers';
-import { differenceSeconds } from '../../utils/dateHelpers';
+import { convertStringToDate, differenceSeconds } from '../../utils/dateHelpers';
 import { FormInput } from '../form/FormInput';
 import { SubtaksContainer, SubtaskDesc } from './Subtask.style';
 
@@ -15,8 +15,8 @@ type SubtaskProps = {
 export const SubTaskComp = ({ subTask, getDurationForSubtasks, taskStatus, handleCompletedSubtasks }: SubtaskProps) => {
     const [isChecked, setIsChecked] = useState(isCompleted(subTask.status!));
     const subdiff = differenceSeconds(
-        { earlierDate: new Date(subTask.date), earlierTime: subTask.start! },
-        { laterDate: new Date(subTask.date), laterTime: subTask.end! }
+        { earlierDate: convertStringToDate(subTask.date), earlierTime: subTask.start! },
+        { laterDate: convertStringToDate(subTask.date), laterTime: subTask.end! }
     );
     const totalSubtaskSec = getDurationForSubtasks();
     const height = Math.floor((subdiff * 100) / totalSubtaskSec);

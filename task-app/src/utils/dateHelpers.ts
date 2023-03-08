@@ -1,51 +1,34 @@
-import {
-    format,
-    intervalToDuration,
-    differenceInSeconds,
-    isEqual,
-    startOfWeek,
-    endOfWeek,
-    isSameSecond,
-    isBefore,
-} from 'date-fns';
-//TODO refactor this helpers, there are so many functions
+import { format, differenceInSeconds, startOfWeek, endOfWeek, isSameSecond, isBefore, isSameDay } from 'date-fns';
+
 //date formats
+//created this function since there is a time difference between local and Render
+export function convertStringToDate(date: string): Date {
+    const formattedDateString = date.split('T')[0];
+    const year = Number(formattedDateString.split('-')[0]);
+    const month = Number(formattedDateString.split('-')[1]) - 1;
+    const day = Number(formattedDateString.split('-')[2]);
+    return new Date(year, month, day);
+}
 export function longDateFormat(date: Date | string) {
     if (typeof date === 'string') date = new Date(date);
     return format(date, 'dd MMMM yyyy');
 }
-
-export function shortDateFormat(date: Date | string) {
-    if (typeof date === 'string') date = new Date(date);
+export function shortDateFormat(date: Date | string): string {
+    if (typeof date === 'string') date = convertStringToDate(date);
     return format(date, 'MMMM yyyy');
 }
 
 //date helpers calcs
-//returns time
-export function convertTimeString(date: Date, time: string): string {
-    const stringDate = format(date, 'dd MMMM yyyy') + ' ' + time;
-    return format(new Date(stringDate), "hh:mmaaaaa'm'");
-}
-
-export function durationDifferenceInSeconds(startDate: Date, endDate: Date): number {
-    return differenceInSeconds(startDate, endDate);
-}
-// returns { years: ..,  months: .., days: .., hours: ....}
-export function durationBetween(startDate: Date, endDate: Date) {
-    return intervalToDuration({
-        start: startDate,
-        end: endDate,
-    });
-}
 //return seconds
 export function timeDifferenceWithCurrentTime(date: string, time: string) {
     return differenceSeconds(
         { earlierDate: new Date(), earlierTime: format(new Date(), 'HH:mm:ss') },
-        { laterDate: new Date(date), laterTime: time }
+        { laterDate: convertStringToDate(date), laterTime: time }
     );
 }
 
-export function setDateTime(date: Date, time: string): Date {
+export function setDateTime(date: Date | string, time: string): Date {
+    if (typeof date === 'string') date = convertStringToDate(date);
     const hours = Number(time.split(':')[0]);
     const minutes = Number(time.split(':')[1]);
     return new Date(date.setHours(hours, minutes));
@@ -65,11 +48,11 @@ export function differenceSeconds(
 }
 
 export function getDayOfWeek(date: Date | string) {
-    if (typeof date === 'string') date = new Date(date);
+    if (typeof date === 'string') date = convertStringToDate(date);
     return format(date, 'eee');
 }
 export function getDayOfMonth(date: Date | string) {
-    if (typeof date === 'string') date = new Date(date);
+    if (typeof date === 'string') date = convertStringToDate(date);
     return format(date, 'dd');
 }
 function parseDateAndTime(date: Date, time: string = '00:00'): Date {
@@ -93,8 +76,8 @@ export function endOfTheWeek(date: Date | number) {
 
 //comparation
 export const isOverdue = (taskDate: Date): boolean => isDayBefore(taskDate, new Date());
-export function isSameDay(firstDay: Date, secondDay: Date): boolean {
-    return longDateFormat(firstDay) === longDateFormat(secondDay) ? true : false;
+export function isDaySame(firstDay: Date, secondDay: Date): boolean {
+    return isSameDay(firstDay, secondDay);
 }
 export function isDayBefore(firstDay: Date, secondDay: Date): boolean {
     return isBefore(parseDateAndTime(firstDay), parseDateAndTime(secondDay));

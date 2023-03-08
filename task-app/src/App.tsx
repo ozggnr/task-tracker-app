@@ -3,12 +3,12 @@ import { useAppDispatch, useAppSelector } from './store/hooks';
 import { lastWeek, nextWeek, setDay, thisWeek } from './store/reducers/daysOfWeekSlice';
 import { getWeeklyStatusesSelector } from './store/reducers/tasksSlice';
 import {
+    convertStringToDate,
     endOfTheWeek,
     getDayOfMonth,
     getDayOfWeek,
     isDayBefore,
-    isSameDay,
-    longDateFormat,
+    isDaySame,
     shortDateFormat,
     startOfTheWeek,
 } from './utils/dateHelpers';
@@ -34,8 +34,8 @@ export default function CalendarApp() {
     //We will update our state by using dispatch, dispatch gets action with payload
     const dispatch = useAppDispatch();
     //this is our state
-    const activeDay = useAppSelector((state) => state.daysOfWeek);
-    const calendar: Date[] = getWeeklyCalendar(activeDay);
+    const activeDay = useAppSelector((state) => state.daysOfWeek); //string
+    const calendar: Date[] = getWeeklyCalendar(activeDay); //date
     const activeMonth = shortDateFormat(activeDay);
     const weeklyStatuses = useAppSelector(getWeeklyStatusesSelector(calendar));
 
@@ -66,9 +66,9 @@ export default function CalendarApp() {
                             return (
                                 <ButtonDays
                                     key={i} //TODO change the key
-                                    isActive={isSameDay(new Date(activeDay), day)}
+                                    isActive={isDaySame(convertStringToDate(activeDay), day)}
                                     isDayBefore={isDayBefore(day, new Date())}
-                                    onClick={() => handleDaySelect(longDateFormat(day))}
+                                    onClick={() => handleDaySelect(day)}
                                     taskCompleted={checkTasksCompleted(day)}
                                     aria-describedby={getTooltipText(day)}
                                 >
@@ -95,14 +95,16 @@ export default function CalendarApp() {
         }
     }
 
-    function handleDaySelect(selectedDay: string) {
-        dispatch(setDay(selectedDay));
+    function handleDaySelect(selectedDay: Date) {
+        const selectedDayString = selectedDay.toISOString();
+        dispatch(setDay(selectedDayString));
     }
 
-    function getWeeklyCalendar(day: string) {
+    function getWeeklyCalendar(day: string): Date[] {
         let calendar: Date[] = [];
-        let startWeek = startOfTheWeek(new Date(day));
-        let endWeek = endOfTheWeek(new Date(day));
+        const formatedDate = convertStringToDate(day);
+        let startWeek = startOfTheWeek(formatedDate);
+        let endWeek = endOfTheWeek(formatedDate);
         //TODO create helper isBeforeOrSame
         while (isBefore(startWeek, endWeek) || isEqual(startWeek, endWeek)) {
             calendar.push(startWeek);

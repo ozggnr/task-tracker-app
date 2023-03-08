@@ -4,7 +4,7 @@ import { deleteTaskService, updateTaskService } from '../../services/taskService
 import { deleteTask, updateTask } from '../../store/reducers/tasksSlice';
 import { Task } from '../../Types';
 import { getStatusText, isCompleted, isInProgress, isNotCompleted } from '../../utils/taskHelpers';
-import { isOverdue } from '../../utils/dateHelpers';
+import { convertStringToDate, isOverdue } from '../../utils/dateHelpers';
 import { useTaskStatus } from '../../utils/useTaskStatus';
 import { useAppDispatch } from '../../store/hooks';
 import Modal from '../modal/Modal';
@@ -43,8 +43,8 @@ export const TaskCard = ({ task, isTaskOverlap }: PropsWithChildren<TaskProps>) 
     }, [activeTask.status]);
 
     const openDetailPage = (task: Task) => (isInProgress(task.status!) && task.subTasks.length ? true : false);
-    const isTaskOverdue = isOverdue(new Date(activeTask.date)) ? true : false;
-    console.log(openDetails);
+    const isTaskOverdue = isOverdue(convertStringToDate(activeTask.date)) ? true : false;
+
     return (
         <TaskContainer ref={scrollRef} overdue={isTaskOverdue} isActive={openDetails}>
             <ProgressBar

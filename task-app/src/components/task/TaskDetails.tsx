@@ -3,7 +3,7 @@ import { updateTaskService } from '../../services/taskService';
 import { useAppDispatch } from '../../store/hooks';
 import { updateTask } from '../../store/reducers/tasksSlice';
 import { SubTask, Task } from '../../Types';
-import { differenceSeconds } from '../../utils/dateHelpers';
+import { convertStringToDate, differenceSeconds } from '../../utils/dateHelpers';
 import Button, { BUTTON_TYPE } from '../button/Button';
 import { SubTaskComp } from '../subtask/Subtask';
 import { TaskDetailsContainer } from './Task.style';
@@ -58,10 +58,15 @@ export const TaskDetails = ({ activeTask, setOpenDetails }: TaskDetailsProps) =>
 
     function getDurationForSubtasks() {
         const indexLastEl = activeTask.subTasks.length - 1;
+        const firstSubtaskDate = convertStringToDate(activeTask.subTasks[0].date!);
+        const lastSubtaskDate = convertStringToDate(activeTask.subTasks[indexLastEl].date!);
         const totalTimeDifference = differenceSeconds(
-            { earlierDate: new Date(activeTask.subTasks[0].date!), earlierTime: activeTask.subTasks[0].start! },
             {
-                laterDate: new Date(activeTask.subTasks[indexLastEl].date!),
+                earlierDate: firstSubtaskDate,
+                earlierTime: activeTask.subTasks[0].start!,
+            },
+            {
+                laterDate: lastSubtaskDate,
                 laterTime: activeTask.subTasks[indexLastEl].end!,
             }
         );

@@ -7,6 +7,7 @@ import { Task, SubTask } from '../../Types';
 import Button, { BUTTON_TYPE } from '../button/Button';
 import { FormInput } from '../form/FormInput';
 import { Form } from '../form/Form';
+import { longDateFormat } from '../../utils/dateHelpers';
 import { SubtakInputContainer, TaskFormContainer, TaskFormHeader } from './TaskForm.style';
 import { FormButtonRow, FormContent, FormInputRow } from '../form/Form.style';
 import { ICON_SIZE, ICON_TYPE } from '../button/Icon.style';
@@ -26,7 +27,6 @@ type TaskFormProps = {
     activeDay?: string;
     isTaskOverlap: (task: Task) => boolean;
 };
-
 export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFormProps) => {
     const subTaskField: SubTask = {
         date: activeDay || task?.date!, //Not sure about this
@@ -56,7 +56,7 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
     return (
         <TaskFormContainer>
             <TaskFormHeader>
-                <h3>{selectedTask?.date}</h3>
+                <h3>{longDateFormat(selectedTask?.date)}</h3>
                 <Button
                     icon={ICON_TYPE.add}
                     iconSize={ICON_SIZE.small}

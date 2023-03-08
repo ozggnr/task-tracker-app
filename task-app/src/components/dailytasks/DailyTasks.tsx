@@ -6,7 +6,7 @@ import Button, { BUTTON_TYPE } from '../button/Button';
 import { TaskCard } from '../task/Task';
 import { TaskForm } from '../task/TaskForm';
 import { checkOverlapTask } from '../../utils/validationHelpers';
-import { isOverdue } from '../../utils/dateHelpers';
+import { convertStringToDate, isOverdue } from '../../utils/dateHelpers';
 import { Loading } from '../loading/Loading';
 import { Message, SEVERITY_TYPE } from '../message/Message';
 import Modal from '../modal/Modal';
@@ -32,7 +32,6 @@ export const DailyTasks = ({ day }: Props) => {
     const dailyTasks = useAppSelector(getDailyTasksSelector(day));
     //I have to sort here since prisma sort doesn't work on the back end
     const sortedDailyTasks = dailyTasks.sort((a, b) => (a.start > b.start ? 1 : -1));
-
     if (status === 'loading') {
         return <Loading />;
     } else if (error) {
@@ -52,7 +51,7 @@ export const DailyTasks = ({ day }: Props) => {
                     icon={ICON_TYPE.add}
                     btnType={BUTTON_TYPE.link}
                     onClick={() => setOpenForm(true)}
-                    disabled={isOverdue(new Date(day))}
+                    disabled={isOverdue(convertStringToDate(day))}
                 >
                     Add Task
                 </Button>

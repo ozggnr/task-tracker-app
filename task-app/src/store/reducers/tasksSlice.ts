@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction, current, createSelector, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import { Task } from '../../Types';
-import { longDateFormat } from '../../utils/dateHelpers';
+import { convertStringToDate, isDaySame } from '../../utils/dateHelpers';
 import { isCompleted } from '../../utils/taskHelpers';
 import { getTasks } from '../../services/taskService';
 
@@ -70,7 +70,9 @@ export const getTaskByIdSelector = (id: string) => {
     return createSelector(selectTaskSlice, (tasks) => tasks.tasks.find((task) => task.id === id));
 };
 export const getDailyTasksSelector = (date: string) => {
-    return createSelector(selectTaskSlice, (tasks) => tasks.tasks.filter((task) => longDateFormat(task.date) === date));
+    return createSelector(selectTaskSlice, (tasks) => {
+        return tasks.tasks.filter((task) => isDaySame(convertStringToDate(task.date), convertStringToDate(date)));
+    });
 };
 
 export const getWeeklyStatusesSelector = (calendar: Date[]) => {
@@ -78,7 +80,7 @@ export const getWeeklyStatusesSelector = (calendar: Date[]) => {
     return createSelector(selectTaskSlice, (tasks) => {
         const days = new Map<string, boolean | null>();
         calendar.forEach((day) => {
-            const sameDayTasks = tasks.tasks.filter((task) => task.date === day.toISOString());
+            const sameDayTasks = tasks.tasks.filter((task) => isDaySame(convertStringToDate(task.date), day));
             const isTasksCompleted = sameDayTasks.length
                 ? sameDayTasks.every((task) => isCompleted(task.status!))
                 : null;
