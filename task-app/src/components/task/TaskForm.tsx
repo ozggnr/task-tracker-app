@@ -8,7 +8,7 @@ import Button, { BUTTON_TYPE } from '../button/Button';
 import { FormInput } from '../form/FormInput';
 import { Form } from '../form/Form';
 import { longDateFormat } from '../../utils/dateHelpers';
-import { SubtakInputContainer, TaskFormContainer, TaskFormHeader } from './TaskForm.style';
+import { SubtakInputContainer, SubtaskFormTitle, TaskFormContainer, TaskFormHeader } from './TaskForm.style';
 import { FormButtonRow, FormContent, FormInputRow } from '../form/Form.style';
 import { ICON_SIZE, ICON_TYPE } from '../button/Icon.style';
 import { Divider } from '../../Main.style';
@@ -68,6 +68,7 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                             subTasks: [...taskInputFields.subTasks, ...[subTaskField]],
                         });
                     }}
+                    tooltip="Add Subtask"
                 />
             </TaskFormHeader>
             <Form onSubmit={handleFormSubmit}>
@@ -113,20 +114,21 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                     {taskInputFields.subTasks.length > 0 && (
                         <>
                             <Divider />
-                            <h3>Subtasks</h3>
+                            <SubtaskFormTitle>Subtasks</SubtaskFormTitle>
                         </>
                     )}
                     {taskInputFields.subTasks.length > 0 &&
                         taskInputFields.subTasks.map((subTask, index) => {
                             return (
                                 <SubtakInputContainer key={subTask.id}>
-                                    <FormInputRow>
+                                    <FormInputRow key={subTask.id}>
                                         <Button
                                             icon={ICON_TYPE.delete}
                                             type="button"
                                             btnType={BUTTON_TYPE.delete}
                                             onClick={() => handleDeleteSubTask(subTask.id!)}
                                             iconSize={ICON_SIZE.small}
+                                            tooltip="Delete Subtask"
                                         />
 
                                         <FormInput

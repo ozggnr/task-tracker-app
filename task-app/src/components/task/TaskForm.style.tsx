@@ -14,5 +14,8 @@ export const TaskFormHeader = styled(Row)`
     padding: 0 1.5em;
 `;
 export const SubtakInputContainer = styled.div`
+    margin-top: 1rem;
+`;
+export const SubtaskFormTitle = styled.h3`
     margin-top: 2rem;
 `;
