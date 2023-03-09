@@ -7,6 +7,7 @@ import {
     endOfTheWeek,
     getDayOfMonth,
     getDayOfWeek,
+    getMonthText,
     isDayBefore,
     isDaySame,
     shortDateFormat,
@@ -41,7 +42,7 @@ export default function CalendarApp() {
 
     return (
         <Theme>
-            <CalendarContainer>
+            <CalendarContainer month={getMonthText(activeDay).toLowerCase()}>
                 <CalendarHeader>
                     <Title>{activeMonth}</Title>
                     <CalendarButtonsRow>

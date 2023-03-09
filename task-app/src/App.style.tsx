@@ -1,8 +1,11 @@
 import styled from 'styled-components';
 import { Row } from './Main.style';
 
-export const CalendarContainer = styled.div`
-    background-image: url('images/back3.png');
+interface CalendarContainerProps {
+    readonly month?: string;
+}
+export const CalendarContainer = styled.div<CalendarContainerProps>`
+    background-image: url('images/${(props) => props.month}.png');
     background-position: center center;
     background-size: cover;
     height: 100vh;
