@@ -17,7 +17,10 @@ export function shortDateFormat(date: Date | string): string {
     if (typeof date === 'string') date = convertStringToDate(date);
     return format(date, 'MMMM yyyy');
 }
-
+export function getMonthText(date: Date | string): string {
+    if (typeof date === 'string') date = convertStringToDate(date);
+    return format(date, 'LLLL');
+}
 //date helpers calcs
 //return seconds
 export function timeDifferenceWithCurrentTime(date: string, time: string) {

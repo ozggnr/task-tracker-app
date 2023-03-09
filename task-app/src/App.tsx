@@ -14,7 +14,6 @@ import {
     startOfTheWeek,
 } from './utils/dateHelpers';
 import { DailyTasks } from './components/dailytasks/DailyTasks';
-import { Message, SEVERITY_TYPE } from './components/message/Message';
 import Theme from './Theme';
 import {
     CalendarButtonsRow,
