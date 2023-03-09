@@ -1,8 +1,8 @@
 import { createSlice, current } from '@reduxjs/toolkit';
-import { addWeeks, parseISO, subWeeks } from 'date-fns';
+import { addWeeks, formatISO, parseISO, subWeeks } from 'date-fns';
 import { startOfTheWeek } from '../../utils/dateHelpers';
 
-const today = new Date().toISOString();
+const today = formatISO(new Date());
 export const daysOfWeekSlice = createSlice({
     name: 'daysOfWeek',
     initialState: today,
