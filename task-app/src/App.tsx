@@ -88,9 +88,9 @@ export default function CalendarApp() {
 
     function getTooltipText(day: Date) {
         let text: string;
-        if (checkTasksCompleted(day) === null) return 'No task assigned';
+        if (checkTasksCompleted(day) === null) return 'No task(s) assigned';
         else {
-            checkTasksCompleted(day) ? (text = 'Task(s) are completed!') : (text = 'You have incompleted Task(s)');
+            checkTasksCompleted(day) ? (text = 'Task(s) are completed!') : (text = 'You have uncompleted Task(s)');
             return text;
         }
     }
