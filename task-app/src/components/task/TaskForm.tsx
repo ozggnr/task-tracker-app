@@ -133,7 +133,7 @@ export const TaskForm = ({ setOpenForm, task, activeDay, isTaskOverlap }: TaskFo
                                         />
 
                                         <FormInput
-                                            label="SubDescription"
+                                            label="Description"
                                             type="text"
                                             name="description"
                                             value={subTask.description}
