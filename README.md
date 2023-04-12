@@ -24,10 +24,21 @@ Once there, you will be presented with the TaskerApp homepage. From here, you ca
             <td><img src='./task-app/src/assets/screenshots/tasks-uncompleted.png' width='300px'/></td>
         </tr>
     </table>
-
 -   See details about tasks, subtasks and progress bar and mark them as completed
     <img src='./task-app/src/assets/screenshots/task-inprogress.png' width='500px'>
-
+-   App will warn you if your new task overlaps with another one and if your subtask's time exceeds your task's time
+    <table>
+        <tr>
+            <td>Your new task overlaps with another task</td>
+            <td>Subtask's time exceeds task's time</td>
+        </tr>
+        <tr>
+            <td>
+                <img src='./task-app/src/assets/screenshots/task-overlaps.png' width='300px'/>
+            </td>
+            <td><img src='./task-app/src/assets/screenshots/subtask-exceed-task.png' width='300px'/></td>
+        </tr>
+    </table>
 -   Tasker application is a responsive app with following breakpoints:
     576px, 768px, 992px, 1200px
     <table>
