@@ -44,12 +44,12 @@ export const FormButtonRow = styled(Row)`
 export const Input = styled.input<InputProps>`
     padding-inline: 0.5rem;
     font-size: 100%;
-    height: 100%;
+    border: 1px solid black;
     ${(props) =>
         props.isAlert &&
         `
         border: 2px solid #e53935;
-    `}
+    `};
 `;
 export const StyledCheckbox = styled.input.attrs({ type: 'checkbox' })`
     -webkit-appearance: none;
